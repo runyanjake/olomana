@@ -26,17 +26,17 @@ Olomana, the web server will be a significant upgrade over its predecessor. I am
 In order to speed up how fast I can wipe and rebuild the server, I am maintaining this repository as a stamp of the Olomana config, as well as a instruction manual for myself to remember in what order components should be installed.
 
 
-### Part 1: Initial Configuration
+## Part 1: Initial Configuration
 
 Olomana is based off of the latest stable version of Ubuntu Server (https://ubuntu.com/download/server)
 
-#### Mounting Hard Drives
+### Mounting Hard Drives
 
 Managing disk partitions using `gdisk` and configuring drives for automatic mounting using the `fstab` file. Example: https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/
 
 Created a `/data/write` and `/data/persistent` mount point that my config is based on. Applications that write frequently do so to the dedicated drive mounted at `/data/write`, and persistent data is written to `/data/persistent`.
 
-#### Docker Installation
+### Docker Installation
 
 1. Install Docker, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04.
 
@@ -59,9 +59,9 @@ Created a `/data/write` and `/data/persistent` mount point that my config is bas
 5. Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
 
 
-### Part 2: Services Configuration
+## Part 2: Services Configuration
 
-#### Network Router (Traefik)
+### Network Router (Traefik)
 
 Traefik is the networking stack that I'm using for Olomana. The goal here is to define the basic configuration for the Traefik container so that later containers can just be plugged into Traefik as necessary. 
 
@@ -75,7 +75,7 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 5. (Additional) Configure the admin console and generate passwords for the admin user.
 
-#### Docker Admin Console (Portainer)
+### Docker Admin Console (Portainer)
 
 1. Start portainer using the docker-compose file: `docker-compose up -d`.
 
@@ -85,7 +85,7 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 4. Check Traefik routing for Portainer and make the login page available over `admin.whitney.rip`.
 
-#### System Metrics (Grafana, Prometheus, Node-Exporter)
+### System Metrics (Grafana, Prometheus, Node-Exporter)
 
 Grafana, Prometheus, and Node-Exporter were originally separate configs in the Whitney config due to a circular dependancy. I made an attempt to unify them in the Olomana config. 
 
@@ -99,7 +99,7 @@ To test that metrics are working, import the dashboard `1860`, a basic node-expo
 
 When customizing dashboards, adding images can be done by hosting them on Imgur and linking them inside a Text Panel in an `<img>` html tag.
 
-##### Jenkins
+### Jenkins
 
 1. Followed instructions at https://dev.to/andresfmoya/install-jenkins-using-docker-compose-4cab
 
@@ -107,7 +107,7 @@ Note that the container name is different, so for the command to get the one tim
 
 2. Check Traefik routing for Jenkins, and make available on `jenkins.whitney.rip`.
 
-##### Plex
+### Plex
 
 When navigating to the plex home page for the first time setup, remember to start by going to `http://[ip-address]:32400/web/index.html`. The plain address shows nothing until the plex is configured.
 
@@ -127,7 +127,7 @@ When navigating to the plex home page for the first time setup, remember to star
 
 3. Ensure there aren't any Traefik routes for plex.
 
-##### Covid 19 Project
+### Covid 19 Project
 
 1. Clone `https://github.com/KevRunAmok/Covid19app` (dockerized by me!) to a folder and follow its instructions to built a image from it.  
 
@@ -155,7 +155,7 @@ After adding the user, you can exec onto the container and run mysql from there 
 
 If mysql fails to start due to `Another process with pid 30 is using unix socket file`, this might be because the socket file was locked and was not unlocked in a previous run. Remove the file `/data/covid19/mysql.sock.lock` and it should start up correctly.
 
-##### Minecraft
+### Minecraft
 
 Olomana runs a Paper Minecraft server based off of `https://github.com/itzg/docker-minecraft-server`. All server config is done via env vars in the docker-compose. 
 
@@ -175,7 +175,7 @@ SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`
 DynMap: `https://www.spigotmc.org/resources/dynmap%C2%AE.274/`
 NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`
 
-##### NordVPN 
+### NordVPN 
 
 Uses the open source https://github.com/bubuntux/nordvpn to create a NordVPN container that other containers can route traffic through.
 
@@ -193,9 +193,9 @@ FIREWALL=Enable
 
 The default port is 8080, but I am using port 8888 via the `WEBUI_PORT=8888` instead due to a port conflict with Traefik.
 
-#### Part 3: Reference
+## Part 3: Reference
 
-##### Port Map
+### Port Map
 
 **External**
 
