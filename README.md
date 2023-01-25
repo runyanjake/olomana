@@ -48,7 +48,7 @@ Created a `/data/write` and `/data/persistent` mount point that my config is bas
 
 ### Misc Setup
 
-1. Create a new SSH key for Olomana on Github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+1. Create a new SSH key for Olomana and add it to Github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 2. Install OpenSSH (`apt-get install openssh-server`) and make sure you can ssh into the server over the local internet (Check ip address using `ip -a`).
 
@@ -57,6 +57,8 @@ Created a `/data/write` and `/data/persistent` mount point that my config is bas
 4. Add the new SSH key created in step (1) to Github. 
 
 5. Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
+
+6. Clone this repo somewhere.
 
 
 ## Part 2: Services Configuration
@@ -129,7 +131,7 @@ When navigating to the plex home page for the first time setup, remember to star
 
 ### Covid 19 Project
 
-1. Clone `https://github.com/KevRunAmok/Covid19app` (dockerized by me!) to a folder and follow its instructions to built a image from it.  
+1. Clone `https://github.com/KevRunAmok/Covid19app` (dockerized by me!) to a subfolder and follow its instructions to built a image from it.  
 
 2. Create that the `./schema` folder has been created. If a sql dump file has been provided, put them in there, and ensure that they are named in such a way that the alphanumeric execution order executes the schema one before the data one.
 
