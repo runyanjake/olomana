@@ -2,7 +2,7 @@
 The PWS 2.0 redesign, successor to https://github.com/runyanjake/whitney.
 
 
-### Background
+## Background
 
 Whitney was the codename for my first homelab setup (For reference: https://www.reddit.com/r/homelab/). It was built out of my friend's handmedown hardware in an old server case that was e-wasted from school. This initial build was on the "janky" side, featuring an unmounted power supply in the optical bay, secured only by some green yarn. (Fire hazard, anyone?)
 
@@ -13,7 +13,7 @@ I ran a lot of services from this box - my personal website/online resume, side 
 But eventually I started running up against the limits of the box. The machine's CPU was released in 2008, which was indicative of the age of most of its hardware. After spending a lot of work on the original Whitney config in the first repo, I decided that I had learned enough to warrant an upgrade.
 
 
-### The Upgrade
+## The Upgrade
 
 PWS 2.0 was given the nickname of "Olomana", a second step in this pattern of mountainous server names. Mount Olomana (https://en.wikipedia.org/wiki/Olomana\_(mountain)) is a mountain on the Windward side of Oahu, Hawaii. It has 3 peaks which are are a popular, albeit difficult and dangerous hike. While visiting family in Kailua, I hiked the Ko'olau range and snapped this picture of the rarely seen backside of Mount Olomana.
 
@@ -21,22 +21,22 @@ Olomana, the web server will be a significant upgrade over its predecessor. I am
 
 [Picture here]
 
-### Setup / Installation Instructions
+## Setup / Installation Instructions
 
 In order to speed up how fast I can wipe and rebuild the server, I am maintaining this repository as a stamp of the Olomana config, as well as a instruction manual for myself to remember in what order components should be installed.
 
 
-#### Part 1: Initial Configuration
+### Part 1: Initial Configuration
 
 Olomana is based off of the latest stable version of Ubuntu Server (https://ubuntu.com/download/server)
 
-##### Mounting Hard Drives
+#### Mounting Hard Drives
 
 Managing disk partitions using `gdisk` and configuring drives for automatic mounting using the `fstab` file. Example: https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/
 
 Created a `/data/write` and `/data/persistent` mount point that my config is based on. Applications that write frequently do so to the dedicated drive mounted at `/data/write`, and persistent data is written to `/data/persistent`.
 
-##### Docker Installation
+#### Docker Installation
 
 1. Install Docker, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04.
 
@@ -46,7 +46,7 @@ Created a `/data/write` and `/data/persistent` mount point that my config is bas
 
 4. Install Docker-Compose additionally, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
 
-#### Misc Setup
+### Misc Setup
 
 1. Create a new SSH key for Olomana on Github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
@@ -54,14 +54,14 @@ Created a `/data/write` and `/data/persistent` mount point that my config is bas
 
 3. Install Github CLI (gh). I prefer to add the library and install with apt rather than installing some other package manager: https://www.techiediaries.com/install-github-cli-ubuntu-20/
 
-Add the new SSH key created in step (1) to Github. 
+4. Add the new SSH key created in step (1) to Github. 
 
-Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
+5. Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
 
 
-#### Part 2: Services Configuration
+### Part 2: Services Configuration
 
-##### Network Router (Traefik)
+#### Network Router (Traefik)
 
 Traefik is the networking stack that I'm using for Olomana. The goal here is to define the basic configuration for the Traefik container so that later containers can just be plugged into Traefik as necessary. 
 
@@ -75,7 +75,7 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 5. (Additional) Configure the admin console and generate passwords for the admin user.
 
-##### Docker Admin Console (Portainer)
+#### Docker Admin Console (Portainer)
 
 1. Start portainer using the docker-compose file: `docker-compose up -d`.
 
@@ -85,7 +85,7 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 4. Check Traefik routing for Portainer and make the login page available over `admin.whitney.rip`.
 
-##### System Metrics (Grafana, Prometheus, Node-Exporter)
+#### System Metrics (Grafana, Prometheus, Node-Exporter)
 
 Grafana, Prometheus, and Node-Exporter were originally separate configs in the Whitney config due to a circular dependancy. I made an attempt to unify them in the Olomana config. 
 
