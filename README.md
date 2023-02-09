@@ -17,7 +17,7 @@ But eventually I started running up against the limits of the box. The machine's
 
 PWS 2.0 was given the nickname of "Olomana", a second step in this pattern of mountainous server names. Mount Olomana (https://en.wikipedia.org/wiki/Olomana\_(mountain)) is a mountain on the Windward side of Oahu, Hawaii. It has 3 peaks which are are a popular, albeit difficult and dangerous hike. While visiting family in Kailua, I hiked the Ko'olau range and snapped this picture of the rarely seen backside of Mount Olomana.
 
-Olomana, the web server will be a significant upgrade over its predecessor. I am building it as a 4U rack-mounted machine with new components. The 16U rack it is mounted in was sourced from the popular website www.racksolutions.com. The build itself includes a number of current gen budget components. Cricital resources like Ram and CPU cores are more abundant in the new build. I obtained a UPS and a dedicated write drive that were tested on PWS 1.0 to combat some data corruption issues I had faced on the old hardware.
+Olomana, the web server will be a significant upgrade over its predecessor. I am building it as a 4U rack-mounted machine with new components. The 16U rack it is mounted in was sourced from the popular website www.racksolutions.com. The build itself includes a number of current gen budget components. Cricital resources like Ram and CPU cores are more abundant in the new build. I got a UPS and a dedicated write drive that were tested on PWS 1.0 to combat some data corruption issues I had faced on the old hardware.
 
 [Picture here]
 
@@ -35,6 +35,12 @@ Olomana is based off of the latest stable version of Ubuntu Server (https://ubun
 Managing disk partitions using `gdisk` and configuring drives for automatic mounting using the `fstab` file. Example: https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/
 
 Created a `/data/write` and `/data/persistent` mount point that my config is based on. Applications that write frequently do so to the dedicated drive mounted at `/data/write`, and persistent data is written to `/data/persistent`.
+
+### OpenSSH installation
+
+`sudo apt-get install openssh-server`
+
+Test you can ssh to the machine over the local internet. 
 
 ### Docker Installation
 
