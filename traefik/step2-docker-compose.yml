@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  step2-traefik:
+    image: traefik:v2.9
+    container_name: step2-traefik
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  step2-whoami:
+    image: traefik/whoami
+    container_name: step2-whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"

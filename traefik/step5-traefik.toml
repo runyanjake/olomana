@@ -1,0 +1,27 @@
+# Whitney Traefik Static Config
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoinst.websecure]
+    address = ":443"
+
+[providers]
+  [providers.docker]
+    watch = true
+    network = "traefik_traefik-network"
+  [providers.file]
+    directory = "/etc/traefik/dynamic/"
+    watch = true
+    filename = "traefik-dynamic.toml"
+
+[api]
+  insecure = true
+  dashboard = true
+
+[log]
+  level = "error"
+

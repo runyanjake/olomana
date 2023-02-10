@@ -1,0 +1,13 @@
+# Whitney Traefik Dynamic Config
+
+[http.middlewares.simpleAuth.basicAuth]
+  users = ["USER_REDACTED:$PASS$WORD_REDACTED"]
+
+[http.routers.api]
+  rule = "Host(`monitor.whitney.rip`)"
+  entrypoints = "websecure"
+  middlewares = ["simpleAuth"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
+

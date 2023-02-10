@@ -1,0 +1,37 @@
+# Whitney Traefik Static Config
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.web.http.redirections.entryPoint]
+    to = "websecure"
+    scheme = "https"
+  [entryPoints.websecure]
+    address = ":443"
+
+[api]
+  dashboard = true
+  
+[file]
+  watch = true
+
+[certificatesResolvers.lets-encrypt.acme]
+  email = "EMAIL_@_WWW_._COM"
+  storage = "acme.json"
+  [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
+
+[providers]
+  [providers.docker]
+    watch = true
+    network = "MY_TRAEFIK_NETWORK"
+  [providers.file]
+    directory = "/etc/traefik/dynamic/"
+    filename = "traefik-dynamic.toml"
+    watch = true
+
+[log]
+  level = "error"
+

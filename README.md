@@ -42,6 +42,10 @@ Created a `/data/write` and `/data/persistent` mount point that my config is bas
 
 Test you can ssh to the machine over the local internet. 
 
+Port forward port 22 on the gateway.
+
+Try connecting to the public IP/via domain if DNS is set up already.
+
 ### Docker Installation
 
 1. Install Docker, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04.
@@ -60,7 +64,7 @@ Test you can ssh to the machine over the local internet.
 
 3. Add the new SSH key created in step (1) to Github. 
 
-4. Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
+4. Authenticate with Github (`gh auth login`) using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
 
 5. Clone this repo somewhere.
 
