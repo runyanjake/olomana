@@ -71,6 +71,8 @@ Try connecting to the public IP/via domain if DNS is set up already.
 
 ## Part 2: Services Configuration
 
+*Note when using Traefik that services need 1. to have their UI ports allowed through the machine's firewall, and 2. must have labels declared for Traefik to pick up.*
+
 ### Network Router (Traefik)
 
 Traefik is the networking stack that I'm using for Olomana. The goal here is to define the basic configuration for the Traefik container so that later containers can just be plugged into Traefik as necessary. 
