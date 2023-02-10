@@ -1,0 +1,27 @@
+version: '3.7'
+
+networks:
+  traefik_traefik-network:
+    external: true
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: always
+    networks:
+      - traefik_traefik-network
+    privileged: true
+    user: root
+    ports:
+      - 8082:8080
+      - 50000:50000
+    volumes:
+      - /data/jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins.rule=Host(`jenkins.whitney.rip`)"
+      - "traefik.http.routers.jenkins.entrypoints=web"
+
