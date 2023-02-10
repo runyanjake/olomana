@@ -56,15 +56,13 @@ Test you can ssh to the machine over the local internet.
 
 1. Create a new SSH key for Olomana and add it to Github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
-2. Install OpenSSH (`apt-get install openssh-server`) and make sure you can ssh into the server over the local internet (Check ip address using `ip -a`).
+2. Install Github CLI (gh). I prefer to add the library and install with apt rather than installing some other package manager: https://www.techiediaries.com/install-github-cli-ubuntu-20/
 
-3. Install Github CLI (gh). I prefer to add the library and install with apt rather than installing some other package manager: https://www.techiediaries.com/install-github-cli-ubuntu-20/
+3. Add the new SSH key created in step (1) to Github. 
 
-4. Add the new SSH key created in step (1) to Github. 
+4. Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
 
-5. Authenticate with Github (`gh auth login`) over the SSH method using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
-
-6. Clone this repo somewhere.
+5. Clone this repo somewhere.
 
 
 ## Part 2: Services Configuration
