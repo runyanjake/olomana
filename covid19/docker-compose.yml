@@ -1,0 +1,40 @@
+version: "3"
+
+networks:
+  covidapp-network:
+    driver: bridge
+  traefik_traefik-network:
+    external: true
+
+services: 
+  covid_app:
+    image: kr/covidapp
+    container_name: covidapp
+    restart: always
+    networks:
+      - covidapp-network
+      - traefik_traefik-network
+    build: .
+    depends_on:
+      - mysql
+    ports: 
+      - "1337:1337"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.covidapp.rule=Host(`covid.whitney.rip`)"
+      - "traefik.http.routers.covidapp.entrypoints=web"
+
+  mysql:
+      image: mysql/mysql-server:latest
+      container_name: mysql_covidapp
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: 'root'
+      command: mysqld --sql_mode="" --character-set-server=utf8mb4 --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+      ports:
+        - "3306:3306"
+      volumes:
+        - /data/covid19/mysql:/var/lib/mysql
+        - ./schema:/docker-entrypoint-initdb.d/:ro
+      networks:
+        - covidapp-network
