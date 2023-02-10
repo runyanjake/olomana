@@ -85,6 +85,8 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 5. (Additional) Configure the admin console and generate passwords for the admin user.
 
+**Note that often I had to restart traefik after bringing up other services.**
+
 ### Docker Admin Console (Portainer)
 
 1. Start portainer using the docker-compose file: `docker-compose up -d`.
