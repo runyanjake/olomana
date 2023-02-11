@@ -89,6 +89,8 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 **Note that often I had to restart traefik after bringing up other services.**
 
+**Also note that the network that Traefik is set up to scrape needs to match the actual network that docker has, not necessarily what is in traefik.toml. For example traefik-network and traefik_traefik-network have been mixed up for me in the past.**
+
 ### Docker Admin Console (Portainer)
 
 1. Start portainer using the docker-compose file: `docker-compose up -d`.
