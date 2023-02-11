@@ -1,0 +1,71 @@
+version: "3"
+
+networks:
+  minecraft_network:
+    driver: bridge
+  grafana_grafana-network:
+    external: true
+  traefik_traefik-network:
+    external: true
+
+services:
+  minecraft_creative:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft_creative
+    restart: always 
+    networks:
+      - grafana_grafana-network
+      - minecraft_network
+    ports:
+      - "25566:25565"
+      - "9226:9225"
+    volumes:
+      - /data/minecraft_creative:/data
+    environment:
+      - TYPE=PAPER
+      - EULA=TRUE
+      - SERVER_NAME=minecraft_creative
+      - MODE=creative
+      - DIFFICULTY=peaceful
+      - OPS=RicecakeSMS,pZ_aeriaL
+      - ICON=https://i.imgur.com/sqjZGql.png
+      - ENABLE_COMMAND_BLOCK=true
+      - GENERATE_STRUCTURES=false
+      - MOTD="\u00A77Pinnerland Creative Server, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
+      - PVP=false
+      - LEVEL_TYPE=FLAT
+      - ALLOW_FLIGHT=true
+
+  minecraft_2023:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft_2023
+    restart: always 
+    networks:
+      - traefik_traefik-network
+      - grafana_grafana-network
+      - minecraft_network
+    ports:
+      - "25565:25565"
+      - "9225:9225"
+      - "8123:8123"
+    volumes:
+      - /data/minecraft_2023:/data
+    environment:
+      - TYPE=PAPER
+      - MEMORY=4G
+      - VERSION=1.19.2
+      - EULA=TRUE
+      - SERVER_NAME=minecraft_2023
+      - MODE=survival
+      - SPAWN_PROTECTION=0
+      - DIFFICULTY=hard
+      - OPS=RicecakeSMS,pZ_aeriaL
+      - ICON=https://i.imgur.com/sqjZGql.png
+      - SEED="itsgoochfor2023"
+      - MOTD="\u00A77Pinnerland, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
+      - ALLOW_FLIGHT=false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minemap.rule=Host(`minemap.whitney.rip`)"
+      - "traefik.http.routers.minemap.entrypoints=web"
+
