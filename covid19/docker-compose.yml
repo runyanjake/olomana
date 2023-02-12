@@ -20,10 +20,12 @@ services:
     ports: 
       - "1337:1337"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.covidapp.rule=Host(`covid.whitney.rip`)"
-      - "traefik.http.routers.covidapp.entrypoints=web"
-
+      - traefik.http.routers.covidapp.rule=Host(`covid.whitney.rip`)
+      - traefik.http.routers.covidapp.tls=true
+      - traefik.http.routers.covidapp.tls.certresolver=lets-encrypt
+      - traefik.http.services.covidapp.loadbalancer.server.port=1337
+      - traefik.port=1337
+  
   mysql:
       image: mysql/mysql-server:latest
       container_name: mysql_covidapp
