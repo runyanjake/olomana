@@ -5,10 +5,9 @@ PWS hosts Minecraft servers. Based off `https://github.com/itzg/docker-minecraft
 All server configuration done with env vars.
 Data stored on disk rather than docker volume so things like the config can be edited via just ssh.
 
-Minecraft emits metrics for prometheus to collect via `https://github.com/sladkoff/minecraft-prometheus-exporter`. Clone the repo & build the project into a jar and copy it into the `/plugins` directory for minecraft. 
-Take special care to overwrite the plugin's default "hostname" to `0.0.0.0` to allow all traffic in the config file. Otherwise the minecraft target will show up as DOWN in Prometheus. This allows the plugin to listen to traffic from outside the container (namely the prometheus instance). 
+Minecraft emits metrics for Prometheus to collect for Grafana. We are exporting metrics via the docker container described in `https://github.com/Joshi425/minecraft-exporter`. Change the default port via env variable to make sure there aren't port conflicts. 
 
-Monitoring commands to get logs from the container are documented in the github repo.
+Monitoring commands to get logs from the minecraft container are documented in the github repo.
 
 example: `docker exec minecraft_2023 mc_log`
 
@@ -22,8 +21,6 @@ example: `docker exec minecraft_2023 mc_log`
 `docker run -d -p 25565:25565 --restart=always -e TYPE=SPIGOT --name=minecraft_creative -e EULA=TRUE -v /data/minecraft_1.17:/data -v ./server.properties:/data/server.properties itzg/minecraft-server`
 
 ##### Plugins
-
-Metrics: `https://github.com/sladkoff/minecraft-prometheus-exporter` as described above. Build jar and copy to jars folder. Ensure hostname is set to 0.0.0.0 to allow for remote pings.
 
 SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`
 

@@ -69,3 +69,23 @@ services:
       - "traefik.http.routers.minemap.rule=Host(`minemap.whitney.rip`)"
       - "traefik.http.routers.minemap.entrypoints=web"
 
+  minecraft_2023_metrics:
+    image: joshi425/minecraft_exporter:latest
+    container_name: minecraft_2023_metrics
+    restart: always
+    networks:
+      - minecraft_network
+    ports:
+      - 2565:2565
+    volumes:
+      - /data/minecraft_2023/world:/world
+    environment:
+      - RCON_HOST=127.0.0.1
+      - RCON_PORT=25565
+      - HTTP_PORT=2565
+      - FORGE_SERVER="False"
+      - PAPER_SERVER="True"
+      - DYNMAP_ENABLED="True"
+
+
+
