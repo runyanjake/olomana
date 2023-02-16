@@ -1,0 +1,26 @@
+version: "3"
+
+networks:
+  traefik_traefik-network:
+    external: true
+
+services:
+  photoprism:
+    image: photoprism/photoprism
+    container_name: photoprism
+    restart: always
+    networks:
+      - traefik_traefik-network
+    ports:
+      - "2342:2342"
+    volumes:
+      - /data/persistent/photoprism/storage:/photoprism/storage
+      - /data/persistent/photoprism/originals:/photoprism/originals
+    environment:
+      - PHOTOPRISM_ADMIN_PASSWORD=ADMIN_PASSWORD
+      - PHOTOPRISM_SITE_URL=HTTPS://SITE_URL.COM
+    labels:
+      - traefik.http.routers.gallery.rule=Host(`SITE_URL.COM`)
+      - traefik.http.routers.gallery.tls=true
+      - traefik.http.routers.gallery.tls.certresolver=lets-encrypt
+
