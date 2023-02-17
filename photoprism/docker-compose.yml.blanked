@@ -5,22 +5,70 @@ networks:
     external: true
 
 services:
-  photoprism:
+  photoprism-admin:
     image: photoprism/photoprism
-    container_name: photoprism
+    container_name: photoprism-admin
     restart: always
     networks:
       - traefik_traefik-network
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
     ports:
       - "2342:2342"
     volumes:
       - /data/persistent/photoprism/storage:/photoprism/storage
       - /data/persistent/photoprism/originals:/photoprism/originals
     environment:
+      - PHOTOPRISM_ADMIN_USER=ADMIN_USER
       - PHOTOPRISM_ADMIN_PASSWORD=ADMIN_PASSWORD
-      - PHOTOPRISM_SITE_URL=HTTPS://SITE_URL.COM
+      - PHOTOPRISM_LOG_LEVEL=info
+      - PHOTOPRISM_SITE_URL=SITE_URL_WITH_HTTPS
+      - PHOTOPRISM_ORIGINALS_LIMIT=5000
+      - PHOTOPRISM_HTTP_COMPRESSION=gzip
+      - PHOTOPRISM_EXPERIMENTAL=false
+      - PHOTOPRISM_DISABLE_FACES=true
+      - PHOTOPRISM_DISABLE_RAW=false
+      - PHOTOPRISM_JPEG_QUALITY=100
+      - PHOTOPRISM_SITE_CAPTION=PWS Gallery
+      - PHOTOPRISM_SITE_DESCRIPTION=Read-only photos of PWS
+      - PHOTOPRISM_SITE_AUTHOR=PWS
     labels:
-      - traefik.http.routers.gallery.rule=Host(`SITE_URL.COM`)
-      - traefik.http.routers.gallery.tls=true
-      - traefik.http.routers.gallery.tls.certresolver=lets-encrypt
+      - traefik.http.routers.photos.rule=Host(`SITE_URL`)
+      - traefik.http.routers.photos.tls=true
+      - traefik.http.routers.photos.tls.certresolver=lets-encrypt
+  
+  # Additional, readonly instance with the same values as above. Except there is no admin user and the instance is readonly.
+  photoprism-public:
+    image: photoprism/photoprism
+    container_name: photoprism-public
+    restart: always
+    networks:
+      - traefik_traefik-network
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    ports:
+      - "2343:2342"
+    volumes:
+      - /data/persistent/photoprism/storage:/photoprism/storage
+      - /data/persistent/photoprism/originals:/photoprism/originals
+    environment:
+      - PHOTOPRISM_READ_ONLY=true
+      - PHOTOPRISM_AUTH_MODE=public
+      - PHOTOPRISM_LOG_LEVEL=info
+      - PHOTOPRISM_SITE_URL=SITE_URL_WITH_HTTPS
+      - PHOTOPRISM_ORIGINALS_LIMIT=5000
+      - PHOTOPRISM_HTTP_COMPRESSION=gzip
+      - PHOTOPRISM_EXPERIMENTAL=false
+      - PHOTOPRISM_DISABLE_FACES=true
+      - PHOTOPRISM_DISABLE_RAW=false
+      - PHOTOPRISM_JPEG_QUALITY=100
+      - PHOTOPRISM_SITE_CAPTION=PWS Gallery
+      - PHOTOPRISM_SITE_DESCRIPTION=Photos of PWS
+      - PHOTOPRISM_SITE_AUTHOR=PWS
+    labels:
+      - traefik.http.routers.public-photos.rule=Host(`SITE_URL`)
+      - traefik.http.routers.public-photos.tls=true
+      - traefik.http.routers.public-photos.tls.certresolver=lets-encrypt
 
