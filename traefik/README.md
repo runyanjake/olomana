@@ -6,6 +6,8 @@ For setup I followed this official Traefik tutorial: https://doc.traefik.io/trae
 
 `https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/` is also a good reference.
 
+GENERAL NOTE: Don't restart the container that often because it issues Let'sEncrypt challenges that can get you rate limited quickly. (1hr cooldown)
+
 ### Baby Steps Setup
 
 ##### Step 1
