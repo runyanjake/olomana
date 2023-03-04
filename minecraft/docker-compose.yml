@@ -23,6 +23,8 @@ services:
       - /data/minecraft_creative:/data
     environment:
       - TYPE=PAPER
+      - MEMORY=2G
+      - VERSION=1.19.2
       - EULA=TRUE
       - SERVER_NAME=minecraft_creative
       - MODE=creative
