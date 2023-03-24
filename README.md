@@ -209,24 +209,11 @@ FIREWALL=Enable
 
 The default port is 8080, but I am using port 8888 via the `WEBUI_PORT=8888` instead due to a port conflict with Traefik.
 
-## Part 3: Reference
+## Part 3: SMB (Samba) Server
 
-### Port Map
+Created a samba server on a large drive to use as a NAS. 
 
-**External**
-
-- 3000 - Grafana
-
-- 8080 - Traefik
-
-- 9000 - Portainer
+Followed `https://phoenixnap.com/kb/ubuntu-samba`.
 
 
-**Grafana Network**
-
-- 995 - Node_Exporter
-
-- 3000 - Grafana
-
-- 9090 - Prometheus
 

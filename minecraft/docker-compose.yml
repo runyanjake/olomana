@@ -20,7 +20,7 @@ services:
       - "25566:25565"
       - "9226:9225"
     volumes:
-      - /data/minecraft_creative:/data
+      - /data/persistent/minecraft_creative:/data
     environment:
       - TYPE=PAPER
       - MEMORY=2G
@@ -51,7 +51,7 @@ services:
       - "9225:9225"
       - "8123:8123"
     volumes:
-      - /data/minecraft_2023:/data
+      - /data/persistent/minecraft_2023:/data
     environment:
       - TYPE=PAPER
       - MEMORY=4G
@@ -82,7 +82,7 @@ services:
     ports:
       - 2565:2565
     volumes:
-      - /data/minecraft_2023/world:/world
+      - /data/persistent/minecraft_2023/world:/world
     environment:
       - RCON_HOST=127.0.0.1
       - RCON_PORT=25565
