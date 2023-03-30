@@ -36,7 +36,7 @@ services:
       ports:
         - "3306:3306"
       volumes:
-        - /data/covid19/mysql:/var/lib/mysql
+        - /data/coldstorage/covid19/mysql:/var/lib/mysql
         - ./schema:/docker-entrypoint-initdb.d/:ro
       networks:
         - covidapp-network

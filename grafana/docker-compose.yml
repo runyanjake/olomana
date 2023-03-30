@@ -25,7 +25,7 @@ services:
       - "3000:3000"
     volumes:
       - ./olomana.ini:/etc/grafana/grafana.ini
-      - /data/grafana_data:/var/lib/grafana
+      - /data/coldstorage/grafana_data:/var/lib/grafana
     labels:
       - traefik.http.routers.grafana.rule=Host(`grafana.whitney.rip`)
       - traefik.http.routers.grafana.tls=true
