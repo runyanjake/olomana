@@ -215,5 +215,7 @@ Created a samba server on a large drive to use as a NAS.
 
 Followed `https://phoenixnap.com/kb/ubuntu-samba`.
 
+When connecting on windows go to the network tab and search for the server, format is: 
 
+`\\ipaddress`
 

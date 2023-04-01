@@ -19,14 +19,14 @@
   watch = true
 
 [certificatesResolvers.lets-encrypt.acme]
-  email = "EMAIL_@_WWW_._COM"
+  email = "runyanjake@gmail.com"
   storage = "acme.json"
   [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
 
 [providers]
   [providers.docker]
     watch = true
-    network = "MY_TRAEFIK_NETWORK"
+    network = "traefik_network"
   [providers.file]
     directory = "/etc/traefik/dynamic/"
     filename = "traefik-dynamic.toml"
