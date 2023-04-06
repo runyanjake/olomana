@@ -219,3 +219,67 @@ When connecting on windows go to the network tab and search for the server, form
 
 `\\ipaddress`
 
+## Part 4: Other Stuff
+
+### Installing Graphics Card (For running capGPT and stuff)
+
+Part 1: Install Nvidia Drivers
+
+Followed https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#ubuntu
+
+Resolved issue with old key by following method 2 in this issue: https://github.com/NVIDIA/cuda-repo-management/issues/4
+
+Part 2: Install nvidia-docker
+
+Followed: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
+
+### Video-Remove-Silence
+
+I am using this github repo to remove dead space from videos.
+
+Repo: https://github.com/excitoon/video-remove-silence
+
+Requirements:
+
+ - python 3.5
+
+ - ffmpeg (apt-get install ffmpeg)
+
+Running project:
+
+ - Place item(s) to process in an input directory. I have input/ at the same level as the folder containing the repo.
+
+ - cd into the repo.
+
+ - `python3 video-remove-silence --threshold-duration=1.1 ../input/video1.mov && python3 video-remove-silence --threshold-duration=1.1 ../input/video1.mov && ...`
+
+I noticed that increasing the threshold was necessary because the default values produced a video that was slightly choppy. Threshold=1.1 seemed to improve the flow of the video a lot with only minimal video length increase.
+
+### GPT4All
+
+Repo: https://github.com/nomic-ai/gpt4all
+
+Run by moving into the ./chat directory and running the linux executable.
+
+### Stable Diffusion
+
+#### Graphics Card Setup
+
+It was hard to get drivers setup initially due to side effects of trying to do so a few different ways. I redeployed Olomana and driver setup was straightforward the second time.
+
+I got some help but mainly followed Nvidia documentation for installing the latest drivers for my card, `nvidia-smi` and `nvidia-docker`. 
+
+[todo add links]
+
+#### Running Models
+
+Running https://github.com/Stability-AI/StableDiffusion, follow instructions there and at the preceding project at https://github.com/CompVis/latent-diffusion, where you actually create the conda env. 
+
+I am running the v2.1_768-nonema-pruned.skpt from https://huggingface.co/stabilityai/stable-diffusion-2-1/tree/main. But downloaded both as recommended in the README.
+
+-----------
+
+I am running https://github.com/CompVis/stable-diffusion. This repo had some files that weren't found in the others for some reason. Using this one in particular because it's packaged well.
+
+Used these weights: https://huggingface.co/CompVis/stable-diffusion-v-1-4-original
+V1
