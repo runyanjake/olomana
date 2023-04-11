@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3"
 
 networks:
   traefik-network:
@@ -6,24 +6,24 @@ networks:
 services:
 
   traefik:
-    image: "traefik:v2.9"
-    container_name: "traefik"
-    restart: always
+    image: traefik:v2.9
+    container_name: traefik
+    #restart: always
     networks:
       - traefik-network
     ports:
-      - "80:80"
-      - "8080:8080"
-      - "443:443"
+      - 80:80
+      - 8080:8080
+      - 443:443
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik.toml:/etc/traefik/traefik.toml"
-      - "./traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml"
-      - "./acme.json:/acme.json"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml
+      - ./acme.json:/etc/acme.json
 
   whoami:
-    image: "traefik/whoami"
-    container_name: "whoami_traefik"
+    image: traefik/whoami
+    container_name: whoami_traefik
     networks:
       - traefik-network
     labels:

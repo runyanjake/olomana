@@ -8,6 +8,25 @@ For setup I followed this official Traefik tutorial: https://doc.traefik.io/trae
 
 GENERAL NOTE: Don't restart the container that often because it issues Let'sEncrypt challenges that can get you rate limited quickly. (1hr cooldown)
 
+## GENERAL REMINDERS
+
+There is some funkiness with Traefik's acme.json file. The container is supposed to create it and manage it but due to docker linking of files and folders this gets mixed up.
+
+Reading the logs can help you understand, need to look backward from the cert resolver that i've called lets-encrypt.
+
+To make Traefik correctly populate the acme.json do the following:
+
+1. create acme.json yourself.
+
+2. Make sure the mount in docker works with the definition of the certresolver in traefik.toml.
+
+I found that we needed to have a full path (or at least a path that contained a folder, so that traefik didn't get confused and think that acme.json was a folder.
+
+3. Give the acme.json file specific permissions (600) e.g. `chmod 600 acme.json`
+
+4. Run docker-compose, does not require you to be root.
+
+
 ### Baby Steps Setup
 
 ##### Step 1
