@@ -221,6 +221,7 @@ When connecting on windows go to the network tab and search for the server, form
 
 ## Part 4: Other Stuff
 
+
 ### Installing Graphics Card (For running capGPT and stuff)
 
 Part 1: Install Nvidia Drivers
@@ -254,6 +255,18 @@ Running project:
  - `python3 video-remove-silence --threshold-duration=1.1 ../input/video1.mov && python3 video-remove-silence --threshold-duration=1.1 ../input/video1.mov && ...`
 
 I noticed that increasing the threshold was necessary because the default values produced a video that was slightly choppy. Threshold=1.1 seemed to improve the flow of the video a lot with only minimal video length increase.
+
+### Conda
+
+Used for all the below AI/ML stuff.
+
+1. Install Conda
+
+Followed `https://linuxhint.com/install-anaconda-ubuntu-22-04/`
+
+2. Configure conda so that it doesn't auto-start after login to a new session.
+
+`conda config --set auto_activate_base false`
 
 ### GPT4All
 
