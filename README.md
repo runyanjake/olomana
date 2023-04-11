@@ -79,6 +79,8 @@ Traefik is the networking stack that I'm using for Olomana. The goal here is to 
 
 1. Follow the instructions in the `traefik/` folder to run the example traefik configs and confirm that they are reachable.
 
+1.5 Note there is some annoying stuff to do regarding the `acme.json` file. See instructions in the repo for how to set it up right.
+
 2. Fill out the "Blanked" Traefik config and set up the final Traefik container.
 
 3. Ensure that the DNS is setup correctly (External step, I am using Cloudflare.) so that we can route to the server via the vanity URL.
