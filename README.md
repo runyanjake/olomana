@@ -68,6 +68,14 @@ Try connecting to the public IP/via domain if DNS is set up already.
 
 5. Clone this repo somewhere.
 
+6. Set system time using `timedatectl`, in case we want to set up any cron jobs later.
+
+List current time: `timedatectl`
+
+Get time zone options: `timedatectl list-timezones`
+
+Set local timezone: `sudo timedatectl set-timezone America/Los_Angeles`
+
 
 ## Part 2: Services Configuration
 
@@ -192,6 +200,8 @@ Commands to get logs from the container are documented in the github repo: `dock
 SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`
 DynMap: `https://www.spigotmc.org/resources/dynmap%C2%AE.274/`
 NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`
+
+The minecraft server seems to run into instability from time to time. Thus, I configured a cronjob to restart the server at 2am daily, using crontab.
 
 ### NordVPN 
 

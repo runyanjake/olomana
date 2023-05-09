@@ -30,4 +30,13 @@ NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`
 
 ajLeaderboards: `https://www.spigotmc.org/threads/ajleaderboards.471179/`
 
+##### Periodic Restarts
+
+The minecraft server runs into instability from time to time. Thus, it needs to be restarted every once and a while.
+
+Since people play late, I chose to update at 2am PST.
+
+`sudo crontab -e`
+
+add `0 2 * * * docker restart minecraft-2023 minecraft-creative`
 
