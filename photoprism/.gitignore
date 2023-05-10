@@ -1,1 +1,2 @@
-docker-compose.yml
+docker-compose-public.yml
+docker-compose-private.yml
