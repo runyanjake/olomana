@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/bin/docker:/usr/local/bin/docker
     labels:
-      - "traefik.enable=true"
       - "traefik.http.routers.jenkins.rule=Host(`jenkins.whitney.rip`)"
-      - "traefik.http.routers.jenkins.entrypoints=web"
+      - "traefik.http.routers.jenkins.tls=true"
+      - "traefik.http.routers.jenkins.tls.certresolver=lets-encrypt"
 
