@@ -1,5 +1,6 @@
 letsencrypt/
 tmp/
+backups/
 acme.json
 traefik.toml
 traefik-dynamic.toml

@@ -55,7 +55,7 @@ services:
     environment:
       - TYPE=PAPER
       - MEMORY=4G
-      - VERSION=1.19.2
+      - VERSION=1.20.1
       - EULA=TRUE
       - SERVER_NAME=minecraft_2023
       - MODE=survival
@@ -72,6 +72,28 @@ services:
       - traefik.http.routers.minemap.tls.certresolver=lets-encrypt
       - traefik.http.services.minemap.loadbalancer.server.port=8123
       - traefik.port=8123
+
+  minecraft_skyblock:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft_skyblock
+    restart: always 
+    networks:
+      - minecraft_network
+    ports:
+      - "25564:25565"
+    volumes:
+      - /data/persistent/minecraft_skyblock:/data
+    environment:
+      - TYPE=PAPER
+      - MEMORY=4G
+      - VERSION=1.20.1
+      - EULA=TRUE
+      - SERVER_NAME=minecraft_skyblock
+      - MODE=survival
+      - DIFFICULTY=hard
+      - OPS=RicecakeSMS,pZ_aeriaL
+      - ICON=https://i.imgur.com/sqjZGql.png
+      - MOTD="\u00A77Skyblock, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
 
   minecraft_2023_metrics:
     image: joshi425/minecraft_exporter:latest
