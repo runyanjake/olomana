@@ -1,6 +1,8 @@
 networks:
   gitea_network:
     external: false
+  traefik_traefik-network:
+    external: true
 
 services:
   server:
@@ -19,6 +21,7 @@ services:
     restart: always
     networks:
       - gitea_network
+      - traefik_traefik-network
     volumes:
       - /data/persistent/gitea/gitea:/data
       - /etc/timezone:/etc/timezone:ro
