@@ -38,3 +38,7 @@ Some things that were weird:
 
 - had to make sure to specify database container by the right name. Removed custom name and used just "database".
 
+6. Handle Authentication like you'd do on Github with SSH keys etc.
+
+Settings > SSH/GPG Keys > Manage SSH Keys
+

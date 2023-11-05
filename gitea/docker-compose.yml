@@ -26,6 +26,12 @@ services:
     ports:
       - "3300:3000"
       - "222:22"
+    labels:
+      - traefik.http.routers.gitea.rule=Host(`git.whitney.rip`)
+      - traefik.http.routers.gitea.tls=true
+      - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
+      - traefik.http.services.gitea.loadbalancer.server.port=3300
+      - traefik.port=3300
 
   database:
     image: postgres:14
