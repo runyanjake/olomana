@@ -1,5 +1,10 @@
 version: "3.4"
 
+networks:
+  traefik_traefik-network:
+    external: true
+
+
 services:
   app:
     image: monica
@@ -7,6 +12,8 @@ services:
       - db
     ports:
       - 8022:80
+    networks:
+      - traefik_traefik-network
     environment:
       - APP_KEY=base64:Hl8b+vnvibkFbOR0CPQVmt5mLCB0mnXqfo8aIbNPRxo=
       - DB_HOST=db
