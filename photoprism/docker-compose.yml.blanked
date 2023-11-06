@@ -5,9 +5,8 @@ networks:
     external: true
 
 services:
-  photoprism-admin:
+  photoprism-private:
     image: photoprism/photoprism
-    container_name: photoprism-private
     restart: always
     networks:
       - traefik_traefik-network
@@ -15,34 +14,33 @@ services:
       - seccomp:unconfined
       - apparmor:unconfined
     ports:
-      - "2342:2342"
+      - "[[HOST_PORT]]:2342"
     volumes:
-      - /data/coldstorage/photoprism-private/storage:/photoprism/storage
-      - /data/coldstorage/photoprism-private/originals:/photoprism/originals
+      - /data/coldstorage/photoprism/storage:/photoprism/storage
+      - /data/coldstorage/photoprism/originals:/photoprism/originals
     environment:
-      - PHOTOPRISM_ADMIN_USER=ADMIN_USER
-      - PHOTOPRISM_ADMIN_PASSWORD=ADMIN_PASSWORD
+      - PHOTOPRISM_ADMIN_USER=[[ADMIN_USER]]
+      - PHOTOPRISM_ADMIN_PASSWORD=[[ADMIN_PASS]]
       - PHOTOPRISM_LOG_LEVEL=info
-      - PHOTOPRISM_SITE_URL=SITE_URL_WITH_HTTPS
-      - PHOTOPRISM_HTTP_PORT=2342
+      - PHOTOPRISM_SITE_URL=[[SITE_URL_WITH_HTTPS]]
       - PHOTOPRISM_ORIGINALS_LIMIT=5000
       - PHOTOPRISM_HTTP_COMPRESSION=gzip
       - PHOTOPRISM_EXPERIMENTAL=false
       - PHOTOPRISM_DISABLE_FACES=true
       - PHOTOPRISM_DISABLE_RAW=false
       - PHOTOPRISM_JPEG_QUALITY=100
-      - PHOTOPRISM_SITE_CAPTION=PWS Gallery
-      - PHOTOPRISM_SITE_DESCRIPTION=Read-only photos of PWS
-      - PHOTOPRISM_SITE_AUTHOR=PWS
+      - PHOTOPRISM_SITE_CAPTION=[[SITE_CAPTION]]
+      - PHOTOPRISM_SITE_DESCRIPTION=[[SITE_DESCRIPTION]]
+      - PHOTOPRISM_SITE_AUTHOR=[[SITE_AUTHOR]]
     labels:
-      - traefik.http.routers.privatephotos.rule=Host(`SITE_URL`)
-      - traefik.http.routers.privatephotos.tls=true
-      - traefik.http.routers.privatephotos.tls.certresolver=lets-encrypt
+      - traefik.http.routers.private-photos.rule=Host(`[[SITE_URL_WITH_HTTPS]]`)
+      - traefik.http.routers.private-photos.tls=true
+      - traefik.http.routers.private-photos.tls.certresolver=lets-encrypt
+      - traefik.http.services.private-photos.loadbalancer.server.port=2342
+      - traefik.port=[[HOST_PORT]]
   
-  # Additional, readonly instance with the same values as above. Except there is no admin user and the instance is readonly.
   photoprism-public:
     image: photoprism/photoprism
-    container_name: photoprism-public
     restart: always
     networks:
       - traefik_traefik-network
@@ -50,27 +48,28 @@ services:
       - seccomp:unconfined
       - apparmor:unconfined
     ports:
-      - "2343:2343"
+      - "[[DIFFERENT_HOST_PORT]]:2342"
     volumes:
-      - /data/coldstorage/photoprism-public/storage:/photoprism/storage
-      - /data/coldstorage/photoprism-public/originals:/photoprism/originals
+      - /data/coldstorage/photoprism/storage:/photoprism/storage
+      - /data/coldstorage/photoprism/originals:/photoprism/originals
     environment:
       - PHOTOPRISM_READ_ONLY=true
       - PHOTOPRISM_AUTH_MODE=public
       - PHOTOPRISM_LOG_LEVEL=info
-      - PHOTOPRISM_SITE_URL=SITE_URL_WITH_HTTPS
-      - PHOTOPRISM_HTTP_PORT=2343
+      - PHOTOPRISM_SITE_URL=[[DIFFERENT_SITE_URL_WITH_HTTPS]]
       - PHOTOPRISM_ORIGINALS_LIMIT=5000
       - PHOTOPRISM_HTTP_COMPRESSION=gzip
       - PHOTOPRISM_EXPERIMENTAL=false
       - PHOTOPRISM_DISABLE_FACES=true
       - PHOTOPRISM_DISABLE_RAW=false
       - PHOTOPRISM_JPEG_QUALITY=100
-      - PHOTOPRISM_SITE_CAPTION=PWS Gallery
-      - PHOTOPRISM_SITE_DESCRIPTION=Photos of PWS
-      - PHOTOPRISM_SITE_AUTHOR=PWS
+      - PHOTOPRISM_SITE_CAPTION=[[SITE_CAPTION]]
+      - PHOTOPRISM_SITE_DESCRIPTION=[[SITE_DESCRIPTION]]
+      - PHOTOPRISM_SITE_AUTHOR=[[SITE_AUTHOR]]
     labels:
-      - traefik.http.routers.publicphotos.rule=Host(`SITE_URL`)
-      - traefik.http.routers.publicphotos.tls=true
-      - traefik.http.routers.publicphotos.tls.certresolver=lets-encrypt
+      - traefik.http.routers.public-photos.rule=Host(`[[DIFFERENT_SITE_URL_WITH_HTTPS]]`)
+      - traefik.http.routers.public-photos.tls=true
+      - traefik.http.routers.public-photos.tls.certresolver=lets-encrypt
+      - traefik.http.services.public-photos.loadbalancer.server.port=2342
+      - traefik.port=[[DIFFERENT_HOST_PORT]]
 

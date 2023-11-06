@@ -15,30 +15,31 @@ volumes:
 services:
   grafana:
     image: grafana/grafana
-    user: "1001"
+    user: "[[USER_ID]]"
     container_name: grafana
     restart: always
-    networks: 
+    networks:
       - grafana-network
       - traefik_traefik-network
     ports:
-      - "3000:3000"
+      - "[[HOST_PORT]]:3000"
     volumes:
       - ./olomana.ini:/etc/grafana/grafana.ini
       - /data/coldstorage/grafana_data:/var/lib/grafana
     labels:
-      - traefik.http.routers.grafana.rule=Host(`grafana.whitney.rip`)
+      - traefik.http.routers.grafana.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.grafana.tls=true
       - traefik.http.routers.grafana.tls.certresolver=lets-encrypt
       - traefik.http.services.grafana.loadbalancer.server.port=3000
-      - traefik.port=3000
+      - traefik.port=[[HOST_PORT]]
     depends_on:
       - node_exporter
       - prometheus
+
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
-    user: "995:995"
+    user: "[[USER_ID]]:[[GROUP_ID]]"
     restart: always
     networks:
       - grafana-network
@@ -49,6 +50,7 @@ services:
       - "/:/host:ro,rslave"
     depends_on:
       - prometheus
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -57,7 +59,7 @@ services:
       - grafana-network
       - minecraft_minecraft_network
     ports:
-      - "9090:9090"
+      - "[[HOST_PORT]]:9090"
     volumes:
       - "./prometheus.yml:/etc/prometheus.yml"
       - prometheus_data:/prometheus
@@ -66,5 +68,4 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--web.console.libraries=/usr/share/prometheus/console_libraries"
       - "--web.console.templates=/usr/share/prometheus/consoles"
-
 

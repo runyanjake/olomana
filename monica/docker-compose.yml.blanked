@@ -1,0 +1,41 @@
+version: "3"
+
+networks:
+  traefik_traefik-network:
+    external: true
+
+services:
+  app:
+    image: monica
+    depends_on:
+      - db
+    ports:
+      - [[HOST_PORT]]:80
+    networks:
+      - traefik_traefik-network
+    environment:
+      - APP_KEY=[[APP_KEY]]
+      - DB_HOST=[[DATABASE_HOST]]
+      - DB_USERNAME=[[DATABASE_USERNAME]]
+      - DB_PASSWORD=[[DATABASE_PASSWORD]]
+    volumes:
+      - /data/persistent/monica/app:/var/www/html/storage
+    restart: always
+    labels:
+      - traefik.http.routers.monica.rule=Host(`[[SITE_URL]]`)
+      - traefik.http.routers.monica.tls=true
+      - traefik.http.routers.monica.tls.certresolver=lets-encrypt
+      - traefik.http.services.monica.loadbalancer.server.port=80
+      - traefik.port=[[HOST_PORT]]
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=[[DATABASE_HOST]]
+      - MYSQL_USER=[[DATABASE_USERNAME]]
+      - MYSQL_PASSWORD=[[DATABASE_PASSWORD]]
+    volumes:
+      - /data/persistent/monica/db:/var/lib/mysql
+    restart: always
+

@@ -1,3 +1,5 @@
+version: "3"
+
 networks:
   gitea_network:
     external: false
@@ -11,13 +13,13 @@ services:
     depends_on:
       - database
     environment:
-      - USER_UID=1001
-      - USER_GID=1001
+      - USER_UID=[[USER_ID]]
+      - USER_GID=[[USER_ID]]
       - GITEA__database__DB_TYPE=postgres
       - GITEA__database__HOST=database:5432
-      - GITEA__database__HAME=gitea
-      - GITEA__database__USER=gitea
-      - GITEA__database__PASSWD=gitea
+      - GITEA__database__NAME=[[DATABASE_NAME]]
+      - GITEA__database__USER=[[DATABASE_USER]]
+      - GITEA__database__PASSWD=[[DATABASE_PASSWD]]
     restart: always
     networks:
       - gitea_network
@@ -27,14 +29,14 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "3300:3000"
+      - "[[HOST_PORT]]:3000"
       - "222:22"
     labels:
-      - traefik.http.routers.gitea.rule=Host(`git.whitney.rip`)
+      - traefik.http.routers.gitea.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.gitea.tls=true
       - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
-      - traefik.http.services.gitea.loadbalancer.server.port=3300
-      - traefik.port=3300
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
+      - traefik.port=[[HOST_PORT]]
 
   database:
     image: postgres:14
@@ -42,9 +44,9 @@ services:
     networks:
       - gitea_network
     environment:
-      - POSTGRES_USER=gitea
-      - POSTGRES_PASSWORD=gitea
-      - POSTGRES_DB=gitea
+      - POSTGRES_USER=[[DATABASE_USER]]
+      - POSTGRES_PASSWORD=[[DATABASE_PASSWD]]
+      - POSTGRES_DB=[[DATABASE_NAME]]
     volumes:
       - /data/persistent/gitea/database:/var/lib/postgresql/data
 

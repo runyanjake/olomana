@@ -12,16 +12,18 @@ services:
     networks:
       - traefik_traefik-network
     privileged: true
-    user: root
+    user: [[USER]]
     ports:
-      - 8082:8080
+      - [[HOST_PORT]]:8080
       - 50000:50000
     volumes:
       - /data/coldstorage/jenkins:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/bin/docker:/usr/local/bin/docker
     labels:
-      - "traefik.http.routers.jenkins.rule=Host(`jenkins.whitney.rip`)"
-      - "traefik.http.routers.jenkins.tls=true"
-      - "traefik.http.routers.jenkins.tls.certresolver=lets-encrypt"
+      - traefik.http.routers.jenkins.rule=Host(`[[SITE_URL]]`)
+      - traefik.http.routers.jenkins.tls=true
+      - traefik.http.routers.jenkins.tls.certresolver=lets-encrypt
+      - traefik.http.services.jenkins.loadbalancer.server.port=8080
+      - traefik.port=[[HOST_PORT]]
 

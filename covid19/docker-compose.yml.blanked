@@ -9,7 +9,6 @@ networks:
 services: 
   covid_app:
     image: kr/covidapp
-    container_name: covidapp
     restart: always
     networks:
       - covidapp-network
@@ -18,25 +17,26 @@ services:
     depends_on:
       - mysql
     ports: 
-      - "1337:1337"
+      - "[[HOST_PORT]]:1337"
     labels:
-      - traefik.http.routers.covidapp.rule=Host(`covid.whitney.rip`)
+      - traefik.http.routers.covidapp.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.covidapp.tls=true
       - traefik.http.routers.covidapp.tls.certresolver=lets-encrypt
       - traefik.http.services.covidapp.loadbalancer.server.port=1337
-      - traefik.port=1337
+      - traefik.port=[[HOST_PORT]]
   
   mysql:
       image: mysql/mysql-server:latest
       container_name: mysql_covidapp
       restart: always
       environment:
-        MYSQL_ROOT_PASSWORD: 'root'
+        MYSQL_ROOT_PASSWORD: '[[MYSQL_ROOT_PASSWORD]]'
       command: mysqld --sql_mode="" --character-set-server=utf8mb4 --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
       ports:
-        - "3306:3306"
+        - "[[HOST_PORT]]:3306"
       volumes:
         - /data/coldstorage/covid19/mysql:/var/lib/mysql
         - ./schema:/docker-entrypoint-initdb.d/:ro
       networks:
         - covidapp-network
+
