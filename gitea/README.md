@@ -28,6 +28,12 @@ This goes in the [server] section. (https://docs.gitea.com/next/administration/c
 
 `LOCAL_ROOT_URL = http://localhost:3000/`
 
+Also modify the following:
+
+`ROOT_URL = https://git.whitney.rip`
+
+`SSH_DOMAIN = git.whitney.rip`
+
 Then start containers again.
 
 5. Go to xxx.xxx.xx.xxx:3300 and fill out initial config.
@@ -38,7 +44,16 @@ Some things that were weird:
 
 - had to make sure to specify database container by the right name. Removed custom name and used just "database".
 
-6. Handle Authentication like you'd do on Github with SSH keys etc.
+6. Enable SSH on the server
+
+- install openssh-server
+
+- follow `https://wiki.archlinux.org/title/Gitea#Enable_SSH_Support`
+
+Should be able to clone via HTTPS at this point.
+
+7. Handle user authentication like you'd do on Github by generating new ssh keys and adding them to the SSH Keys section.
 
 Settings > SSH/GPG Keys > Manage SSH Keys
 
+Now should also be able to clone with SSH.
