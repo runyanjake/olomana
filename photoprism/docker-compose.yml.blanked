@@ -53,7 +53,7 @@ services:
       - /data/coldstorage/photoprism/storage:/photoprism/storage
       - /data/coldstorage/photoprism/originals:/photoprism/originals
     environment:
-      - PHOTOPRISM_READ_ONLY=true
+      - PHOTOPRISM_READONLY=true
       - PHOTOPRISM_AUTH_MODE=public
       - PHOTOPRISM_LOG_LEVEL=info
       - PHOTOPRISM_SITE_URL=[[DIFFERENT_SITE_URL_WITH_HTTPS]]
