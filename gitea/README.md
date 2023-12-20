@@ -36,7 +36,8 @@ Also modify the following:
 
 Then start containers again.
 
-5. Go to xxx.xxx.xx.xxx:3300 and fill out initial config.
+5. Go to xxx.xxx.xx.xxx:3300 and fill out initial config. Everything should match up to default values.
+
 
 Some things that were weird: 
 
