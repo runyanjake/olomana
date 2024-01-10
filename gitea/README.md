@@ -22,7 +22,7 @@ Followed instructions on Gitea page: https://docs.gitea.com/next/installation/in
 
 4. Stop server and set value in app.ini.
 
-Add magic line to /data/persistent/gitea/gitea/gitea/conf/app.ini because local workers will otherwise assume they can use our custom port 3300 to reach services locally. Have to specify local url here.
+Add magic line to /data/persistent/gitea/gitea/gitea/conf/app.ini because local workers will otherwise assume they can use our custom port 3330 to reach services locally. Have to specify local url here.
 
 This goes in the [server] section. (https://docs.gitea.com/next/administration/config-cheat-sheet)
 

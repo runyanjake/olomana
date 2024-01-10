@@ -13,9 +13,6 @@ services:
       - traefik_traefik-network
     privileged: true
     user: [[USER]]
-    ports:
-      - [[HOST_PORT]]:8080
-      - 50000:50000
     volumes:
       - /data/coldstorage/jenkins:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
@@ -25,5 +22,5 @@ services:
       - traefik.http.routers.jenkins.tls=true
       - traefik.http.routers.jenkins.tls.certresolver=lets-encrypt
       - traefik.http.services.jenkins.loadbalancer.server.port=8080
-      - traefik.port=[[HOST_PORT]]
+      - traefik.port=8080
 

@@ -21,8 +21,6 @@ services:
     networks:
       - grafana-network
       - traefik_traefik-network
-    ports:
-      - "[[HOST_PORT]]:3000"
     volumes:
       - ./olomana.ini:/etc/grafana/grafana.ini
       - /data/coldstorage/grafana_data:/var/lib/grafana
@@ -30,8 +28,8 @@ services:
       - traefik.http.routers.grafana.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.grafana.tls=true
       - traefik.http.routers.grafana.tls.certresolver=lets-encrypt
-      - traefik.http.services.grafana.loadbalancer.server.port=[[HOST_PORT]]
-      - traefik.port=[[HOST_PORT]]
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+      - traefik.port=3000
     depends_on:
       - node_exporter
       - prometheus
@@ -58,8 +56,6 @@ services:
     networks:
       - grafana-network
       - minecraft_minecraft_network
-    ports:
-      - "[[HOST_PORT]]:9090"
     volumes:
       - "./prometheus.yml:/etc/prometheus.yml"
       - prometheus_data:/prometheus

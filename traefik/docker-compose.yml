@@ -1,16 +1,15 @@
 version: "3"
 
 networks:
-  traefik_traefik-network:
-    external: true
+  traefik-network:
 
 services:
   traefik:
     image: traefik:v2.9
     container_name: traefik
-    restart: always
+    restart: unless-stopped
     networks:
-      - traefik_traefik-network
+      - traefik-network
     ports:
       - 80:80
       - 8080:8080
@@ -25,7 +24,7 @@ services:
     image: traefik/whoami
     container_name: whoami_traefik
     networks:
-      - traefik_traefik-network
+      - traefik-network
     labels:
       - traefik.http.routers.whoami.rule=Host(`whoami.whitney.rip`)
       - traefik.http.routers.whoami.tls=true

@@ -13,8 +13,6 @@ services:
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
-    ports:
-      - "[[HOST_PORT]]:2342"
     volumes:
       - /data/coldstorage/photoprism/storage:/photoprism/storage
       - /data/coldstorage/photoprism/originals:/photoprism/originals
@@ -37,7 +35,7 @@ services:
       - traefik.http.routers.private-photos.tls=true
       - traefik.http.routers.private-photos.tls.certresolver=lets-encrypt
       - traefik.http.services.private-photos.loadbalancer.server.port=2342
-      - traefik.port=[[HOST_PORT]]
+      - traefik.port=2342
   
   photoprism-public:
     image: photoprism/photoprism

@@ -16,14 +16,12 @@ services:
     build: .
     depends_on:
       - mysql
-    ports: 
-      - "[[HOST_PORT]]:1337"
     labels:
       - traefik.http.routers.covidapp.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.covidapp.tls=true
       - traefik.http.routers.covidapp.tls.certresolver=lets-encrypt
       - traefik.http.services.covidapp.loadbalancer.server.port=1337
-      - traefik.port=[[HOST_PORT]]
+      - traefik.port=1337
   
   mysql:
       image: mysql/mysql-server:latest

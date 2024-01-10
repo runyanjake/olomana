@@ -28,15 +28,12 @@ services:
       - /data/persistent/gitea/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "[[HOST_PORT]]:3000"
-      - "222:22"
     labels:
       - traefik.http.routers.gitea.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.gitea.tls=true
       - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
-      - traefik.http.services.gitea.loadbalancer.server.port=[[HOST_PORT]]
-      - traefik.port=[[HOST_PORT]]
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
+      - traefik.port=3000
 
   database:
     image: postgres:14
