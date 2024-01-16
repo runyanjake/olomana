@@ -22,7 +22,7 @@ Followed instructions on Gitea page: https://docs.gitea.com/next/installation/in
 
 4. Stop server and set value in app.ini.
 
-Add magic line to /data/persistent/gitea/gitea/gitea/conf/app.ini because local workers will otherwise assume they can use our custom port 3330 to reach services locally. Have to specify local url here.
+Add magic line to /data/persistent/gitea/gitea/gitea/conf/app.ini because local workers will otherwise assume they can use our port 3000 to reach services locally. Have to specify local url here.
 
 This goes in the [server] section. (https://docs.gitea.com/next/administration/config-cheat-sheet)
 
@@ -36,7 +36,7 @@ Also modify the following:
 
 Then start containers again.
 
-5. Go to xxx.xxx.xx.xxx:3300 and fill out initial config. Everything should match up to default values.
+5. Go to xxx.xxx.xx.xxx:3000 and fill out initial config. Everything should match up to default values.
 
 
 Some things that were weird: 
