@@ -34,7 +34,13 @@ Olomana is based off of the latest stable version of Ubuntu Server (https://ubun
 
 Managing disk partitions using `gdisk` and configuring drives for automatic mounting using the `fstab` file. Example: https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/
 
+#### Drives
+
 Created a `/data/write` and `/data/persistent` mount point that my config is based on. Applications that write frequently do so to the dedicated drive mounted at `/data/write`, and persistent data is written to `/data/persistent`.
+
+#### ZFS
+
+Later, I created a ZFS system to replace non-ephemeral data. It's a ZFS pool using `raidz1`, mounted to /pwspool.
 
 ### OpenSSH installation
 

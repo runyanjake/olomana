@@ -6,11 +6,11 @@ A self hosted plex server that is basically the vanilla plex docker container.
 
 The container expects its mounted folders to exist already, before it's created. 
 Either create the following or mount a drive to /data/plex that has your data.
-- `/data/persistent/plex/tvseries`
-- `/data/persistent/plex/movies`
-- `/data/persistent/plex/photos`
-- `/data/persistent/plex/homevideos`
-- `/data/persistent/plex/transcode`
+- `/pwspool/plex/tvseries`
+- `/pwspool/plex/movies`
+- `/pwspool/plex/photos`
+- `/pwspool/plex/homevideos`
+- `/pwspool/plex/transcode`
 
 (If Docker has been installed with snap, while installing the OS, you'll have issues here. It's better to seperately install docker-ce and docker-compose.
 
