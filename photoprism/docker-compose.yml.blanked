@@ -14,8 +14,8 @@ services:
       - seccomp:unconfined
       - apparmor:unconfined
     volumes:
-      - /data/coldstorage/photoprism/storage:/photoprism/storage
-      - /data/coldstorage/photoprism/originals:/photoprism/originals
+      - /pwspool/software/photoprism/storage:/photoprism/storage
+      - /pwspool/software/photoprism/originals:/photoprism/originals
     environment:
       - PHOTOPRISM_ADMIN_USER=[[ADMIN_USER]]
       - PHOTOPRISM_ADMIN_PASSWORD=[[ADMIN_PASS]]
@@ -48,8 +48,8 @@ services:
     ports:
       - "[[DIFFERENT_HOST_PORT]]:2342"
     volumes:
-      - /data/coldstorage/photoprism/storage:/photoprism/storage
-      - /data/coldstorage/photoprism/originals:/photoprism/originals
+      - /pwspool/software/photoprism/storage:/photoprism/storage
+      - /pwspool/software/photoprism/originals:/photoprism/originals
     environment:
       - PHOTOPRISM_READONLY=true
       - PHOTOPRISM_AUTH_MODE=public

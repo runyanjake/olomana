@@ -19,7 +19,7 @@ services:
       - DB_USERNAME=[[DATABASE_USERNAME]]
       - DB_PASSWORD=[[DATABASE_PASSWORD]]
     volumes:
-      - /data/persistent/monica/app:/var/www/html/storage
+      - /pwspool/software/monica/app:/var/www/html/storage
     restart: always
     labels:
       - traefik.http.routers.monica.rule=Host(`[[SITE_URL]]`)
@@ -36,6 +36,6 @@ services:
       - MYSQL_USER=[[DATABASE_USERNAME]]
       - MYSQL_PASSWORD=[[DATABASE_PASSWORD]]
     volumes:
-      - /data/persistent/monica/db:/var/lib/mysql
+      - /pwspool/software/monica/db:/var/lib/mysql
     restart: always
 

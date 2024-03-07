@@ -25,7 +25,7 @@ services:
       - gitea_network
       - traefik_traefik-network
     volumes:
-      - /data/persistent/gitea/gitea:/data
+      - /pwspool/software/gitea/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
@@ -45,5 +45,5 @@ services:
       - POSTGRES_PASSWORD=[[DATABASE_PASSWD]]
       - POSTGRES_DB=[[DATABASE_NAME]]
     volumes:
-      - /data/persistent/gitea/database:/var/lib/postgresql/data
+      - /pwspool/software/gitea/database:/var/lib/postgresql/data
 

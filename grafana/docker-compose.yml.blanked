@@ -23,7 +23,7 @@ services:
       - traefik_traefik-network
     volumes:
       - ./olomana.ini:/etc/grafana/grafana.ini
-      - /data/coldstorage/grafana_data:/var/lib/grafana
+      - /pwspool/software/grafana:/var/lib/grafana
     labels:
       - traefik.http.routers.grafana.rule=Host(`[[SITE_URL]]`)
       - traefik.http.routers.grafana.tls=true

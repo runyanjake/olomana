@@ -33,7 +33,7 @@ services:
       ports:
         - "[[HOST_PORT]]:3306"
       volumes:
-        - /data/coldstorage/covid19/mysql:/var/lib/mysql
+        - /pwspool/software/covid19/mysql:/var/lib/mysql
         - ./schema:/docker-entrypoint-initdb.d/:ro
       networks:
         - covidapp-network
