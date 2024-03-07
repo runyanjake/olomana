@@ -22,7 +22,7 @@ The repo contains `grafana.ini`, the config file for grafana. By default this de
 
 `sudo docker-compose up -d`
 
-I usually had to manually give ownership to the right user to the /data/grafana_data folder hierarchy before grafana would work.
+I usually had to manually give ownership to the right user to the /pwspool/grafana folder hierarchy before grafana would work.
 
 Also, if using traefik, to expose this container, you probably need to restart traefik after this container goes up.
 
