@@ -11,12 +11,12 @@ services:
       - PGID=[[GROUP_ID]]
       - VERSION=docker
     volumes:
-      - /pwspool/plex/:/config
-      - /pwspool/plex/tvseries:/tv
-      - /pwspool/plex/movies:/movies
-      - /pwspool/plex/photos:/photos
-      - /pwspool/plex/homevideos:/homevideos
-      - /pwspool/plex/transcode:/transcode
+      - /pwspool/archive/plex/:/config
+      - /pwspool/archive/plex/tvseries:/tv
+      - /pwspool/archive/plex/movies:/movies
+      - /pwspool/archive/plex/photos:/photos
+      - /pwspool/archive/plex/homevideos:/homevideos
+      - /pwspool/archive/plex/transcode:/transcode
     labels:
       - "traefik.enable=false"
 
