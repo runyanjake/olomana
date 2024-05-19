@@ -20,6 +20,25 @@ example: `docker exec minecraft_2023 mc_log`
 `docker run -d -p 25565:25565 --network=host --restart=always --name=minecraft_2023 -e EULA=true -e MC_MAXMEM=2g -e MC_MINMEM=512m -v /data/minecraft_1.16:/minecraft nimmis/spigot`
 `docker run -d -p 25565:25565 --restart=always -e TYPE=SPIGOT --name=minecraft_creative -e EULA=TRUE -v /data/minecraft_1.17:/data -v ./server.properties:/data/server.properties itzg/minecraft-server`
 
+##### Additional Setup
+
+Make sure to go into server.properties and set
+
+`white-list=true`.
+
+Add users to whitelist via server commands or by creating whitelist.json in server directory.
+
+```
+[
+  {
+    "uuid": "player_uuid",
+    "name": "player_username"
+  }
+]
+```
+
+Don't get griefed! We did once! :)
+
 ##### Plugins
 
 SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`
