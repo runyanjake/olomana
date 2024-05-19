@@ -15,6 +15,11 @@ const quotes = [
         link: "https://en.wikipedia.org/wiki/Abraham_Lincoln"
     },
     {
+        text: "Don't believe everything you read on the internet.",
+        author: "Abraham Lincoln",
+        link: "https://www.goodreads.com/quotes/4472530-the-problem-with-internet-quotes-is-that-you-cannot-always"
+    },
+    {
         text: "I should be on in a few minutes.",
         author: "Jake, in the moments before baiting",
         link: "https://www.youtube.com/channel/UCZctf3QSXXk9a5KzrAJ2bmw"
