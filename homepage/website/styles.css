@@ -1,4 +1,5 @@
 body {
+    height: 100%;
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
@@ -9,6 +10,12 @@ body {
 .container {
     width: 80%;
     margin: 0 auto;
+}
+
+.container-with-footer-padding {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 60px;
 }
 
 header {
@@ -45,10 +52,43 @@ header nav ul li a {
     font-weight: 500;
 }
 
+.blog-image {
+    width: 50%;
+    height: auto;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
 .nav-button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #F5844C;
+    color: #240f0f;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.service-entry {
+    padding-bottom: 60px;
+}
+
+.service-public-status {
+    display: inline;
+    padding: 10px 20px;
+    background-color: #1daa0a;
+    color: #240f0f;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.service-private-status {
+    display: inline;
+    padding: 10px 20px;
+    background-color: #c72424;
     color: #240f0f;
     text-decoration: none;
     font-weight: 600;
