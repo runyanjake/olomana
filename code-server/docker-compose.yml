@@ -1,0 +1,34 @@
+version: '3.7'
+
+networks:
+  traefik_traefik-network:
+    external: true
+    
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    restart: unless-stopped
+    networks:
+      - traefik_traefik-network
+    volumes:
+      - /pwspool/software/code-server/config:/config
+    ports:
+      - 8443:8443
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD=jakenotes
+        #- HASHED_PASSWORD=TODO
+      - SUDO_PASSWORD=jakenotes
+        #- SUDO_PASSWORD_HASH=TODO
+      - PROXY_DOMAIN=code.whitney.rip
+      - DEFAULT_WORKSPACE=/config/workspace
+    labels:
+      - traefik.http.routers.code.rule=Host(`code.whitney.rip`)
+      - traefik.http.routers.code.tls=true
+      - traefik.http.routers.code.tls.certresolver=lets-encrypt
+      - traefik.http.services.code.loadbalancer.server.port=8443
+      - traefik.port=8443
+
