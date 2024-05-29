@@ -12,7 +12,7 @@ services:
       - [TRAEFIK_NETWORK]
     build: .
     labels:
-      - traefik.http.routers.homepage.rule=Host(`[SUBDOMAIN_URL]`)
+      - traefik.http.routers.homepage.rule=Host(`[DOMAIN_URL]` || `[SUBDOMAIN_URL]`)
       - traefik.http.routers.homepage.tls=true
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
       - traefik.http.services.homepage.loadbalancer.server.port=[[NGINX_INTERNAL_PORT]]

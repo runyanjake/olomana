@@ -32,7 +32,7 @@ jenkins:
 	cd jenkins && $(DOCKER_BUILD)
 
 minecraft:
-	cd minecraft && $(DOCKER_NETWORK_CREATE) grafana_grafana-network && $(DOCKER_COMPOSE_UP)
+	cd minecraft && $(DOCKER_COMPOSE_UP)
 
 monica:
 	cd monica && $(DOCKER_BUILD)
@@ -50,5 +50,5 @@ portainer:
 	cd portainer && $(DOCKER_BUILD)
 
 traefik:
-	cd traefik && $(DOCKER_NETWORK_CREATE) traefik_traefik-network && $(DOCKER_COMPOSE_UP)
+	cd traefik && $(DOCKER_COMPOSE_UP)
 
