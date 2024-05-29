@@ -1,17 +1,18 @@
 version: '3'
 
 networks:
-  [[TRAEFIK_NETWORK]]:
+  [TRAEFIK_NETWORK]:
     external: true
 
 services:
   web:
     image: homepage
+    restart: unless-stopped
     networks:
-      - [[TRAEFIK_NETWORK]]
+      - [TRAEFIK_NETWORK]
     build: .
     labels:
-      - traefik.http.routers.homepage.rule=Host(`[[SITE_URL]]`)
+      - traefik.http.routers.homepage.rule=Host(`[SUBDOMAIN_URL]`)
       - traefik.http.routers.homepage.tls=true
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
       - traefik.http.services.homepage.loadbalancer.server.port=[[NGINX_INTERNAL_PORT]]

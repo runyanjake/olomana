@@ -4,26 +4,26 @@ services:
   nordlynx:
     image: ghcr.io/bubuntux/nordlynx
     container_name: nordlynx
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     environment:
-      - PRIVATE_KEY=[[PRIVATE_KEY]]
+      - PRIVATE_KEY=[PRIVATE_KEY]
       - NET_LOCAL=192.168.1.0/24
       - TZ=America/Los_Angeles
       - QUERY=filters\[country_id\]=202
     ports:
-      - "[[HOST_URL]]:8888"
-    restart: "unless-stopped"
+      - "[HOST_URL]:8888"
     labels:
       - traefik.enable=false
 
   qb:
     image: ghcr.io/linuxserver/qbittorrent:latest
     container_name: qb
-    restart: always
+    restart: unless-stopped
     network_mode: service:nordlynx
     environment:
-      - WEBUI_PORT=[[HOST_URL]]
+      - WEBUI_PORT=[HOST_URL]
     volumes:
       - /data/write/qb/appdata/config:/config
       - /data/write/qb/downloads:/downloads
@@ -31,4 +31,3 @@ services:
       - nordlynx
     labels:
       - traefik.enable=false
-

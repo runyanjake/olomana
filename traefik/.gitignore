@@ -2,6 +2,7 @@ letsencrypt/
 tmp/
 backups/
 acme.json
+docker-compose.yml
 traefik.toml
 traefik-dynamic.toml
 

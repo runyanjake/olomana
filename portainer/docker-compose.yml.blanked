@@ -10,7 +10,7 @@ services:
   portainer:
     image: portainer/portainer-ce 
     container_name: portainer
-    restart: always
+    restart: unless-stopped
     networks:
       - traefik_traefik-network
     ports:

@@ -3,33 +3,35 @@ version: "3"
 networks:
   gitea_network:
     external: false
-  traefik_traefik-network:
+  [TRAEFIK_NETWORK]:
     external: true
 
 services:
   server:
     image: gitea/gitea:latest
     container_name: gitea
+    restart: unless-stopped
     depends_on:
       - database
     environment:
-      - USER_UID=[[USER_ID]]
-      - USER_GID=[[USER_ID]]
+      - USER_UID=1001
+      - USER_GID=1001
+      - DOMAIN=[SUBDOMAIN_URL]
+      - PROTOCOL=http
       - GITEA__database__DB_TYPE=postgres
       - GITEA__database__HOST=database:5432
-      - GITEA__database__NAME=[[DATABASE_NAME]]
-      - GITEA__database__USER=[[DATABASE_USER]]
-      - GITEA__database__PASSWD=[[DATABASE_PASSWD]]
-    restart: always
+      - GITEA__database__NAME=[GITEA_DB_NAME]
+      - GITEA__database__USER=[GITEA_DB_USER]
+      - GITEA__database__PASSWD=[GITEA_DB_PASS]
     networks:
       - gitea_network
-      - traefik_traefik-network
+      - [TRAEFIK_NETWORK]
     volumes:
       - /pwspool/software/gitea/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - traefik.http.routers.gitea.rule=Host(`[[SITE_URL]]`)
+      - traefik.http.routers.gitea.rule=Host(`[SUBDOMAIN_URL]`)
       - traefik.http.routers.gitea.tls=true
       - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
       - traefik.http.services.gitea.loadbalancer.server.port=3000
@@ -37,13 +39,15 @@ services:
 
   database:
     image: postgres:14
-    restart: always
     networks:
       - gitea_network
+    restart: unless-stopped
     environment:
-      - POSTGRES_USER=[[DATABASE_USER]]
-      - POSTGRES_PASSWORD=[[DATABASE_PASSWD]]
-      - POSTGRES_DB=[[DATABASE_NAME]]
+      - POSTGRES_USER=[GITEA_DB_USER]
+      - POSTGRES_PASSWORD=[GITEA_DB_PASS]
+      - POSTGRES_DB=[GITEA_DB_NAME]
     volumes:
       - /pwspool/software/gitea/database:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
 

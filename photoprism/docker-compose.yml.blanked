@@ -1,15 +1,16 @@
 version: "3"
 
 networks:
-  traefik_traefik-network:
+  [TRAEFIK_NETWORK]:
     external: true
 
 services:
   photoprism-private:
     image: photoprism/photoprism
-    restart: always
+    container_name: photoprism-private
+    restart: unless-stopped
     networks:
-      - traefik_traefik-network
+      - [TRAEFIK_NETWORK]
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
@@ -39,9 +40,10 @@ services:
   
   photoprism-public:
     image: photoprism/photoprism
-    restart: always
+    container_name: photoprism-public
+    restart: unless-stopped
     networks:
-      - traefik_traefik-network
+      - [TRAEFIK_NETWORK]
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
