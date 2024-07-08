@@ -24,7 +24,7 @@
   # Use LetsEncrypt Staging Server
   # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
   # Use LetsEncrypt Prod Server
-  caServer: "https://acme-v02.api.letsencrypt.org/directory"
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
   [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
 
 [providers]
