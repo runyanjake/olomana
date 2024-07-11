@@ -14,8 +14,8 @@ services:
     depends_on:
       - database
     environment:
-      - USER_UID=1001
-      - USER_GID=1001
+      - USER_UID=[GITEA_USER_ID]
+      - USER_GID=[GITEA_USER_GROUP_ID]
       - DOMAIN=[SUBDOMAIN_URL]
       - PROTOCOL=http
       - GITEA__database__DB_TYPE=postgres
