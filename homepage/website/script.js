@@ -44,6 +44,11 @@ const quotes = [
         author: "MayMay",
         link: "https://gallery.whitney.rip/library/albums/as3wif72i18kzs9q/tobee-and-maymay"
     },
+    {
+        text: "It's your internet. Take it back.",
+        author: "DWS",
+        link: "https://dws.rip"
+    },
 ];
 const failureMessageQOTD = 'Failed to fetch the quote of the day. Please try again later.';
 
