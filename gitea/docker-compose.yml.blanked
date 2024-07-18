@@ -35,7 +35,6 @@ services:
       - traefik.http.routers.gitea.tls=true
       - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
       - traefik.http.services.gitea.loadbalancer.server.port=3000
-      - traefik.port=3000
 
   database:
     image: postgres:14

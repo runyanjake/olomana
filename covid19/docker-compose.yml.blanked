@@ -22,7 +22,6 @@ services:
       - traefik.http.routers.covidapp.tls=true
       - traefik.http.routers.covidapp.tls.certresolver=lets-encrypt
       - traefik.http.services.covidapp.loadbalancer.server.port=1337
-      - traefik.port=1337
   
   mysql:
       image: mysql/mysql-server:latest

@@ -30,5 +30,4 @@ services:
       - traefik.http.routers.code.tls=true
       - traefik.http.routers.code.tls.certresolver=lets-encrypt
       - traefik.http.services.code.loadbalancer.server.port=8443
-      - traefik.port=8443
 

@@ -16,4 +16,4 @@ services:
       - traefik.http.routers.homepage.tls=true
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
       - traefik.http.services.homepage.loadbalancer.server.port=[[NGINX_INTERNAL_PORT]]
-      - traefik.port=[[NGINX_INTERNAL_PORT]]
+

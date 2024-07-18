@@ -28,7 +28,6 @@ services:
       - traefik.http.routers.grafana.tls=true
       - traefik.http.routers.grafana.tls.certresolver=lets-encrypt
       - traefik.http.services.grafana.loadbalancer.server.port=3000
-      - traefik.port=3000
     depends_on:
       - node_exporter
       - prometheus

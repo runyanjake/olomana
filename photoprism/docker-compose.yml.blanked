@@ -36,7 +36,6 @@ services:
       - traefik.http.routers.private-photos.tls=true
       - traefik.http.routers.private-photos.tls.certresolver=lets-encrypt
       - traefik.http.services.private-photos.loadbalancer.server.port=2342
-      - traefik.port=2342
   
   photoprism-public:
     image: photoprism/photoprism
@@ -71,5 +70,4 @@ services:
       - traefik.http.routers.public-photos.tls=true
       - traefik.http.routers.public-photos.tls.certresolver=lets-encrypt
       - traefik.http.services.public-photos.loadbalancer.server.port=2342
-      - traefik.port=[[DIFFERENT_HOST_PORT]]
 
