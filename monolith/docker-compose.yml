@@ -1,0 +1,46 @@
+version: "3"
+
+networks:
+  traefik:
+    driver: bridge
+    name: traefik
+
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    networks:
+      - traefik
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml
+      - ./acme.json:/etc/acme.json
+
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - /pwspool/software/code-server/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - HASHED_PASSWORD=$$argon2i$$v=19$$m=4096,t=3,p=1$$o70PqzdDrUvzijIN+Nd+uw$$8wsBelBomYLsaKFelBAf+v8KqpS7TMsfFvmouarbehg
+      - SUDO_PASSWORD_HASH=$$argon2i$$v=19$$m=4096,t=3,p=1$$o70PqzdDrUvzijIN+Nd+uw$$8wsBelBomYLsaKFelBAf+v8KqpS7TMsfFvmouarbehg
+      - PROXY_DOMAIN=code.whitney.rip
+      - DEFAULT_WORKSPACE=/config/workspace
+    labels:
+      - traefik.http.routers.code.rule=Host(`code.whitney.rip`)
+      - traefik.http.routers.code.tls=true
+      - traefik.http.routers.code.tls.certresolver=lets-encrypt
+      - traefik.http.services.code.loadbalancer.server.port=8443
+

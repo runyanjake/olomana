@@ -1,0 +1,18 @@
+# Whitney Traefik Dynamic Config
+
+[http.middlewares]
+  [http.middlewares.redirect-to-www.redirectRegex]
+    regex = "^https?://example.com(.*)"
+    replacement = "http://www.example.com$${1}"
+    permanent = true
+  [http.middlewares.simpleAuth.basicAuth]
+    users = ["olomana:HASHED_PASSWORD_HERE"]
+
+[http.routers.api]
+  rule = "Host(`monitor.example.rip`)"
+  entrypoints = "websecure"
+  middlewares = ["simpleAuth"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
+
