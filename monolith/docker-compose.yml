@@ -137,8 +137,8 @@ services:
       - QUERY=filters\[country_id\]=202
     ports:
       - "8888:8888"
-      - "6881:6881"
-      - "6881:6881/udp"
+      - 6881:6881
+      - 6881:6881/udp
     labels:
       - traefik.enable=false
 
