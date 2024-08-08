@@ -129,7 +129,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PRIVATE_KEY_FILE=nordlynx/privatekey.txt
+      - PRIVATE_KEY=mDnVa4EMbnlSF8Sg/i657hf+NRyWQxQjKTwkImD/HWE=
       - NET_LOCAL=192.168.1.0/24
       - TZ=America/Los_Angeles
       - QUERY=filters\[country_id\]=202
