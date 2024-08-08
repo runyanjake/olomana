@@ -18,9 +18,9 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik.toml:/etc/traefik/traefik.toml
-      - ./traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml
-      - ./acme.json:/etc/acme.json
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik/traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml
+      - ./traefik/acme.json:/etc/acme.json
 
   code-server:
     image: lscr.io/linuxserver/code-server:latest
