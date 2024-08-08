@@ -116,8 +116,10 @@ services:
       - traefik
     networks:
       - traefik
+    ports:
+      - "81:80"
     labels:
       - traefik.http.routers.homepage.rule=Host(`www.whitney.rip`)
       - traefik.http.routers.homepage.tls=true
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
-      - traefik.http.services.homepage.loadbalancer.server.port=80
+      - traefik.http.services.homepage.loadbalancer.server.port=81
