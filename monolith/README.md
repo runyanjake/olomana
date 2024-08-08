@@ -1,8 +1,8 @@
 # Olomana - All in One
 This is the one-dockerfile version of olomana containing the stable "production" containers.
 Better than going module by module but don't let that stop you.
-Run everything with a simple `docker-compose down && docker system prune && docker-compose up -d`
-Run one thing with a simple `docker-compose up serviceName`
+Run everything with a simple `docker compose down && docker system prune && docker compose up -d`
+Run one thing with a simple `docker compose up serviceName`
 
 ## Setup
 
@@ -23,7 +23,7 @@ In addition to the above files, make sure the docker socket is mounted:
 
 #### References
 https://doc.traefik.io/traefik/getting-started/quick-start/
-https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
+https://doc.traefik.io/traefik/user-guides/docker compose/basic-example/
 
 ### Code-Server
 
@@ -68,4 +68,4 @@ https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/
 #### Instructions
 
 ##### Build
-Test build with `docker-compose build homepage`.
+Test build with `docker compose build homepage`.
