@@ -134,7 +134,7 @@ services:
       - PRIVATE_KEY=mDnVa4EMbnlSF8Sg/i657hf+NRyWQxQjKTwkImD/HWE=
       - NET_LOCAL=192.168.1.0/24
       - TZ=America/Los_Angeles
-      - QUERY=filters\[country_id\]=209
+      - QUERY=filters\[country_id\]=202
     ports:
       - "8888:8888"
       - "6881:6881"
@@ -156,6 +156,5 @@ services:
     volumes:
       - /data/write/qb/appdata/config:/config
       - /data/write/qb/downloads:/downloads
-      - ./plugins:/plugins
     labels:
       - traefik.enable=false
