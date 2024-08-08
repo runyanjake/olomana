@@ -16,6 +16,8 @@ services:
     image: traefik:latest
     container_name: traefik
     restart: unless-stopped
+    depends_on:
+      - traefik
     networks:
       - traefik
     ports:
@@ -32,6 +34,8 @@ services:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
     restart: unless-stopped
+    depends_on:
+      - traefik
     networks:
       - traefik
     volumes:
@@ -55,6 +59,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     depends_on:
+      - traefik
       - node_exporter
       - prometheus
     networks:
@@ -109,6 +114,8 @@ services:
     container_name: homepage
     build: homepage/
     restart: unless-stopped
+    depends_on:
+      - traefik
     networks:
       - traefik
     labels:
