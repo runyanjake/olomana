@@ -146,8 +146,8 @@ services:
       - nordlynx
     network_mode: service:nordlynx
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1001
+      - PGID=1001
       - WEBUI_PORT=8888
     volumes:
       - /data/write/qb/appdata/config:/config
