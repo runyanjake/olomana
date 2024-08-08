@@ -123,11 +123,13 @@ services:
       - traefik.http.services.homepage.loadbalancer.server.port=81
 
   nordlynx:
-    image: ghcr.io/bubuntux/nordlynx:latest
+    image: ghcr.io/bubuntux/nordlynx:v3.12.2
     container_name: nordlynx
     restart: unless-stopped
+    network_mode: bridge
     cap_add:
       - NET_ADMIN
+      - NET_RAW
     environment:
       - PRIVATE_KEY=mDnVa4EMbnlSF8Sg/i657hf+NRyWQxQjKTwkImD/HWE=
       - NET_LOCAL=192.168.1.0/24
