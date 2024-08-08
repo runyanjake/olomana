@@ -122,19 +122,17 @@ services:
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
       - traefik.http.services.homepage.loadbalancer.server.port=81
 
-  nordvpn:
-    image: ghcr.io/bubuntux/nordvpn
-    container_name: nordvpn
+  nordlynx:
+    image: ghcr.io/bubuntux/nordlynx:latest
+    container_name: nordlynx
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
-      - NET_RAW
-    devices:
-      - /dev/net/tun
     environment:
-      - TOKENFILE=nordvpn/token.txt
-      - CONNECT=Spain
-      - TECHNOLOGY=NordLynx
+      - PRIVATE_KEY_FILE=nordlynx/privatekey.txt
+      - NET_LOCAL=192.168.1.0/24
+      - TZ=America/Los_Angeles
+      - QUERY=filters\[country_id\]=202
     ports:
       - "8888:8888"
     labels:
@@ -145,8 +143,8 @@ services:
     container_name: qb
     restart: unless-stopped
     depends_on:
-      - nordvpn
-    network_mode: service:nordvpn
+      - nordlynx
+    network_mode: service:nordlynx
     environment:
       - PUID=1000
       - PGID=1000
@@ -156,7 +154,4 @@ services:
       - /data/write/qb/downloads:/downloads
       - ./plugins:/plugins
     labels:
-      - traefik.http.routers.qb.rule=Host(`qb.whitney.rip`)
-      - traefik.http.routers.qb.tls=true
-      - traefik.http.routers.qb.tls.certresolver=lets-encrypt
-      - traefik.http.services.qb.loadbalancer.server.port=8888
+      - traefik.enable=false
