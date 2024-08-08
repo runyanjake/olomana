@@ -18,11 +18,8 @@ Create/Fill in the following files in a `traefik/` directory under this one usin
 The file `traefik/acme.json` will be generated on first run. Make sure it eventually gets permission code 600. You might need to create a blank file before the first run.
 
 ##### Volumes
-Mount each of these files into the container, including the docker socket:
+In addition to the above files, make sure the docker socket is mounted:
 - `/var/run/docker.sock:/var/run/docker.sock:ro`
-- `./traefik/traefik.toml:/etc/traefik/traefik.toml`
-- `./traefik/traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml`
-- `./traefik/acme.json:/etc/acme.json`
 
 #### References
 https://doc.traefik.io/traefik/getting-started/quick-start/  
@@ -38,10 +35,33 @@ Mount the persistant storage somewhere.
 
 ##### Metadata
 Re-roll hashed passwords. 
-
+./olomana.ini:/etc/grafana/grafana.ini
 #### References
 https://docs.linuxserver.io/images/docker-code-server/  
 https://coder.com/docs/code-server/latest/install#docker  
 https://hub.docker.com/r/linuxserver/code-server  
 https://github.com/coder/code-server/blob/main/docs/FAQ.md#can-i-store-my-password-hashed
+
+### Grafana
+
+#### Instructions
+
+##### Files
+Create/Fill in the following files in a `grafana` directory under this one using the templates.
+- `grafana.ini`
+- `prometheus.yml`
+
+##### Volumes
+Make sure that in additionto mounting the 2 files above to their respective containers, grafana container has the following mount:
+- `/pwspool/software/grafana:/var/lib/grafana`
+
+Also make sure that the correct user has access to the folder on the host machine, sometimes grafana won't start up otherwise.
+
+##### Grafana Setup
+To set up the data source in grafana to point to prometheus, you would refer to `http://prometheus:9090`.
+
+#### References
+https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/
+
+
 
