@@ -123,7 +123,7 @@ services:
       - traefik.http.services.homepage.loadbalancer.server.port=81
 
   nordlynx:
-    image: ghcr.io/bubuntux/nordlynx:latest
+    image: ghcr.io/bubuntux/nordlynx
     container_name: nordlynx
     restart: unless-stopped
     network_mode: bridge
