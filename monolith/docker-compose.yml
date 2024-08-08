@@ -121,3 +121,42 @@ services:
       - traefik.http.routers.homepage.tls=true
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
       - traefik.http.services.homepage.loadbalancer.server.port=81
+
+  nordvpn:
+    image: ghcr.io/bubuntux/nordvpn
+    container_name: nordvpn
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/net/tun
+    environment:
+      - TOKENFILE=nordvpn/token.txt
+      - CONNECT=Spain
+      - TECHNOLOGY=NordLynx
+    ports:
+      - "8888:8888"
+    labels:
+      - traefik.enable=false
+
+  qb:
+    image: ghcr.io/linuxserver/qbittorrent:latest
+    container_name: qb
+    restart: unless-stopped
+    depends_on:
+      - nordvpn
+    network_mode: service:nordvpn
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8888
+    volumes:
+      - /data/write/qb/appdata/config:/config
+      - /data/write/qb/downloads:/downloads
+      - ./plugins:/plugins
+    labels:
+      - traefik.http.routers.qb.rule=Host(`qb.whitney.rip`)
+      - traefik.http.routers.qb.tls=true
+      - traefik.http.routers.qb.tls.certresolver=lets-encrypt
+      - traefik.http.services.qb.loadbalancer.server.port=8888
