@@ -16,8 +16,6 @@ services:
     image: traefik:latest
     container_name: traefik
     restart: unless-stopped
-    depends_on:
-      - traefik
     networks:
       - traefik
     ports:
