@@ -4,6 +4,12 @@ networks:
   traefik:
     driver: bridge
     name: traefik
+  grafana:
+    driver: bridge
+    name: grafana
+
+volumes:
+  prometheus_data: {}
 
 services:
   traefik:
@@ -43,4 +49,58 @@ services:
       - traefik.http.routers.code.tls=true
       - traefik.http.routers.code.tls.certresolver=lets-encrypt
       - traefik.http.services.code.loadbalancer.server.port=8443
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    depends_on:
+      - node_exporter
+      - prometheus
+    networks: 
+      - grafana
+      - traefik
+    user: "1003"
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /pwspool/software/grafana:/var/lib/grafana
+    labels:
+      - traefik.http.routers.grafana.rule=Host(`grafana.whitney.rip`)
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.routers.grafana.tls.certresolver=lets-encrypt
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - grafana
+    pid: host
+    user: "1003:1005"
+    command:
+      - "--path.rootfs=/host"
+    volumes:
+      - "/:/host:ro,rslave"
+    labels:
+      - traefik.enable=false
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    networks:
+      - grafana
+    volumes:
+      - "./grafana/prometheus.yml:/etc/prometheus.yml"
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    labels:
+      - traefik.enable=false
 
