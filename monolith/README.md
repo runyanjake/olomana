@@ -1,7 +1,7 @@
 # Olomana - All in One
-This is the one-dockerfile version of olomana containing the stable "production" containers. 
-Better than going module by module but don't let that stop you.  
-Run everything with a simple `docker-compose down && docker system prune && docker-compose up -d`  
+This is the one-dockerfile version of olomana containing the stable "production" containers.
+Better than going module by module but don't let that stop you.
+Run everything with a simple `docker-compose down && docker system prune && docker-compose up -d`
 Run one thing with a simple `docker-compose up serviceName`
 
 ## Setup
@@ -13,7 +13,7 @@ Run one thing with a simple `docker-compose up serviceName`
 ##### Files
 Create/Fill in the following files in a `traefik/` directory under this one using the provided templates:
 - `traefik.toml`
-- `traefik-dynamic.toml`. 
+- `traefik-dynamic.toml`.
 
 The file `traefik/acme.json` will be generated on first run. Make sure it eventually gets permission code 600. You might need to create a blank file before the first run.
 
@@ -22,7 +22,7 @@ In addition to the above files, make sure the docker socket is mounted:
 - `/var/run/docker.sock:/var/run/docker.sock:ro`
 
 #### References
-https://doc.traefik.io/traefik/getting-started/quick-start/  
+https://doc.traefik.io/traefik/getting-started/quick-start/
 https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
 
 ### Code-Server
@@ -34,12 +34,12 @@ Mount the persistant storage somewhere.
 - `/pwspool/software/code-server/config:/config`
 
 ##### Metadata
-Re-roll hashed passwords. 
+Re-roll hashed passwords.
 ./olomana.ini:/etc/grafana/grafana.ini
 #### References
-https://docs.linuxserver.io/images/docker-code-server/  
-https://coder.com/docs/code-server/latest/install#docker  
-https://hub.docker.com/r/linuxserver/code-server  
+https://docs.linuxserver.io/images/docker-code-server/
+https://coder.com/docs/code-server/latest/install#docker
+https://hub.docker.com/r/linuxserver/code-server
 https://github.com/coder/code-server/blob/main/docs/FAQ.md#can-i-store-my-password-hashed
 
 ### Grafana
@@ -63,5 +63,9 @@ To set up the data source in grafana to point to prometheus, you would refer to 
 #### References
 https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/
 
+### Homepage
 
+#### Instructions
 
+##### Build
+Test build with `docker-compose build homepage`.

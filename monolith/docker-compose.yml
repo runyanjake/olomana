@@ -57,7 +57,7 @@ services:
     depends_on:
       - node_exporter
       - prometheus
-    networks: 
+    networks:
       - grafana
       - traefik
     user: "1003"
@@ -104,3 +104,15 @@ services:
     labels:
       - traefik.enable=false
 
+  homepage:
+    image: homepage
+    container_name: homepage
+    build: homepage/
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - traefik.http.routers.homepage.rule=Host(`www.whitney.rip`)
+      - traefik.http.routers.homepage.tls=true
+      - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
+      - traefik.http.services.homepage.loadbalancer.server.port=80
