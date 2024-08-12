@@ -1,14 +1,17 @@
-version: "3"
+networks:
+  traefik:
+    external: true
 
 services:
   plex: 
     image: ghcr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: host
     restart: unless-stopped
+    networks:
+      - traefik
     environment:
-      - PUID=[[USER_ID]]
-      - PGID=[[GROUP_ID]]
+      - PUID=1000
+      - PGID=1000
       - VERSION=docker
     volumes:
       - /pwspool/archive/plex/:/config
@@ -18,5 +21,8 @@ services:
       - /pwspool/archive/plex/homevideos:/homevideos
       - /pwspool/archive/plex/transcode:/transcode
     labels:
-      - "traefik.enable=false"
+      - traefik.http.routers.plex.rule=Host(`SITE_URL`)
+      - traefik.http.routers.plex.tls=true
+      - traefik.http.routers.plex.tls.certresolver=lets-encrypt
+      - traefik.http.services.plex.loadbalancer.server.port=3000
 
