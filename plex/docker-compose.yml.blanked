@@ -24,5 +24,5 @@ services:
       - traefik.http.routers.plex.rule=Host(`SITE_URL`)
       - traefik.http.routers.plex.tls=true
       - traefik.http.routers.plex.tls.certresolver=lets-encrypt
-      - traefik.http.services.plex.loadbalancer.server.port=3000
+      - traefik.http.services.plex.loadbalancer.server.port=32400
 
