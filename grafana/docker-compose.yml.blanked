@@ -1,8 +1,7 @@
-version: "3"
-
 networks:
   grafana-network:
     driver: bridge
+    name: grafana
   traefik:
     external: true
   minecraft:
@@ -14,14 +13,14 @@ volumes:
 services:
   grafana:
     image: grafana/grafana
-    user: "[USER_ID]"
+    user: "USER:GROUP"
     container_name: grafana
     restart: unless-stopped
     networks:
       - grafana-network
       - traefik
     volumes:
-      - ./olomana.ini:/etc/grafana/grafana.ini
+      - ./grafana.ini:/etc/grafana/grafana.ini
       - /pwspool/software/grafana:/var/lib/grafana
     labels:
       - traefik.http.routers.grafana.rule=Host(`SITE_URL`)
@@ -35,7 +34,7 @@ services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
-    user: "[USER_ID]:[GROUP_ID]"
+    user: "USER:GROUP"
     restart: unless-stopped
     networks:
       - grafana-network
@@ -62,3 +61,4 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--web.console.libraries=/usr/share/prometheus/console_libraries"
       - "--web.console.templates=/usr/share/prometheus/consoles"
+
