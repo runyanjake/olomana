@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  traefik:
+    external: true
+
+services:
+  homepage:
+    image: homepage
+    container_name: homepage
+    build: .
+    restart: unless-stopped
+    networks:
+      - traefik
+    ports:
+      - "81:80"
+    labels:
+      - traefik.http.routers.homepage.rule=Host(`SITE_URL`)
+      - traefik.http.routers.homepage.tls=true
+      - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
+      - traefik.http.services.homepage.loadbalancer.server.port=81

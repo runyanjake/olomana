@@ -1,0 +1,73 @@
+version: "3"
+
+networks:
+  [TRAEFIK_NETWORK]:
+    external: true
+
+services:
+  photoprism-private:
+    image: photoprism/photoprism
+    container_name: photoprism-private
+    restart: unless-stopped
+    networks:
+      - [TRAEFIK_NETWORK]
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    volumes:
+      - /pwspool/software/photoprism/storage:/photoprism/storage
+      - /pwspool/software/photoprism/originals:/photoprism/originals
+    environment:
+      - PHOTOPRISM_ADMIN_USER=[[ADMIN_USER]]
+      - PHOTOPRISM_ADMIN_PASSWORD=[[ADMIN_PASS]]
+      - PHOTOPRISM_LOG_LEVEL=info
+      - PHOTOPRISM_SITE_URL=[[SITE_URL_WITH_HTTPS]]
+      - PHOTOPRISM_ORIGINALS_LIMIT=5000
+      - PHOTOPRISM_HTTP_COMPRESSION=gzip
+      - PHOTOPRISM_EXPERIMENTAL=false
+      - PHOTOPRISM_DISABLE_FACES=true
+      - PHOTOPRISM_DISABLE_RAW=false
+      - PHOTOPRISM_JPEG_QUALITY=100
+      - PHOTOPRISM_SITE_CAPTION=[[SITE_CAPTION]]
+      - PHOTOPRISM_SITE_DESCRIPTION=[[SITE_DESCRIPTION]]
+      - PHOTOPRISM_SITE_AUTHOR=[[SITE_AUTHOR]]
+    labels:
+      - traefik.http.routers.private-photos.rule=Host(`[[SITE_URL_WITH_HTTPS]]`)
+      - traefik.http.routers.private-photos.tls=true
+      - traefik.http.routers.private-photos.tls.certresolver=lets-encrypt
+      - traefik.http.services.private-photos.loadbalancer.server.port=2342
+  
+  photoprism-public:
+    image: photoprism/photoprism
+    container_name: photoprism-public
+    restart: unless-stopped
+    networks:
+      - [TRAEFIK_NETWORK]
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    ports:
+      - "[[DIFFERENT_HOST_PORT]]:2342"
+    volumes:
+      - /pwspool/software/photoprism/storage:/photoprism/storage
+      - /pwspool/software/photoprism/originals:/photoprism/originals
+    environment:
+      - PHOTOPRISM_READONLY=true
+      - PHOTOPRISM_AUTH_MODE=public
+      - PHOTOPRISM_LOG_LEVEL=info
+      - PHOTOPRISM_SITE_URL=[[DIFFERENT_SITE_URL_WITH_HTTPS]]
+      - PHOTOPRISM_ORIGINALS_LIMIT=5000
+      - PHOTOPRISM_HTTP_COMPRESSION=gzip
+      - PHOTOPRISM_EXPERIMENTAL=false
+      - PHOTOPRISM_DISABLE_FACES=true
+      - PHOTOPRISM_DISABLE_RAW=false
+      - PHOTOPRISM_JPEG_QUALITY=100
+      - PHOTOPRISM_SITE_CAPTION=[[SITE_CAPTION]]
+      - PHOTOPRISM_SITE_DESCRIPTION=[[SITE_DESCRIPTION]]
+      - PHOTOPRISM_SITE_AUTHOR=[[SITE_AUTHOR]]
+    labels:
+      - traefik.http.routers.public-photos.rule=Host(`[[DIFFERENT_SITE_URL_WITH_HTTPS]]`)
+      - traefik.http.routers.public-photos.tls=true
+      - traefik.http.routers.public-photos.tls.certresolver=lets-encrypt
+      - traefik.http.services.public-photos.loadbalancer.server.port=2342
+

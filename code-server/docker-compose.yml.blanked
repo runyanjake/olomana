@@ -1,0 +1,30 @@
+version: '3.7'
+
+networks:
+  [TRAEFIK_NETWORK]:
+    external: true
+
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - /pwspool/software/code-server/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD=[PASS]
+        #- HASHED_PASSWORD=[PASS_HASH]
+      - SUDO_PASSWORD=[SUDO_PASS]
+        #- SUDO_PASSWORD_HASH=[SUDO_PASS_HASH]
+      - PROXY_DOMAIN=[SUBDOMAIN_URL]
+      - DEFAULT_WORKSPACE=/config/workspace
+    labels:
+      - traefik.http.routers.code.rule=Host(`[SUBDOMAIN_URL]`)
+      - traefik.http.routers.code.tls=true
+      - traefik.http.routers.code.tls.certresolver=lets-encrypt
+      - traefik.http.services.code.loadbalancer.server.port=8443

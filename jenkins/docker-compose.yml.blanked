@@ -1,0 +1,25 @@
+version: '3.7'
+
+networks:
+  TRAEFIK_NETWORK:
+    external: true
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: unless-stopped
+    networks:
+      - [TRAEFIK_NETWORK]
+    privileged: true
+    user: root
+    volumes:
+      - /pwspool/software/jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+    labels:
+      - traefik.http.routers.jenkins.rule=Host(`[SUBDOMAIN_URL]`)
+      - traefik.http.routers.jenkins.tls=true
+      - traefik.http.routers.jenkins.tls.certresolver=lets-encrypt
+      - traefik.http.services.jenkins.loadbalancer.server.port=8080
+

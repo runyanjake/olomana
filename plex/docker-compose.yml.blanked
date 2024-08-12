@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  plex: 
+    image: ghcr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - PUID=[[USER_ID]]
+      - PGID=[[GROUP_ID]]
+      - VERSION=docker
+    volumes:
+      - /pwspool/archive/plex/:/config
+      - /pwspool/archive/plex/tvseries:/tv
+      - /pwspool/archive/plex/movies:/movies
+      - /pwspool/archive/plex/photos:/photos
+      - /pwspool/archive/plex/homevideos:/homevideos
+      - /pwspool/archive/plex/transcode:/transcode
+    labels:
+      - "traefik.enable=false"
+

@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  nordlynx:
+    image: ghcr.io/bubuntux/nordlynx:latest
+    container_name: nordlynx
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - TOKEN=e9f2ab4999032b61f29845afdc0067aa389827546411b4891ff0ec4368ab6cc1
+      - PRIVATE_KEY=mDnVa4EMbnlSF8Sg/i657hf+NRyWQxQjKTwkImD/HWE=
+      - NET_LOCAL=192.168.1.0/24
+      - TZ=America/Los_Angeles
+      - QUERY=filters\[country_id\]=202
+    ports:
+      - "8888:8888"
+    labels:
+      - traefik.enable=false
+
+  qb:
+    image: ghcr.io/linuxserver/qbittorrent:latest
+    container_name: qb
+    restart: unless-stopped
+    network_mode: service:nordlynx
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8888
+    volumes:
+      - /data/write/qb/appdata/config:/config
+      - /data/write/qb/downloads:/downloads
+      - ./plugins:/plugins
+    depends_on:
+      - nordlynx
+    labels:
+      - traefik.enable=false
+

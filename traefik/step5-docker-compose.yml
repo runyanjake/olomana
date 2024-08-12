@@ -1,0 +1,33 @@
+version: "3.3"
+
+networks:
+  traefik-network:
+
+services:
+
+  traefik:
+    image: "traefik:v2.9"
+    container_name: "traefik_whitney"
+    restart: always
+    networks:
+      - traefik-network
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./step5-traefik.toml:/etc/traefik/traefik.toml"
+      - "./step5-traefik-dynamic.toml:/etc/traefik/dynamic/traefik-dynamic.toml"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "whoami_whitney"
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.whitney.rip`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+    depends_on:
+            - traefik
+
