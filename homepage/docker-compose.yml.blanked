@@ -15,7 +15,7 @@ services:
     ports:
       - "81:80"
     labels:
-      - traefik.http.routers.homepage.rule=Host(`SITE_URL`)
+      - traefik.http.routers.homepage.rule=Host(`SITE_URL`) || Host(`SITE_URL_WWW`)
       - traefik.http.routers.homepage.tls=true
       - traefik.http.routers.homepage.tls.certresolver=lets-encrypt
       - traefik.http.services.homepage.loadbalancer.server.port=81
