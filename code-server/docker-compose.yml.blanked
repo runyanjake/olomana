@@ -1,7 +1,5 @@
-version: '3.7'
-
 networks:
-  [TRAEFIK_NETWORK]:
+  traefik:
     external: true
 
 services:
