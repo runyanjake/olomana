@@ -1,8 +1,7 @@
-version: "3"
-
 networks:
-  traefik_traefik-network:
+  traefik:
     external: true
+
 volumes:
   portainer_data:
 
@@ -12,9 +11,7 @@ services:
     container_name: portainer
     restart: unless-stopped
     networks:
-      - traefik_traefik-network
-    ports:
-      - "[[HOST_URL]]:9000"
+      - traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
