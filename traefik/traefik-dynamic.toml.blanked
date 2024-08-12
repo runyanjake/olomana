@@ -4,7 +4,7 @@
     replacement = "http://www.whitney.com$${1}"
     permanent = true
   [http.middlewares.simpleAuth.basicAuth]
-    users = ["olomana:$2y$05$k9MjyAQnhsdUiWY9laCzD.1Ckidw5IcM282RUgmUyOgHHo.YbtGmq"]
+    users = ["olomana:password_hash"]
 
 [http.routers.api]
   rule = "Host(`monitor.whitney.rip`)"

@@ -1,7 +1,5 @@
-version: "3"
-
 networks:
-  traefik-network:
+  traefik:
     driver: bridge
     name: traefik
 
