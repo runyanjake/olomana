@@ -25,7 +25,7 @@ services:
     environment:
       - TYPE=PAPER
       - MEMORY=2G
-      - VERSION=1.20.2
+      - VERSION=1.21.1
       - EULA=TRUE
       - SERVER_NAME=minecraft_creative
       - MODE=creative
@@ -57,7 +57,7 @@ services:
     environment:
       - TYPE=PAPER
       - MEMORY=4G
-      - VERSION=1.20.2
+      - VERSION=1.21.1
       - EULA=TRUE
       - SERVER_NAME=minecraft_2023
       - MODE=survival

@@ -1,33 +1,15 @@
-# Whitney Minecraft
+# Minecraft
 
-PWS hosts Minecraft servers. Based off `https://github.com/itzg/docker-minecraft-server` for 1.17+ as `https://github.com/nimmis/docker-spigot` is no longer maintained past 2019.
+Self-host one or multiple servers.
 
-All server configuration done with env vars.
-Data stored on disk rather than docker volume so things like the config can be edited via just ssh.
+## Instructions
 
-Minecraft emits metrics for Prometheus to collect for Grafana. We are exporting metrics via the docker container described in `https://github.com/Joshi425/minecraft-exporter`. Change the default port via env variable to make sure there aren't port conflicts. 
+### Minecraft Setup
 
-Monitoring commands to get logs from the minecraft container are documented in the github repo.
-
-example: `docker exec minecraft_2023 mc_log`
-
-### Build all components with Docker Compose
-
-`docker-compose up -d`
-
-### Start with Plain Docker
-
-`docker run -d -p 25565:25565 --network=host --restart=always --name=minecraft_2023 -e EULA=true -e MC_MAXMEM=2g -e MC_MINMEM=512m -v /data/minecraft_1.16:/minecraft nimmis/spigot`
-`docker run -d -p 25565:25565 --restart=always -e TYPE=SPIGOT --name=minecraft_creative -e EULA=TRUE -v /data/minecraft_1.17:/data -v ./server.properties:/data/server.properties itzg/minecraft-server`
-
-##### Additional Setup
-
-Make sure to go into server.properties and set
-
-`white-list=true`.
-
-Add users to whitelist via server commands or by creating whitelist.json in server directory.
-
+#### Whitelist
+After first time start go into `server.properties` and set `white-list=true`.  
+Add users via server commands (`whitelist add NAME`).  
+OR add users to `whitelist.json` in server directory.  
 ```
 [
   {
@@ -37,25 +19,22 @@ Add users to whitelist via server commands or by creating whitelist.json in serv
 ]
 ```
 
-Don't get griefed! We did once! :)
+#### Plugins/Mods
 
 ##### Plugins
-
-SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`
-
-Dynmap: `https://www.spigotmc.org/resources/dynmap%C2%AE.274/`
-
-NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`
-
+SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`  
+Dynmap: `https://www.spigotmc.org/resources/dynmap%C2%AE.274/`  
+NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`  
 ajLeaderboards: `https://www.spigotmc.org/threads/ajleaderboards.471179/`
 
-##### Periodic Restarts
+##### Mods
 
-The minecraft server runs into instability from time to time. Thus, it needs to be restarted every once and a while.
+### Maintenance
+Configure scheduled restarts by configuring `crontab` to periodically restart the container.  
+Edit crontab: `sudo crontab -e`  
+Add: `0 2 * * * docker restart minecraft-2023 minecraft-creative`
 
-Since people play late, I chose to update at 2am PST.
-
-`sudo crontab -e`
-
-add `0 2 * * * docker restart minecraft-2023 minecraft-creative`
+## References
+https://github.com/itzg/docker-minecraft-server  
+https://github.com/Joshi425/minecraft-exporter
 

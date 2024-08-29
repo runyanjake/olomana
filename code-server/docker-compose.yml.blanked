@@ -11,6 +11,7 @@ services:
       - traefik
     volumes:
       - /pwspool/software/code-server/config:/config
+      - /pwspool/archive/jake/notes:/config/workspace
     environment:
       - PUID=1000
       - PGID=1000

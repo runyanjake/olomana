@@ -17,3 +17,4 @@ https://docs.linuxserver.io/images/docker-code-server/
 https://coder.com/docs/code-server/latest/install#docker  
 https://hub.docker.com/r/linuxserver/code-server  
 https://github.com/coder/code-server/blob/main/docs/FAQ.md#can-i-store-my-password-hashed
+
