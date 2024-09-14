@@ -1,0 +1,24 @@
+networks:
+  traefik:
+    external: true
+
+services:
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: homeassistant
+    restart: unless-stopped
+    networks:
+      - traefik
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /path/to/config:/config
+    ports:
+      - 8123:8123
+    labels:
+      - traefik.http.routers.homeassistant.rule=Host(`SITE_URL`)
+      - traefik.http.routers.homeassistant.tls=true
+      - traefik.http.routers.homeassistant.tls.certresolver=lets-encrypt
+      - traefik.http.services.homeassistant.loadbalancer.server.port=8123

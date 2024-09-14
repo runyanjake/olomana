@@ -1,0 +1,25 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Configure HTTP settings
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.x.xxx
+
+# Configure logging
+logger:
+  default: info
+  logs:
+    homeassistant.core: debug
+    homeassistant.components: info
+    homeassistant.components.mqtt: debug
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
