@@ -34,6 +34,12 @@ Note these snippets should go above the `automation` line.
 nmap -sn 192.168.1.xxx/24 (adjust for your local network)
 ```
 
+### Home Assistant configuration
+
+#### Automation
+1. Navigate to Settings > Automations & Scenes > Create Automation 
+2. Configure based on time, location, or other triggers.
+
 ## References
 https://www.home-assistant.io/integrations/wiz/  
 
