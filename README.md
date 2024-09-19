@@ -1,68 +1,82 @@
 # olomana
 The PWS 2.0 redesign, successor to https://github.com/runyanjake/whitney.
 
+## About
 
-## Background
-
+### Background
 Whitney was the codename for my first homelab setup (For reference: https://www.reddit.com/r/homelab/). It was built out of my friend's handmedown hardware in an old server case that was e-wasted from school. This initial build was on the "janky" side, featuring an unmounted power supply in the optical bay, secured only by some green yarn. (Fire hazard, anyone?)
-
 [Picture Here]
-
-I ran a lot of services from this box - my personal website/online resume, side projects, a Covid-19 data tracker, game servers, and a lot of other projects that taught me lessons in DNS config, networking, maintaining persistent storage and others. 
-
+I ran a lot of services from this box - my personal website/online resume, side projects, a Covid-19 data tracker, game servers, and a lot of other projects that taught me lessons in DNS config, networking, maintaining persistent storage and others.  
 But eventually I started running up against the limits of the box. The machine's CPU was released in 2008, which was indicative of the age of most of its hardware. After spending a lot of work on the original Whitney config in the first repo, I decided that I had learned enough to warrant an upgrade.
 
-
-## The Upgrade
-
-PWS 2.0 was given the nickname of "Olomana", a second step in this pattern of mountainous server names. Mount Olomana (https://en.wikipedia.org/wiki/Olomana\_(mountain)) is a mountain on the Windward side of Oahu, Hawaii. It has 3 peaks which are are a popular, albeit difficult and dangerous hike. While visiting family in Kailua, I hiked the Ko'olau range and snapped this picture of the rarely seen backside of Mount Olomana.
-
+### The Upgrade
+PWS 2.0 was given the nickname of "Olomana", a second step in this pattern of mountainous server names. Mount Olomana (https://en.wikipedia.org/wiki/Olomana\_(mountain)) is a mountain on the Windward side of Oahu, Hawaii. It has 3 peaks which are are a popular, albeit difficult and dangerous hike. While visiting family in Kailua, I hiked the Ko'olau range and snapped this picture of the rarely seen backside of Mount Olomana.  
 Olomana, the web server will be a significant upgrade over its predecessor. I am building it as a 4U rack-mounted machine with new components. The 16U rack it is mounted in was sourced from the popular website www.racksolutions.com. The build itself includes a number of current gen budget components. Cricital resources like Ram and CPU cores are more abundant in the new build. I got a UPS and a dedicated write drive that were tested on PWS 1.0 to combat some data corruption issues I had faced on the old hardware.
-
 [Picture here]
 
-## Setup / Installation Instructions
+## Setup
 
-In order to speed up how fast I can wipe and rebuild the server, I am maintaining this repository as a stamp of the Olomana config, as well as a instruction manual for myself to remember in what order components should be installed.
+### Hardware
 
+#### Hard Drives/Filesystem
+Manage disk partitions with `gdisk`, configure mounts by editing `/etc/fstab`. See https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/  
+Configure ZFS pool using at least `raidz1` for data that should not be lost. Other data can go in drives directly mounted at the root.
 
-## Part 1: Initial Configuration
+### Software
 
-Olomana is based off of the latest stable version of Ubuntu Server (https://ubuntu.com/download/server)
-
-### Mounting Hard Drives
-
-Managing disk partitions using `gdisk` and configuring drives for automatic mounting using the `fstab` file. Example: https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/
-
-General rule of thumb is archival data/things that we don't want to lose live in the ZFS pool, while more elphemeral data/data we don't care about losing lives in /
-
-#### Drives
-
-Applications that write frequently do so to the dedicated drive mounted at `/data/write`. Prior to ZFS introduction, data was store on drives mounted under /data (persistent, coldstorage, nas).
-
-#### ZFS
-
-Later, I created a ZFS system to replace non-ephemeral data that I want to safeguard under a raid setup. It's a ZFS pool using `raidz1`, mounted to /pwspool.
-
-### OpenSSH installation
-
-`sudo apt-get install openssh-server`
-
-Test you can ssh to the machine over the local internet. 
-
+#### OpenSSH
+```
+sudo apt-get install openssh-server
+```
 Port forward port 22 on the gateway.
+```
+sudo ufw enable
+sudo ufw allow 22
+sudo ufw reload
+```
 
-Try connecting to the public IP/via domain if DNS is set up already.
+### Github CLI
+Install gh CLI tool.
+```
+sudo apt-get install gh
+```
+Generate new SSH key to upload to Github if you'll be pushing or downloading private repos.
+```
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+Edit `~/.ssh/config` so the key is used.
+```
+Host github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+```
+Make sure the key is added to github before doing anything else.  
+You will likely need to make a Personal Access Token upload key. It must have the following permissions.
+```
+workflow
+admin::public_key
+read::org
+```
+Authenticate with the CLI:
+```
+gh auth login
+```
 
-### Docker Installation
+### Docker
+See https://linuxiac.com/how-to-install-docker-on-ubuntu-24-04-lts/
+```
+sudo apt install apt-transport-https curl
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl is-active docker
+```
 
-1. Install Docker, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04.
-
-2. In the same article, follow instructions to allow the main user to execute the docker command without sudo. 
-
-3. (Optional) If the docker service does not start containers on system reboot, the service can be modified so that it starts when the machine is power cycled.
-
-4. Install Docker-Compose additionally, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+1. Install Docker, see https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04.  
+2. In the same article, follow instructions to allow the main user to execute the docker command without sudo.  
+3. (Optional) If the docker service does not start containers on system reboot, the service can be modified so that it starts when the machine is power cycled.  
+4. Install Docker-Compose additionally, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04  
 
 ### Misc Setup
 
