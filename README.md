@@ -22,6 +22,11 @@ Olomana, the web server will be a significant upgrade over its predecessor. I am
 Manage disk partitions with `gdisk`, configure mounts by editing `/etc/fstab`. See https://techguides.yt/guides/how-to-partition-format-and-auto-mount-disk-on-ubuntu-20-04/  
 Configure ZFS pool using at least `raidz1` for data that should not be lost. Other data can go in drives directly mounted at the root.
 
+#### Nvidia GPU Setup
+Install Nvidia Drivers, see https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#ubuntu  
+Resolved issue with old key by following method 2 in this issue: https://github.com/NVIDIA/cuda-repo-management/issues/4  
+Install `nvidia-docker`, see https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
+
 ### Software
 
 #### OpenSSH
@@ -35,7 +40,7 @@ sudo ufw allow 22
 sudo ufw reload
 ```
 
-### Github CLI
+#### Github CLI
 Install gh CLI tool.
 ```
 sudo apt-get install gh
@@ -61,8 +66,12 @@ Authenticate with the CLI:
 ```
 gh auth login
 ```
+Clone this repo
+```
+gh repo clone runyanjake/olomana
+```
 
-### Docker
+#### Docker
 See https://linuxiac.com/how-to-install-docker-on-ubuntu-24-04-lts/
 ```
 sudo apt install apt-transport-https curl
@@ -73,260 +82,10 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 sudo systemctl is-active docker
 ```
 
-1. Install Docker, see https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04.  
-2. In the same article, follow instructions to allow the main user to execute the docker command without sudo.  
-3. (Optional) If the docker service does not start containers on system reboot, the service can be modified so that it starts when the machine is power cycled.  
-4. Install Docker-Compose additionally, following https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04  
+#### Misc
 
-### Misc Setup
-
-1. Create a new SSH key for Olomana and add it to Github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-
-2. Install Github CLI (gh). I prefer to add the library and install with apt rather than installing some other package manager: https://www.techiediaries.com/install-github-cli-ubuntu-20/
-
-3. Add the new SSH key created in step (1) to Github. 
-
-4. Authenticate with Github (`gh auth login`) using a personal access token. Create this at `Settings > Developer Settings > Personal Access Token`. The access token must be given the `workflow`, `admin::publickey`, and `read::org` privs.
-
-5. Clone this repo somewhere.
-
-6. Set system time using `timedatectl`, in case we want to set up any cron jobs later.
-
-List current time: `timedatectl`
-
-Get time zone options: `timedatectl list-timezones`
-
-Set local timezone: `sudo timedatectl set-timezone America/Los_Angeles`
-
-
-## Part 2: Services Configuration
-
-*Note when using Traefik that services need 1. to have their UI ports allowed through the machine's firewall, and 2. must have labels declared for Traefik to pick up.*
-
-### Network Router (Traefik)
-
-Traefik is the networking stack that I'm using for Olomana. The goal here is to define the basic configuration for the Traefik container so that later containers can just be plugged into Traefik as necessary. 
-
-1. Follow the instructions in the `traefik/` folder to run the example traefik configs and confirm that they are reachable.
-
-1.5 Note there is some annoying stuff to do regarding the `acme.json` file. See instructions in the repo for how to set it up right.
-
-2. Fill out the "Blanked" Traefik config and set up the final Traefik container.
-
-3. Ensure that the DNS is setup correctly (External step, I am using Cloudflare.) so that we can route to the server via the vanity URL.
-
-4. Expose port 8080 in the firewall so traffic can be routed to Traefik: `sudo ufw allow 8080`
-
-5. (Additional) Configure the admin console and generate passwords for the admin user.
-
-**Note that often I had to restart traefik after bringing up other services.**
-
-**Also note that the network that Traefik is set up to scrape needs to match the actual network that docker has, not necessarily what is in traefik.toml. For example traefik-network and traefik_traefik-network have been mixed up for me in the past.**
-
-### Docker Admin Console (Portainer)
-
-1. Start portainer using the docker-compose file: `docker-compose up -d`.
-
-2. The UI is available by default on port `9443`. I have changed the config to make it available on port `9000` instead.
-
-3. Confirm that the admin user can login. Update the admin password.
-
-4. Check Traefik routing for Portainer and make the login page available over `admin.whitney.rip`.
-
-### System Metrics (Grafana, Prometheus, Node-Exporter)
-
-Grafana, Prometheus, and Node-Exporter were originally separate configs in the Whitney config due to a circular dependancy. I made an attempt to unify them in the Olomana config. 
-
-A bridge network is used to allow Prometheus to query Node-Exporter for metrics. Grafana connects to Prometheus via the bridge network as well to query for time series info. 
-
-1. Start the containers using the docier-compose file: `docker-compose up -d`. 
-
-2. Prometheus serves over port 9090. Node-Exporter serves over port 995. Grafana serves over port 3000. Confirm that only grafana is available to Traefik as `grafana.whitney.rip`.
-
-To test that metrics are working, import the dashboard `1860`, a basic node-exporter dashboard.
-
-When customizing dashboards, adding images can be done by hosting them on Imgur and linking them inside a Text Panel in an `<img>` html tag.
-
-### Jenkins
-
-1. Followed instructions at https://dev.to/andresfmoya/install-jenkins-using-docker-compose-4cab
-
-Note that the container name is different, so for the command to get the one time password is different too: `docker exec jenkins_olomana cat /var/jenkins_home/secrets/initialAdminPassword`
-
-2. Check Traefik routing for Jenkins, and make available on `jenkins.whitney.rip`.
-
-### Plex
-
-When navigating to the plex home page for the first time setup, remember to start by going to `http://[ip-address]:32400/web/index.html`. The plain address shows nothing until the plex is configured.
-
-1. The container expects a certain folder structure. Create the following or mount a drive to `/data/ersistent that contains the following: 
-
-- `/data/persistent/plex/tvseries`
-
-- `/data/persistent/plex/movies`
-
-- `/data/persistent/plex/homevideos`
-
-- `/data/persistent/plex/transcode`
-
-**NOTE:** If Docker has been installed with snap, while installing the OS, you'll have issues here. It's better to seperately install docker-ce and docker-compose.
-
-2. Start the container using the docker-compose file: `docker-compose up -d`.
-
-3. Ensure there aren't any Traefik routes for plex.
-
-### Covid 19 Project
-
-1. Clone `https://github.com/KevRunAmok/Covid19app` (dockerized by me!) to a subfolder and follow its instructions to built a image from it.  
-
-2. Create that the `./schema` folder has been created. If a sql dump file has been provided, put them in there, and ensure that they are named in such a way that the alphanumeric execution order executes the schema one before the data one.
-
-3. Start the container using the docker-compose file: `docker-compose up -d` and wait until it is ready to accept connections.
-
-4. Create a user who can query the tables:
-
-- `docker exec -it mysql_whitney mysql -uroot -proot`
-
-- `select * from mysql.user;` / `select Host, User from mysql.user;`
-
-- `CREATE USER 'kr_covid'@'%' IDENTIFIED BY 'kr_covid';`
-
-- `ALTER USER 'kr_covid'@'%' IDENTIFIED WITH mysql_native_password BY 'covid123';`
-
-- `GRANT ALL ON sql_covid19.\* to 'kr_covid'@'%';`
-
-After adding the user, you can exec onto the container and run mysql from there to test.
-
-5. Import any data. Normally this is handled automatically, but if the files copied to `/docker-entrypoint-initdb.d/` are not running you can pipe them to mysql manually. 
-
-6. Check Traefik and make sure the project is available at `covid.whitney.rip`.
-
-If mysql fails to start due to `Another process with pid 30 is using unix socket file`, this might be because the socket file was locked and was not unlocked in a previous run. Remove the file `/data/covid19/mysql.sock.lock` and it should start up correctly.
-
-### Minecraft
-
-Olomana runs a Paper Minecraft server based off of `https://github.com/itzg/docker-minecraft-server`. All server config is done via env vars in the docker-compose. 
-
-Metrics are emitted via `https://github.com/sladkoff/minecraft-prometheus-exporter` The repo was cloned and the project was built into a jar file, and copied into the plugins directory if it was there already. 
-
-The plugin's hostname is overwritten to 0.0.0.0 to allow all traffic in the config file. Otherwise minecraft will show up as DOWN in Prometheus. This allows the plugin to listen to outside traffic (Prometheus). 
-
-Commands to get logs from the container are documented in the github repo: `docker exec minecraft_2023_olomana mc_log` and `docker logs -f minecraft_2023_olomana`.
-
-1. Start container with docker-compose: `docker-compose up -d`.
-
-2. Copy all plugins to plugins directory. Double check that all env vars requested have been copied correctly into the `server.properties` file. Sometimes they seem not to be copied or a cached version of the file ends up there.
-
-**Plugins**
-
-SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`
-DynMap: `https://www.spigotmc.org/resources/dynmap%C2%AE.274/`
-NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`
-
-The minecraft server seems to run into instability from time to time. Thus, I configured a cronjob to restart the server at 2am daily, using crontab.
-
-### NordVPN 
-
-Uses the open source https://github.com/bubuntux/nordvpn to create a NordVPN container that other containers can route traffic through.
-
-The following changes were made on top of that config:
-
+##### Set System Time
 ```
-volumes:
-- /data/write/qb/appdata/config:/config
-- /data/write/qb/downloads:/downloads
+timedatectl list-timezones
+sudo timedatectl set-timezone America/Los_Angeles
 ```
-
-```
-FIREWALL=Enable
-```
-
-The default port is 8080, but I am using port 8888 via the `WEBUI_PORT=8888` instead due to a port conflict with Traefik.
-
-## Part 3: SMB (Samba) Server
-
-Created a samba server on a large drive to use as a NAS. 
-
-Followed `https://phoenixnap.com/kb/ubuntu-samba`.
-
-When connecting on windows go to the network tab and search for the server, format is: 
-
-`\\ipaddress`
-
-## Part 4: Other Stuff
-
-
-### Installing Graphics Card (For running capGPT and stuff)
-
-Part 1: Install Nvidia Drivers
-
-Followed https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#ubuntu
-
-Resolved issue with old key by following method 2 in this issue: https://github.com/NVIDIA/cuda-repo-management/issues/4
-
-Part 2: Install nvidia-docker
-
-Followed: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
-
-### Video-Remove-Silence
-
-I am using this github repo to remove dead space from videos.
-
-Repo: https://github.com/excitoon/video-remove-silence
-
-Requirements:
-
- - python 3.5
-
- - ffmpeg (apt-get install ffmpeg)
-
-Running project:
-
- - Place item(s) to process in an input directory. I have input/ at the same level as the folder containing the repo.
-
- - cd into the repo.
-
- - `python3 video-remove-silence --threshold-duration=1.1 ../input/video1.mov && python3 video-remove-silence --threshold-duration=1.1 ../input/video1.mov && ...`
-
-I noticed that increasing the threshold was necessary because the default values produced a video that was slightly choppy. Threshold=1.1 seemed to improve the flow of the video a lot with only minimal video length increase.
-
-### Conda
-
-Used for all the below AI/ML stuff.
-
-1. Install Conda
-
-Followed `https://linuxhint.com/install-anaconda-ubuntu-22-04/`
-
-2. Configure conda so that it doesn't auto-start after login to a new session.
-
-`conda config --set auto_activate_base false`
-
-### GPT4All
-
-Repo: https://github.com/nomic-ai/gpt4all
-
-Run by moving into the ./chat directory and running the linux executable.
-
-### Stable Diffusion
-
-#### Graphics Card Setup
-
-It was hard to get drivers setup initially due to side effects of trying to do so a few different ways. I redeployed Olomana and driver setup was straightforward the second time.
-
-I got some help but mainly followed Nvidia documentation for installing the latest drivers for my card, `nvidia-smi` and `nvidia-docker`. 
-
-[todo add links]
-
-#### Running Models
-
-Running https://github.com/Stability-AI/StableDiffusion, follow instructions there and at the preceding project at https://github.com/CompVis/latent-diffusion, where you actually create the conda env. 
-
-I am running the v2.1_768-nonema-pruned.skpt from https://huggingface.co/stabilityai/stable-diffusion-2-1/tree/main. But downloaded both as recommended in the README.
-
------------
-
-I am running https://github.com/CompVis/stable-diffusion. This repo had some files that weren't found in the others for some reason. Using this one in particular because it's packaged well.
-
-Used these weights: https://huggingface.co/CompVis/stable-diffusion-v-1-4-original
-V1
