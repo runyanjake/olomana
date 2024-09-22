@@ -40,14 +40,14 @@ sudo ufw allow 22
 sudo ufw reload
 ```
 
-#### Neovim
+#### Neovim/LazyVim
 Better vim editor.
 ```
 sudo add-apt-repository ppa:neovim-ppa/stable
 sudo apt update
 sudo apt-get install neovim
 ```
-For configuration, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/neovim).
+This installs a new-ish version of neovim. To install and configure LazyVim, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/neovim).
 
 #### Neofetch
 System stats, visualized.
