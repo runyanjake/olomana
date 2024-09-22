@@ -72,9 +72,16 @@ workflow
 admin::public_key
 read::org
 ```
-Authenticate with the CLI:
+Authenticate with the CLI using a PAT you generate from Github WebUI:
 ```
 gh auth login
+```
+OR, upload your publickey to Github and configure `~/.ssh/config` to provide that key.
+```
+Host github.com
+	User whitney-server
+        Hostname github.com
+        IdentityFile ~/.ssh/id_rsa
 ```
 Clone this repo
 ```
