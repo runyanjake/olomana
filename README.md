@@ -60,41 +60,10 @@ PasswordAuthentication no
 PubkeyAuthentication yes
 ```
 
-
-#### Neovim/LazyVim
-The OS may not be bundled with GCC which is required for neovim variants. It is part of `build-essential`, a bundle of useful build tools.
-```
-sudo apt install build-essential
-```
-
-Better vim editor.
-```
-sudo add-apt-repository ppa:neovim-ppa/stable
-sudo apt update
-sudo apt-get install neovim
-```
-This installs a new-ish version of neovim. To install and configure LazyVim, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/neovim).
-
-#### Neofetch
-System stats, visualized.
-```
-sudo apt-get install neofetch
-```
-
 #### Github CLI
 Install gh CLI tool.
 ```
 sudo apt-get install gh
-```
-Generate new SSH key to upload to Github if you'll be pushing or downloading private repos. Reuse the one from earlier if you want.
-```
-ssh-keygen -t rsa -C "your-email@example.com"
-```
-Edit `~/.ssh/config` so the key is used.
-```
-Host github.com
-    User git
-    IdentityFile ~/.ssh/id_rsa
 ```
 Make sure the key is added to github before doing anything else.  
 You will likely need to make a Personal Access Token upload key. It must have the following permissions.
@@ -109,7 +78,28 @@ gh auth login
 ```
 Clone this repo
 ```
-gh repo clone runyanjake/olomana
+gh repo clone runyanjake/olomana ~/repositories/
+```
+
+#### Neovim/LazyVim
+The OS may not be bundled with GCC which is required for neovim variants. It is part of `build-essential`, a bundle of useful build tools.
+```
+sudo apt install build-essential
+```
+
+Better vim editor.
+```
+gh repo clone runyanjake/dotfiles ~/repositories/
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+sudo apt-get install neovim
+```
+This installs a new-ish version of neovim. To install and configure LazyVim, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/neovim).
+
+#### Neofetch
+System stats, visualized.
+```
+sudo apt-get install neofetch
 ```
 
 #### Docker
