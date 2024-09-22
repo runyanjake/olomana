@@ -30,6 +30,8 @@ Olomana, the web server will be a significant upgrade over its predecessor. I am
 ### Software
 
 #### OpenSSH
+
+##### Server
 ```
 sudo apt-get install openssh-server
 ```
@@ -39,6 +41,9 @@ sudo ufw enable
 sudo ufw allow 22
 sudo ufw reload
 ```
+
+##### Client Setup
+If a client will be connecting to this server and you're configuring it now, follow the next steps to configure that client.  
 On the client, generate a new SSH key
 ```
 ssh-keygen -t rsa -C "your-email@example.com"
@@ -49,7 +54,7 @@ Host 192.168.1.xxx
     User olomana
     IdentityFile ~/.ssh/id_rsa
 ```
-On the server, edit `/etc/ssh/sshd_config` to disable password authentication so users must use ssh key.
+On the server, edit `/etc/ssh/sshd_config` to disable password authentication so users must use ssh key to connect.
 ```
 PasswordAuthentication no
 PubkeyAuthentication yes
