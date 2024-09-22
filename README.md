@@ -41,6 +41,11 @@ sudo ufw reload
 ```
 
 #### Neovim/LazyVim
+The OS may not be bundled with GCC which is required for neovim variants. It is part of `build-essential`, a bundle of useful build tools.
+```
+sudo apt install build-essential
+```
+
 Better vim editor.
 ```
 sudo add-apt-repository ppa:neovim-ppa/stable
