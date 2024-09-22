@@ -40,6 +40,21 @@ sudo ufw allow 22
 sudo ufw reload
 ```
 
+#### Neovim
+Better vim editor.
+```
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+sudo apt-get install neovim
+```
+For configuration, follow customization steps at `https://github.com/runyanjake/dotfiles/tree/main/neovim`.
+
+#### Neofetch
+System stats, visualized.
+```
+sudo apt-get install neofetch
+```
+
 #### Github CLI
 Install gh CLI tool.
 ```
@@ -47,13 +62,13 @@ sudo apt-get install gh
 ```
 Generate new SSH key to upload to Github if you'll be pushing or downloading private repos.
 ```
-ssh-keygen -t ed25519 -C "your_email@example.com"
+ssh-keygen -t rsa -C "your-email@example.com"
 ```
 Edit `~/.ssh/config` so the key is used.
 ```
 Host github.com
     User git
-    IdentityFile ~/.ssh/id_ed25519
+    IdentityFile ~/.ssh/id_rsa
 ```
 Make sure the key is added to github before doing anything else.  
 You will likely need to make a Personal Access Token upload key. It must have the following permissions.
