@@ -85,7 +85,7 @@ Host github.com
 ```
 Clone this repo
 ```
-gh repo clone runyanjake/olomana ~/repositories/
+gh repo clone runyanjake/olomana ~/repositories/olomana
 ```
 
 #### Neovim/LazyVim
@@ -96,7 +96,7 @@ sudo apt install build-essential
 
 Better vim editor.
 ```
-gh repo clone runyanjake/dotfiles ~/repositories/
+gh repo clone runyanjake/dotfiles ~/repositories/dotfiles
 sudo add-apt-repository ppa:neovim-ppa/stable
 sudo apt update
 sudo apt-get install neovim
