@@ -101,7 +101,7 @@ sudo add-apt-repository ppa:neovim-ppa/stable
 sudo apt update
 sudo apt-get install neovim
 ```
-This installs a new-ish version of neovim. To install and configure LazyVim, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/neovim).
+This installs a new-ish version of neovim. To install and configure LazyVim, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/lazyvim).
 
 #### Neofetch
 System stats, visualized.
