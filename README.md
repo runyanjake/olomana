@@ -39,6 +39,22 @@ sudo ufw enable
 sudo ufw allow 22
 sudo ufw reload
 ```
+On the client, generate a new SSH key
+```
+ssh-keygen -t rsa -C "your-email@example.com"
+```
+and edit `~/.ssh/config` so the key is used.
+```
+Host 192.168.1.xxx
+    User olomana
+    IdentityFile ~/.ssh/id_rsa
+```
+On the server, edit `/etc/ssh/sshd_config` to disable password authentication so users must use ssh key.
+```
+PasswordAuthentication no
+PubkeyAuthentication yes
+```
+
 
 #### Neovim/LazyVim
 The OS may not be bundled with GCC which is required for neovim variants. It is part of `build-essential`, a bundle of useful build tools.
@@ -65,7 +81,7 @@ Install gh CLI tool.
 ```
 sudo apt-get install gh
 ```
-Generate new SSH key to upload to Github if you'll be pushing or downloading private repos.
+Generate new SSH key to upload to Github if you'll be pushing or downloading private repos. Reuse the one from earlier if you want.
 ```
 ssh-keygen -t rsa -C "your-email@example.com"
 ```
