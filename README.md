@@ -47,7 +47,7 @@ sudo add-apt-repository ppa:neovim-ppa/stable
 sudo apt update
 sudo apt-get install neovim
 ```
-For configuration, follow customization steps at `https://github.com/runyanjake/dotfiles/tree/main/neovim`.
+For configuration, follow customization steps in my [dotfiles repo](https://github.com/runyanjake/dotfiles/tree/main/neovim).
 
 #### Neofetch
 System stats, visualized.
