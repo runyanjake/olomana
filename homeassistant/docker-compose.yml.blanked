@@ -15,6 +15,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /path/to/config:/config
+      - /path/to/config/configuration.yaml:/config/configuration.yaml
     ports:
       - 8123:8123
     labels:
