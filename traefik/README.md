@@ -20,6 +20,15 @@ In addition to the above files, make sure the docker socket is mounted:
 The file `acme.json` can be weird when it comes to permissions. It will be generated on first run.  
 Ensure it is permission code 600.
 
+## Adjustments
+By default there are 60s upload, download, and idle timeouts. Adjust them by modifying `traefik.toml`:
+```
+[entryPoints.websecure.transport.respondingTimeouts]
+    readTimeout = "512s"
+    writeTimeout = "512s"
+    idleTimeout = "512s"
+```
+
 ## References
 https://doc.traefik.io/traefik/getting-started/quick-start/  
 https://doc.traefik.io/traefik/user-guides/docker compose/basic-example/
