@@ -12,7 +12,7 @@ DOCKER_NETWORK_CREATE = docker network create
 all: network $(MODULES)
 
 network:
-	$(DOCKER NETWORK CREATE) traefik
+	$(DOCKER_NETWORK_CREATE) traefik
 
 code-server:
 	cd code-server && $(DOCKER_BUILD)
