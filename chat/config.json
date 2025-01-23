@@ -1,0 +1,12 @@
+{
+  "modelBackend": "ollama",
+  "ollamaConfig": {
+    "host": "http://host.docker.internal",
+    "port": 11434,
+    "defaultModel": "deepseek-coder"
+  },
+  "otherSettings": {
+    "enableStreaming": true,
+    "timeout": 60
+  }
+}

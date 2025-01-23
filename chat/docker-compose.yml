@@ -1,0 +1,25 @@
+networks:
+  traefik:
+    external: true
+
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:ollama
+    container_name: openwebui
+    networks:
+      - traefik
+    environment:
+      - TZ=UTC
+      - OPENWEBUI_MODEL_PATH=/data/models
+    restart: unless-stopped
+    volumes:
+      - openwebui_data:/data
+    labels:
+      - traefik.http.routers.chat.rule=Host(`chat.whitney.rip`)
+      - traefik.http.routers.chat.tls=true
+      - traefik.http.routers.chat.tls.certresolver=lets-encrypt
+      - traefik.http.services.chat.loadbalancer.server.port=8080
+
+volumes:
+  openwebui_data:
+
