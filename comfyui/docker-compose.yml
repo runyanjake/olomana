@@ -1,0 +1,29 @@
+networks:
+  traefik:
+    external: true
+
+services:
+  comfyui:
+    image: ghcr.io/lecode-official/comfyui-docker:latest
+    container_name: comfyui
+    restart: unless-stopped
+    networks:
+      - traefik
+    environment:
+      - USER_ID=1006
+      - GROUP_ID=1008
+    volumes:
+      - /pwspool/software/comfyui/models:/opt/comfyui/models:rw
+      - /pwspool/software/comfyui/nodes:/opt/comfyui/custom_nodes:rw
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: ["gpu"]
+    labels:
+      - traefik.http.routers.comfyui.rule=Host(`comfyui.whitney.rip`)
+      - traefik.http.routers.comfyui.tls=true
+      - traefik.http.routers.comfyui.tls.certresolver=lets-encrypt
+      - traefik.http.services.comfyui.loadbalancer.server.port=8188
+
