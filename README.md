@@ -27,6 +27,9 @@ Olomana, the web server will be a significant upgrade over its predecessor. I am
 2. Resolved issue with old key by following method 2 in this issue: https://github.com/NVIDIA/cuda-repo-management/issues/4  
 3. Install `nvidia-docker`, see https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
 
+Alternatively:
+1. Install nvidia-smi either via nvidia instructions or `https://ubuntu.com/server/docs/nvidia-drivers-installation`.
+
 ### Software
 
 #### OpenSSH
@@ -59,6 +62,10 @@ On the server, edit `/etc/ssh/sshd_config` to disable password authentication so
 PasswordAuthentication no
 PubkeyAuthentication yes
 ```
+
+##### Security
+I kept getting distributed login attempts against PWS ssh. Fixed with Fail2Ban (`https://github.com/fail2ban/fail2ban`).  
+Refer to `https://www.linode.com/docs/guides/using-fail2ban-to-secure-your-server-a-tutorial/` for instructions to configure and then enable the service. (Imporant that you follow these to setup who is allowed).
 
 #### Github CLI
 Install gh CLI tool.

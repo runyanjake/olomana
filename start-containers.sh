@@ -15,17 +15,19 @@ for folder in "$@"; do
   fi
 
   # Navigate to the folder.
-  cd "$folder" || { echo "Failed to enter folder '$folder'. Skipping..."; continue; }
+  cd "$folder" || {
+    echo "Failed to enter folder '$folder'. Skipping..."
+    continue
+  }
 
   # Take actions based on existance of Dockerfile/docker-compose.yml.
   if [ -f "Dockerfile" ]; then
     echo "Dockerfile found in '$folder'. Running 'docker compose build'..."
     docker compose build
-  elif [ -f "docker-compose.yml" ]; then
+  fi
+  if [ -f "docker-compose.yml" ]; then
     echo "Dockerfile not found but docker-compose.yml exists in '$folder'. Running 'docker compose up -d'..."
     docker compose up -d
-  else
-    echo "Neither Dockerfile nor docker-compose.yml found in '$folder'. Skipping..."
   fi
 
   # Return to the original directory.
