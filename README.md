@@ -67,6 +67,9 @@ PubkeyAuthentication yes
 I kept getting distributed login attempts against PWS ssh. Fixed with Fail2Ban (`https://github.com/fail2ban/fail2ban`).  
 Refer to `https://www.linode.com/docs/guides/using-fail2ban-to-secure-your-server-a-tutorial/` for instructions to configure and then enable the service. (Imporant that you follow these to setup who is allowed).
 
+Fail2Ban configuration lives in `/etc/fail2ban/...` and logs live in `/var/log/fail2ban.log`.  
+Search for bannings with `sudo zgrep 'Ban' /var/log/fail2ban.log*`.
+
 #### Github CLI
 Install gh CLI tool.
 ```
