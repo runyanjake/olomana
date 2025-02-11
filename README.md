@@ -16,6 +16,7 @@ Both take one or more folders as input, each containing relevant docker files.
 - If a `Dockerfile` is present, we will build the container.
 - If a `docker-compose.yml` is present, we will attempt to start the container. 
 - If none is present, the folder will be skipped.
+Also, see `start-all-containers.sh` to start a preselected list of contains that I am currently running.
 
 ## About
 
