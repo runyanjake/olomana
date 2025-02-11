@@ -1,5 +1,21 @@
 # olomana
-The PWS 2.0 redesign, successor to https://github.com/runyanjake/whitney.
+The PWS 2.0 redesign, successor to https://github.com/runyanjake/whitney.  
+This repo is a collection of configuration files for various FOSS projects I have selfhosted on PWS in the past.  
+Learn more about PWS 2.0 at the [PWS Homepage](https://www.whitney.rip).
+
+## Table of Contents
+- [Quick Start](#quick-start)
+- [About](#about)
+- [Setup](#setup)
+  - [Hardware](#hardware)
+  - [Software](#software)
+
+## Quick Start
+Start and stop containers on demand using the companion scripts `start-containers.sh` and `stop-containers.sh`.  
+Both take one or more folders as input, each containing relevant docker files.  
+- If a `Dockerfile` is present, we will build the container.
+- If a `docker-compose.yml` is present, we will attempt to start the container. 
+- If none is present, the folder will be skipped.
 
 ## About
 
