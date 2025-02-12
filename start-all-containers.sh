@@ -6,7 +6,6 @@ declare -a CONTAINERS=(
   "home/homeassistant"
   "media/immich"
   "media/plex"
-  # "media/send"
   "media/transmission"
   "software-development/code-server"
   "software-development/grafana"

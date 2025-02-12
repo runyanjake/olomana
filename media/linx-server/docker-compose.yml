@@ -1,0 +1,26 @@
+networks:
+  traefik:
+    external: true
+
+volumes:
+  linx_files:
+  linx_meta:
+
+services:
+  linx-server:
+    container_name: linx-server
+    image: andreimarcu/linx-server
+    command: -config /data/linx-server.conf
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - linx_files:/data/files
+      - linx_meta:/data/meta
+      - ./linx-server.conf:/data/linx-server.conf
+    labels:
+      - traefik.http.routers.linx-server.rule=Host(`share.whitney.rip`)
+      - traefik.http.routers.linx-server.tls=true
+      - traefik.http.routers.linx-server.tls.certresolver=lets-encrypt
+      - traefik.http.services.linx-server.loadbalancer.server.port=8080
+
