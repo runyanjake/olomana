@@ -13,13 +13,10 @@ services:
       - OPENWEBUI_MODEL_PATH=/data/models
     restart: unless-stopped
     volumes:
-      - openwebui_data:/data
+      - /pwspool/software/openwebui/data:/app/backend/data
     labels:
       - traefik.http.routers.chat.rule=Host(`chat.whitney.rip`)
       - traefik.http.routers.chat.tls=true
       - traefik.http.routers.chat.tls.certresolver=lets-encrypt
       - traefik.http.services.chat.loadbalancer.server.port=8080
-
-volumes:
-  openwebui_data:
 
