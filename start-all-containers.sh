@@ -7,6 +7,7 @@ declare -a CONTAINERS=(
   "media/immich"
   "media/plex"
   "media/transmission"
+  "misc/homepage"
   "software-development/code-server"
   "software-development/grafana"
   "software-development/traefik"
