@@ -18,6 +18,9 @@ Additionally, you must provision the first admin user in the initial config.
 5. Provision new users
 You can do that from the "Site Administration" view from the first admin user.
 6. Configure SSH
+
+**Note: This is probably not worth pursuing and I've given up on it. The following has only sort of worked for me.**
+
 Via Traefik:
 - Add another entrypoint in `traefik.toml`:
 ```
