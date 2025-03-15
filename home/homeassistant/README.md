@@ -52,6 +52,7 @@ http:
     ...
     - 172.18.0.2
 ```
+If it doesnt take from the config manually edit it in the container.
 
 ## References
 https://www.home-assistant.io/integrations/wiz/  
