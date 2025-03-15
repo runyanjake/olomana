@@ -40,6 +40,19 @@ nmap -sn 192.168.1.xxx/24 (adjust for your local network)
 1. Navigate to Settings > Automations & Scenes > Create Automation 
 2. Configure based on time, location, or other triggers.
 
+### Issues
+1. Bad Proxy
+```
+2025-03-15 09:13:37.969 ERROR (MainThread) [homeassistant.components.http.forwarded] Received X-Forwarded-For header from an untrusted proxy 172.18.0.2
+```
+Homeassistant container is receiving request from the docker proxy network, which it doesn't know about. Add the local proxy so that the container knows that it is ok.
+```
+http:
+  trusted_proxies:
+    ...
+    - 172.18.0.2
+```
+
 ## References
 https://www.home-assistant.io/integrations/wiz/  
 
