@@ -20,9 +20,8 @@ services:
       - /pwspool/archive/plex/photos:/photos
       - /pwspool/archive/plex/homevideos:/homevideos
       - /pwspool/archive/plex/transcode:/transcode
+    ports:
+      - "32400:32400"
     labels:
-      - traefik.http.routers.plex.rule=Host(`SITE_URL`)
-      - traefik.http.routers.plex.tls=true
-      - traefik.http.routers.plex.tls.certresolver=lets-encrypt
-      - traefik.http.services.plex.loadbalancer.server.port=32400
+      - traefik.enable=false 
 

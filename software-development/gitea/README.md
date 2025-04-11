@@ -7,6 +7,11 @@ Followed instructions on Gitea page: https://docs.gitea.com/next/installation/in
 ```
 sudo groupadd gitea && sudo useradd giteauser && sudo usermod -a -G gitea giteauser && chown -r gitea:giteauser .
 ```
+2. Configure Environment
+Create `gitea.env` and `database.env` from the examples, replacing with relevant env values.
+
+See [Gitea Documentation](https://docs.gitea.com/administration/config-cheat-sheet) for examples/types.
+
 2. Run via Docker Compose
 ```
 
@@ -23,8 +28,10 @@ Some things that were weird:
 - could not use any port that wasnt default postgresql (5432)
 - had to make sure to specify database container by the right name. Removed custom name and used just "database".
 Note that the first admin is set via env vars, by generating the password hash. Alternatively create your users by setting the env var that controls signups.
+
 5. Provision new users
 You can do that from the "Site Administration" view from the first admin user.
+
 6. Configure SSH
 
 **Note: This is probably not worth pursuing and I've given up on it. The following has only sort of worked for me.**

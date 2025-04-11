@@ -14,12 +14,10 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/config:/config
-      - /path/to/config/configuration.yaml:/config/configuration.yaml
-    ports:
-      - 8123:8123
+      - /pwspool/software/homeassistant/config:/config
+      - /pwspool/software/homeassistant/config/configuration.yaml:/config/configuration.yaml 
     labels:
-      - traefik.http.routers.homeassistant.rule=Host(`SITE_URL`)
+      - traefik.http.routers.homeassistant.rule=Host(`iot.whitney.rip`)
       - traefik.http.routers.homeassistant.tls=true
       - traefik.http.routers.homeassistant.tls.certresolver=lets-encrypt
       - traefik.http.services.homeassistant.loadbalancer.server.port=8123

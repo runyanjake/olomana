@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   traefik:
     external: true
@@ -16,7 +14,8 @@ services:
     environment:
       - DEFAULT_THEME=dark
     labels:
-      - "traefik.http.routers.metube.rule=Host(`[[SITE_URL]]`)"
+      - "traefik.http.routers.metube.rule=Host(`yt.whitney.rip`)"
       - "traefik.http.routers.metube.tls=true"
       - "traefik.http.routers.metube.tls.certresolver=lets-encrypt"
       - "traefik.http.services.metube.loadbalancer.server.port=8081"
+

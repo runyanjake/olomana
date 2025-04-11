@@ -10,15 +10,16 @@ frontend:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    - 192.168.x.xxx
+    - 192.168.96.2
+    - 172.18.0.2
 
 # Configure logging
 logger:
   default: info
   logs:
-    homeassistant.core: debug
+    homeassistant.core: warning
     homeassistant.components: info
-    homeassistant.components.mqtt: debug
+    homeassistant.components.mqtt: warning
 
 automation: !include automations.yaml
 script: !include scripts.yaml
