@@ -1,0 +1,41 @@
+networks:
+  gitea_network:
+    external: false
+  traefik:
+    external: true
+
+services:
+  server:
+    image: gitea/gitea:latest
+    container_name: gitea
+    restart: unless-stopped
+    depends_on:
+      - database
+    env_file:
+      - gitea.env
+    networks:
+      - gitea_network
+      - traefik
+    volumes:
+      - /pwspool/software/gitea/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.http.routers.gitea.rule=Host(`git.whitney.rip`)
+      - traefik.http.routers.gitea.tls=true
+      - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
+
+  database:
+    image: postgres:14
+    container_name: gitea_db
+    networks:
+      - gitea_network
+    restart: unless-stopped
+    env_file:
+      - database.env
+    volumes:
+      - /pwspool/software/gitea/database:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+
