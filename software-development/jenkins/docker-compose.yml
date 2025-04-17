@@ -1,7 +1,7 @@
-version: '3.7'
+volumesersion: '3.7'
 
 networks:
-  TRAEFIK_NETWORK:
+  traefik:
     external: true
 
 services:
@@ -10,7 +10,7 @@ services:
     container_name: jenkins
     restart: unless-stopped
     networks:
-      - [TRAEFIK_NETWORK]
+      - traefik
     privileged: true
     user: root
     volumes:
@@ -18,7 +18,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/bin/docker:/usr/local/bin/docker
     labels:
-      - traefik.http.routers.jenkins.rule=Host(`[SUBDOMAIN_URL]`)
+      - traefik.http.routers.jenkins.rule=Host(`jenkins.whitney.rip`)
       - traefik.http.routers.jenkins.tls=true
       - traefik.http.routers.jenkins.tls.certresolver=lets-encrypt
       - traefik.http.services.jenkins.loadbalancer.server.port=8080
