@@ -1,0 +1,45 @@
+networks:
+  traefik:
+    external: true
+  linkwarden:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: linkwarden-db 
+    image: postgres:16-alpine
+    env_file: properties.env
+    restart: always
+    networks:
+      - linkwarden
+    volumes:
+      - /pwspool/software/linkwarden/db:/var/lib/postgresql/data
+  linkwarden:
+    container_name: linkwarden
+    env_file: properties.env
+    restart: always
+    image: ghcr.io/linkwarden/linkwarden:latest
+    networks:
+      - traefik
+      - linkwarden
+    volumes:
+      - /pwspool/software/linkwarden/data:/data/data
+    depends_on:
+      - postgres
+      - meilisearch
+    labels:
+      - traefik.http.routers.linkwarden.rule=Host(`bookmarks.whitney.rip`)
+      - traefik.http.routers.linkwarden.tls=true
+      - traefik.http.routers.linkwarden.tls.certresolver=lets-encrypt
+      - traefik.http.services.linkwarden.loadbalancer.server.port=3000
+  meilisearch:
+    container_name: linkwarden-search
+    image: getmeili/meilisearch:v1.12.8
+    restart: always
+    env_file:
+      - properties.env
+    networks:
+      - linkwarden 
+    volumes:
+      - /pwspool/software/linkwarden/meili_data:/meili_data
+
