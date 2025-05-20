@@ -1,0 +1,46 @@
+networks:
+  traefik:
+    external: true
+  planka:
+    driver: bridge
+
+services:
+  planka:
+    image: ghcr.io/plankanban/planka:2.0.0-rc.2
+    container_name: planka
+    restart: on-failure
+    networks:
+      - planka
+      - traefik
+    volumes:
+      - /pwspool/software/planka/favicons:/app/public/favicons
+      - /pwspool/software/planka/user-avatars:/app/public/user-avatars
+      - /pwspool/software/planka/background-images:/app/public/background-images
+      - /pwspool/software/planka/attachments:/app/private/attachments
+    env_file:
+      - planka.env 
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - traefik.http.routers.planka.rule=Host(`todo.whitney.rip`)
+      - traefik.http.routers.planka.tls=true
+      - traefik.http.routers.planka.tls.certresolver=lets-encrypt
+      - traefik.http.services.planka.loadbalancer.server.port=1337
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: planka-db
+    restart: on-failure
+    networks:
+      - planka
+    volumes:
+      - /pwspool/software/planka/data:/var/lib/postgresql/data
+    env_file:
+      - planka-db.env 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d planka"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
