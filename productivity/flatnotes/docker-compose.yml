@@ -1,0 +1,21 @@
+networks:
+  traefik:
+    external: true 
+
+services:
+  flatnotes:
+    container_name: flatnotes
+    image: dullage/flatnotes:latest 
+    networks:
+      - traefik
+    env_file:
+      - .env
+    volumes:
+      - "/pwspool/software/flatnotes:/data"
+      - "/pwspool/software/flatnotes/index"
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.flatnotes.rule=Host(`flatnotes.whitney.rip`)
+      - traefik.http.routers.flatnotes.tls=true
+      - traefik.http.routers.flatnotes.tls.certresolver=lets-encrypt
+      - traefik.http.services.flatnotes.loadbalancer.server.port=8080
