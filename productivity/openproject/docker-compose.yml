@@ -1,0 +1,21 @@
+networks:
+  traefik:
+    external: true
+
+services:
+  openproject:
+    image: openproject/openproject:16
+    container_name: openproject
+    restart: always
+    networks:
+      - traefik
+    env_file:
+      - .env
+    volumes:
+      - /pwspool/software/openproject/data:/var/openproject/assets
+    labels:
+      - traefik.http.routers.openproject.rule=Host(`pm.whitney.rip`)
+      - traefik.http.routers.openproject.tls=true
+      - traefik.http.routers.openproject.tls.certresolver=lets-encrypt
+      - traefik.http.services.openproject.loadbalancer.server.port=8080
+
