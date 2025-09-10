@@ -154,3 +154,17 @@ sudo systemctl is-active docker
 timedatectl list-timezones
 sudo timedatectl set-timezone America/Los_Angeles
 ```
+
+## Health / Stability 
+
+### ZFS Healthcheck
+```
+zpool list
+zpool status <pool_name>
+```
+
+### ZFS Fix for DEGRADED/FAULTED State 
+```
+zpool scrub <pool_name>
+zpool status <pool_name>
+```

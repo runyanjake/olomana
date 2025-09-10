@@ -25,7 +25,7 @@ Copy `planka.env.example` to `planka.env`, and `planka-db.env.example` to `plank
 docker compose up -d postgres
 ```
 
-5. Create Admin User 
+5. Create Admin User (For some reason this is not working from the UI) 
 ```
 docker compose run --rm planka npm run db:create-admin-user
 ```
