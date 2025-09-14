@@ -26,71 +26,122 @@
         </div>
     </section>
 
-    <section id="services" class="sub-section">
+    <section id="services-public" class="hero">
         <div class="container">
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/gitea.png" alt="Gitea">
-                <div class="service-text">
-                    <h2>Gitea <a class="service-private-status">Private</a></h2>
-                    <p>I usually host code on Github, but for personal projects or my own IP, I self host. Some repos are mirrored to Github.</p>
-                </div>
-            </div>
-	    <div class="service-entry">
-                <img class="blog-image" src="static/services/code-server.png" alt="Code Server">
-                <div class="service-text">
-                    <h2>Code Server <a class="service-private-status">Private</a></h2>
-                    <p>Personal notebook hosting stuff like my grocery list and anything I need to keep track of in the moment. UI is not too bad on both mobile and on desktop.</p>
-                </div>
-            </div>
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/covid-tracker.png" alt="Covid Tracker">
-                <div class="service-text">
-                    <h2>Covid Tracker <a class="service-public-status">Public</a></h2>
-                    <p>This was a coding project that my dad and I worked on during covid. He wanted to do some data analysis to fact check what was reported on about the covid rates. I wanted some practice with hosting web applications on PWS v1, and hosted the <a href="https://covid.whitney.rip">covid tracker website</a> for him on PWS.</p>
-                    <p>The website renders various charts, tables, and dashboards by interest. It additionally has a few "Checker" utilities to compare cases across cities and availability within hospitals.</p>
-                    <p>Unfortunately, as of 2024, the US government website we scraped data for has stopped sharing information, and unfortunately this marks the end for this project. However, we still run it on PWS with the most recent batch of data.</p>
-                    <p>Some stretch goals for this project include caching with <a href="https://nginx.org/en/">Nginx</a>, or converting it to a different framework like <a href="https://observablehq.com/">Observable</a>.</p>
-                </div>
-            </div>
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/photoprism.png" alt="Photoprism">
-                <div class="service-text">
-                    <h2>Photoprism <a class="service-public-status">Public</a></h2>
-                    <p>I host a personal <a href="https://gallery.whitney.rip">photo gallery</a> of memories that I'd like to remember. <a href="https://www.photoprism.app/">Photoprism</a> makes a great open source(!) solution for doing this that is better than most other comparable projects. Its features list is rather long, and can give you a pretty decent Google Photos impression.</p>
-                </div>
-            </div>
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/recipes.png" alt="Websites">
-                <div class="service-text">
-                    <h2>Websites <a class="service-public-status">Public</a></h2>
-                    <p>There are a few one-of websites that I host off of PWS. One is my <a href="https://recipes.whitney.rip">Recipes Website</a>, a ad-less, bloat-less recipes website that actually tells you how to cook something instead of trying to sell you on a cookbook or something. This was written around the time that ChatGPT was becoming a household name, and this was a great project to start to learn some of the capabilities on.</p>
-                    <p>Some other sites include my personal website (where I blog on some of these projects), and, of course, this PWS website!</p>
-                </div>
-            </div>
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/plex.png" alt="Plex">
-                <div class="service-text">
-                    <h2>Plex <a class="service-private-status">Private</a></h2>
-                    <p>I have a few YouTube channels whose original video files I like to keep an archive of. It's perfectly fine to just host the files and play them in a media player, but self-hosting <a href="https://www.plex.tv/">Plex</a> allows me to slap on a UI for essentially free.</p>
-                </div>
-            </div>
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/discord.png" alt="Discord Bots">
-                <div class="service-text">
-                    <h2>Discord Bots <a class="service-public-status">Public</a></h2>
-                    <p>At one point, when creating discord servers for special interest groups I was a part of, I found that moderation and automation were a problem with the default discord server owner experience.</p>
-                    <p>I tried using a paid discord bot to solve some of these problems, and eventually liked it enough to purchase a lifetime subscription. However, that bot's owners started to lock features away under additional tiers and I became unhappy.</p>
-                    <p>Just unhappy enought to sit down and learn how to use the Discord Api. With the help of the Discord API for Python, and ChatGPT by my side, I have started a <a href="https://github.com/runyanjake/discord">repository</a> containing some of the bots and features I have written for them. It's a nice, fun way to add functionality to a service that some of my friends choose to congregate on.</p>
-                </div>
-            </div>
-            <div class="service-entry">
-                <img class="blog-image" src="static/services/minecraft.png" alt="Minecraft">
-                <div class="service-text">
-                    <h2>Minecraft <a class="service-private-status">Private</a></h2>
-                    <p>Every few winters, people get stuck inside due to rain or snow and want to play some games. In the past, PWS has hosted a minecraft server to scratch that itch. Third party plugins like Dynmap allowed us to elevate the experience by hosting a live-updating <a href="https://minemap.whitney.rip">server map</a>, which is where the screenshot comes from.</p>
-                </div>
-            </div>
+            <h1>Public Services</h1>
+            <p>These services are publically hosted on PWS, open to the world.</p>
         </div>
+        
+        <section id="services" class="sub-section">
+            <div class="container">
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/covid-tracker.png" alt="Covid Tracker">
+                    <div class="service-text">
+                        <h2>Covid Tracker <a class="service-public-status">Public</a></h2>
+                        <p>This was a collaborative project between my dad and I during the Covid-19 pandemic. He had wanted to do some data analysis to fact check what was being reported on in the news. I wanted some practice with hosting web applications, and so I hosted the <a href="https://covid.whitney.rip">covid tracker website</a> for him on PWS.</p>
+                        <p>The website renders various charts, tables, and dashboards by interest. It additionally has a few "Checker" utilities to compare cases across cities and availability within hospitals.</p>
+                        <p>Unfortunately, as of 2024, the US government website we scraped data for has stopped sharing information, and unfortunately this marks the end for this project. However, we still run it on PWS with the most recent batch of data.</p>
+                        <p>Some stretch goals for this project include caching with <a href="https://nginx.org/en/">Nginx</a>, or converting it to a different framework like <a href="https://observablehq.com/">Observable</a>.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/discord.png" alt="Discord Bots">
+                    <div class="service-text">
+                        <h2>Discord Bots <a class="service-public-status">Public</a></h2>
+                        <p>At one point, when creating discord servers for special interest groups I was a part of, I found that moderation and automation were a problem with the default discord server owner experience.</p>
+                        <p>I tried using a paid discord bot to solve some of these problems, and eventually liked it enough to purchase a lifetime subscription. However, that bot's owners started to lock features away under additional tiers and I became unhappy.</p>
+                        <p>Just unhappy enought to sit down and learn how to use the Discord Api. With the help of the Discord API for Python, and ChatGPT by my side, I have started a <a href="https://github.com/runyanjake/discord">repository</a> containing some of the bots and features I have written for them. It's a nice, fun way to add functionality to a service that some of my friends choose to congregate on.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/gitea.png" alt="Gitea">
+                    <div class="service-text">
+                        <h2>Gitea <a class="service-private-status">Public</a></h2>
+                        <p>A majority of my public facing code lives on Github, but some projects are publically hosted or mirrored to/from Github from my Gitea instance. This open source software has near feature parity with Github, and is a great option for self hosting private or semi-private code.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/gitea.png" alt="Immich">
+                    <div class="service-text">
+                        <h2>Immich <a class="service-private-status">Public</a></h2>
+                        <p>After hosting my photos using other photo hosting software, I eventually discovered Immich, a modern Google Photos-like open-source software.</p>
+                        <p>So far it has been a resilient and mostly user-friendly software that I use to store, share, and revisit my photos.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/recipes.png" alt="PWS Recipes">
+                    <div class="service-text">
+                        <h2>PWS Recipes <a class="service-public-status">Public</a></h2>
+                        <p>I host an ad-free and bloat-free recipes <a href="https://recipes.whitney.rip">website</a> on PWS. It actually tells you how to cook something instead of trying to sell you on a cookbook or something.</p>
+                        <p>This was written around the time that ChatGPT was becoming a household name, and it was a good project to begin learning how to responsibly vibe code.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/recipes.png" alt="Jake's Online Resumes">
+                    <div class="service-text">
+                        <h2>Jake's Online Resumes <a class="service-public-status">Public</a></h2>
+                        <p>I have hosted many versions of my <a href="https://jake.runyan.dev">personal website</a> on PWS.</p>
+                        <p>The first version was written in high school using pure javascript/css/html.</p>
+                        <p>Later, I wrote a simple content focused React framework that rendered a custom markdown format into webpages, and hosted a very plain looking version of my website.</p>
+                        <p>Most recently, I have chosed to self host the <a href="https://ghost.org">Ghost</a> open-source framework, a much more feature-rich blogging framework that was written with many of the same intentions as my framework. In the future I plan to revamp my framework, but for now Ghost will be my driver for a modern, sleek, personal website.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section id="services-private" class="hero">
+        <div class="container">
+            <h1>Private Services</h1>
+            <p>These services are primarily personal productivity tools that are not publically exposed.</p>
+        </div>
+        
+        <section id="services" class="sub-section">
+            <div class="container">
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/code-server.png" alt="Code Server">
+                    <div class="service-text">
+                        <h2>Code Server <a class="service-private-status">Private</a></h2>
+                        <p>Personal notebook hosting stuff like my grocery list and anything I need to keep track of in the moment. UI is not too bad on both mobile and on desktop, though experience is far better on desktop.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/plex.png" alt="Plex">
+                    <div class="service-text">
+                        <h2>Plex <a class="service-private-status">Private</a></h2>
+                        <p>I have a few YouTube channels whose original video files I like to keep an archive of. It's perfectly fine to just host the files and play them in a media player, but self-hosting <a href="https://www.plex.tv/">Plex</a> allows me to slap on a UI for essentially free.</p>
+                    </div>
+                </div>
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/minecraft.png" alt="Minecraft">
+                    <div class="service-text">
+                        <h2>Minecraft <a class="service-private-status">Private</a></h2>
+                        <p>Every few winters, people get stuck inside due to rain or snow and want to play some games. In the past, PWS has hosted a minecraft server to scratch that itch.</p>
+                        <p>Third party plugins like Dynmap allowed us to elevate the experience by hosting a live-updating <a href="https://minemap.whitney.rip">server map</a>, which is where the screenshot comes from.</p>
+                        <p>After some incidents, the server has been privatized for a whitelisted group of friends.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section id="services-inactive" class="hero">
+        <div class="container">
+            <h1>Inactive Services</h1>
+            <p>These services were once in use on PWS, however they have been deprecated for one reason or another.</p>
+        </div>
+        
+        <section id="services" class="sub-section">
+            <div class="container">
+                <div class="service-entry">
+                    <img class="blog-image" src="static/services/photoprism.png" alt="Photoprism">
+                    <div class="service-text">
+                        <h2>Photoprism <a class="service-public-status">Deprecated</a></h2>
+                        <p>The v1 version of my personal photo gallery was hosted using the open source software <a href="https://www.photoprism.app/">Photoprism</a>. It had a fine UI, but was eventually discontinued in favor of another open source solution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </section>
     <script src="script.js"></script>
 </body>
