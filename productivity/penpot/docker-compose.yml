@@ -1,0 +1,54 @@
+networks:
+  traefik:
+    external: true
+  penpot:
+    driver: bridge
+
+services:
+  penpot-frontend:
+    image: penpotapp/frontend:latest
+    networks:
+      - traefik
+      - penpot
+    env_file: .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.penpot.rule=Host(`blueprint.whitney.rip`)"
+      - "traefik.http.routers.penpot.entrypoints=websecure"
+      - "traefik.http.routers.penpot.tls=true"
+      - "traefik.http.routers.penpot.tls.certresolver=letsencrypt"
+      - "traefik.http.services.penpot.loadbalancer.server.port=8080"
+    depends_on:
+      - penpot-backend
+
+  penpot-backend:
+    image: penpotapp/backend:latest
+    networks:
+      - penpot
+    env_file: .env
+    depends_on:
+      - penpot-postgres
+      - penpot-redis
+
+  penpot-exporter:
+    image: penpotapp/exporter:latest
+    networks:
+      - penpot
+    env_file: .env
+    depends_on:
+      - penpot-postgres
+      - penpot-redis
+
+  penpot-postgres:
+    image: postgres:15
+    networks:
+      - penpot
+    volumes:
+      - /pwspool/software/penpot/data:/var/lib/postgresql/data
+    env_file: .env
+
+  penpot-redis:
+    image: redis:7
+    networks:
+      - penpot
+
