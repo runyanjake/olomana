@@ -20,6 +20,7 @@ services:
       - /pwspool/archive/plex/photos:/photos
       - /pwspool/archive/plex/homevideos:/homevideos
       - /pwspool/archive/plex/transcode:/transcode
+      - /pwspool/archive/plex/downloads:/downloads
     ports:
       - "32400:32400"
     labels:
