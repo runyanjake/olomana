@@ -1,57 +1,67 @@
 # Gitea
-Self hosted Git  
-Followed instructions on Gitea page: https://docs.gitea.com/next/installation/install-with-docker
 
-### Steps
-1. Create a new user to own the gitea folder.
+Self-hosted git server backed by PostgreSQL, proxied through Traefik.
+
+## Services
+
+| Service | Image | Purpose |
+|---------|-------|---------|
+| `server` | `gitea/gitea:latest` | Gitea web/git server |
+| `database` | `postgres:14` | PostgreSQL database |
+
+Data is persisted to `/pwspool/software/gitea/` on the host.
+
+## Setup
+
+### 1. Configure environment
+
+Copy the example env files and fill in values:
+
 ```
-sudo groupadd gitea && sudo useradd giteauser && sudo usermod -a -G gitea giteauser && chown -r gitea:giteauser .
-```
-2. Configure Environment
-Create `gitea.env` and `database.env` from the examples, replacing with relevant env values.
-
-See [Gitea Documentation](https://docs.gitea.com/administration/config-cheat-sheet) for examples/types.
-
-2. Run via Docker Compose
+cp gitea.env.example gitea.env
+cp database.env.example database.env
 ```
 
-docker-compose up -d
+- `gitea.env` — Gitea app config (domain, SSH settings, DB credentials, etc.)
+- `database.env` — PostgreSQL credentials
+
+See the [Gitea config cheat sheet](https://docs.gitea.com/administration/config-cheat-sheet) for all available options.
+
+### 2. Start the stack
+
 ```
-3. Test postgresql
-```
-docker exec -it gitea_db bash
-psql -h 127.0.0.1 -p 5432 -U olomana_readwrite -d gitea
+docker compose up -d
 ```
 
-4. Go to xxx.xxx.xx.xxx:3000 and fill out initial config. Everything should match up to default value.
-Some things that were weird:
-- could not use any port that wasnt default postgresql (5432)
-- had to make sure to specify database container by the right name. Removed custom name and used just "database".
-Note that the first admin is set via env vars, by generating the password hash. Alternatively create your users by setting the env var that controls signups.
+### 3. Complete initial setup
 
-5. Provision new users
-You can do that from the "Site Administration" view from the first admin user.
+Navigate to `https://git.whitney.rip` and complete the web installer. Values should match what's in `gitea.env`. A few known quirks:
+- PostgreSQL must use the default port (5432); other ports may fail.
+- Use `database` as the database hostname (matches the service name in `docker-compose.yml`).
+- The first admin account can be created during initial setup or by enabling registrations temporarily via `GITEA__service__DISABLE_REGISTRATION=false`.
 
-6. Configure SSH
+### 4. Provision users
 
-Via Traefik (TCP passthrough on port 2222):
+From the admin account: **Site Administration > User Accounts > Create User Account**.
+
+### 5. Configure SSH
+
+SSH is exposed via Traefik TCP passthrough on port 2222:
 - The `gitea` entrypoint on `:2222` is defined in `traefik.toml`.
-- TCP router labels in `docker-compose.yml` forward port 2222 → container port 22.
+- TCP router labels in `docker-compose.yml` forward `2222` → container port `2222`.
 - `SSH_DOMAIN` and `SSH_PORT=2222` in `gitea.env` tell Gitea what to advertise in clone URLs.
 
-Test with:
+Test SSH:
 ```
 ssh -T -p 2222 git@git.whitney.rip
 ```
 
-7. Handle user authentication like you'd do on Github by generating new ssh keys and adding them to the SSH Keys section.
-Settings > SSH/GPG Keys > Manage SSH Keys
-Now should also be able to clone with SSH.
+### 6. Add SSH keys for users
 
-### Running
+**Settings > SSH/GPG Keys > Manage SSH Keys** — same flow as GitHub.
+
+## Running
+
 ```
 docker compose down && docker compose build && docker compose up -d && docker logs -f gitea
 ```
-
-### References
-`https://docs.gitea.com/next/administration/config-cheat-sheet`
