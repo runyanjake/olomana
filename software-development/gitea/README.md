@@ -34,24 +34,18 @@ You can do that from the "Site Administration" view from the first admin user.
 
 6. Configure SSH
 
-**Note: This is probably not worth pursuing and I've given up on it. The following has only sort of worked for me.**
+Via Traefik (TCP passthrough on port 2222):
+- The `gitea` entrypoint on `:2222` is defined in `traefik.toml`.
+- TCP router labels in `docker-compose.yml` forward port 2222 → container port 22.
+- `SSH_DOMAIN` and `SSH_PORT=2222` in `gitea.env` tell Gitea what to advertise in clone URLs.
 
-Via Traefik:
-- Add another entrypoint in `traefik.toml`:
+Test with:
 ```
-entryPoints:
-  gitea:
-    address: ":2222"
+ssh -T -p 2222 git@git.whitney.rip
 ```
-- Configure similar traefik labels to what we normally do for containers:
-```
-- traefik.tcp.routers.gitea_ssh.rule=HostSNI(`*`)
-- traefik.tcp.routers.gitea_ssh.entrypoints=ssh
-- traefik.tcp.routers.gitea_ssh.service=gitea_ssh
-- traefik.tcp.services.gitea_ssh.loadbalancer.server.port=22
-```
+
 7. Handle user authentication like you'd do on Github by generating new ssh keys and adding them to the SSH Keys section.
-Settings > SSH/GPG Keys > Manage SSH Keys  
+Settings > SSH/GPG Keys > Manage SSH Keys
 Now should also be able to clone with SSH.
 
 ### Running

@@ -25,6 +25,10 @@ services:
       - traefik.http.routers.gitea.tls=true
       - traefik.http.routers.gitea.tls.certresolver=lets-encrypt
       - traefik.http.services.gitea.loadbalancer.server.port=3000
+      - traefik.tcp.routers.gitea-ssh.rule=HostSNI(`*`)
+      - traefik.tcp.routers.gitea-ssh.entrypoints=gitea
+      - traefik.tcp.routers.gitea-ssh.service=gitea-ssh-svc
+      - traefik.tcp.services.gitea-ssh-svc.loadbalancer.server.port=2222
 
   database:
     image: postgres:14
