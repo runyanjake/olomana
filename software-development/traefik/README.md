@@ -5,30 +5,35 @@ Traefik is my load balancer.
 
 ## Setup
 
-### Files
+### Folder Structure
 Create/Fill in the following files in a `traefik/` directory under this one using the provided templates:
 - `traefik.toml`
 - `traefik-dynamic.toml`.
 
-The file `traefik/acme.json` will be generated on first run. Make sure it eventually gets permission code 600. You might need to create a blank file before the first run.
+Before the first run, create `acme.json` with the initial contents `{}`. Make sure it has permission code 600 (`chmod 600 acme.json`), incorrect permissions will break traefik.
 
 ### Volumes
 In addition to the above files, make sure the docker socket is mounted:
 - `/var/run/docker.sock:/var/run/docker.sock:ro`
 
-## Reminders
-The file `acme.json` can be weird when it comes to permissions. It will be generated on first run.  
-Ensure it is permission code 600.
+## Notes
 
-## Adjustments
+### Adjustments
 By default there are 60s upload, download, and idle timeouts. Adjust them by modifying `traefik.toml`:
-```
+```yaml
 [entryPoints.websecure.transport.respondingTimeouts]
     readTimeout = "512s"
     writeTimeout = "512s"
     idleTimeout = "512s"
 ```
 
-## References
+### References
 https://doc.traefik.io/traefik/getting-started/quick-start/  
 https://doc.traefik.io/traefik/user-guides/docker compose/basic-example/
+
+## Runbook
+```bash
+docker compose down && docker system prune && docker compose up -d && docker logs -f traefik
+```
+
+
