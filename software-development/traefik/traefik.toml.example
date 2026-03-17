@@ -11,18 +11,21 @@
     scheme = "https"
   [entryPoints.websecure]
     address = ":443"
+  [entryPoints.websecure.transport.respondingTimeouts]
+    readTimeout = "512s"
+    writeTimeout = "512s"
+    idleTimeout = "512s"
+  [entryPoints.gitea]
+    address = ":2222"
 
 [api]
   dashboard = true
-  
-[file]
-  watch = true
 
 [certificatesResolvers.lets-encrypt.acme]
   email = "runyanjake@gmail.com"
   storage = "/etc/acme.json"
   # Use LetsEncrypt Staging Server
-  # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+  # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   # Use LetsEncrypt Prod Server
   caServer = "https://acme-v02.api.letsencrypt.org/directory"
   [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
@@ -30,12 +33,11 @@
 [providers]
   [providers.docker]
     watch = true
-    network = "traefik_network"
+    network = "traefik"
   [providers.file]
     directory = "/etc/traefik/dynamic/"
-    filename = "traefik-dynamic.toml"
     watch = true
 
 [log]
-  level = "error"
+  level = "info"
 

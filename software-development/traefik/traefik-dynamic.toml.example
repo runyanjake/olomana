@@ -1,8 +1,4 @@
 [http.middlewares]
-  [http.middlewares.redirect-to-www.redirectRegex]
-    regex = "^https?://whitney.com(.*)"
-    replacement = "http://www.whitney.com$${1}"
-    permanent = true
   [http.middlewares.simpleAuth.basicAuth]
     users = ["olomana:password_hash"]
 
