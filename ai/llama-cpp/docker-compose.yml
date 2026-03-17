@@ -1,0 +1,38 @@
+services:
+  llama-cpp:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    container_name: llama-cpp
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - /pwspool/software/llama-cpp/models:/models
+    # We moved your environment variables here to guarantee they are applied
+    command: 
+      - "--model"
+      - "/models/Qwen3.5-35B-A3B-UD-IQ2_XXS.gguf"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      - "--n-gpu-layers"
+      - "99"
+      - "--ctx-size"
+      - "8192"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.llama.rule=Host(`llm.whitney.rip`)"
+      - "traefik.http.routers.llama.entrypoints=websecure"
+      - "traefik.http.routers.llama.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.llama.loadbalancer.server.port=8080"
+
+networks:
+  traefik:
+    external: true

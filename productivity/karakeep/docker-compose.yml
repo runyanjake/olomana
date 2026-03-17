@@ -35,6 +35,8 @@ services:
       - --remote-debugging-address=0.0.0.0
       - --remote-debugging-port=9222
       - --hide-scrollbars
+    labels:
+      - traefik.enable=false
 
   meilisearch:
     image: getmeili/meilisearch:latest
@@ -46,6 +48,8 @@ services:
       - karakeep
     volumes:
       - meilisearch:/meili_data
+    labels:
+      - traefik.enable=false
 
 volumes:
   meilisearch:

@@ -51,4 +51,6 @@ services:
       POSTGRES_DB: ${DB_POSTGRESDB_DATABASE}
     volumes:
       - /pwspool/software/n8n/data:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
 

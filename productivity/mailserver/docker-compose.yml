@@ -1,0 +1,53 @@
+networks:
+  traefik:
+    external: true
+
+services:
+  stalwart:
+    image: stalwartlabs/mail-server:latest
+    container_name: stalwart-mail
+    restart: unless-stopped
+    networks:
+      - traefik-public
+    environment:
+      - STALWART_URL=https://mail.whitney.rip
+    volumes:
+      - /pwspool/software/mailserver/stalwart/data:/opt/stalwart-mail
+      # Map the dumped certificates from the sidecar
+      - /pwspool/software/mailserver/stalwart/certs:/opt/stalwart-mail/etc/certs:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTP - Admin UI & Webmail (JMAP)
+      - "traefik.http.routers.mail-ui.rule=Host(`mail.whitney.rip`)"
+      - "traefik.http.routers.mail-ui.entrypoints=websecure"
+      - "traefik.http.routers.mail-ui.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.mail-ui.loadbalancer.server.port=8080"
+
+      # TCP - SMTP (Submission 587)
+      - "traefik.tcp.routers.mail-smtp.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mail-smtp.entrypoints=submission"
+      - "traefik.tcp.routers.mail-smtp.service=mail-smtp-svc"
+      - "traefik.tcp.services.mail-smtp-svc.loadbalancer.server.port=587"
+      # Enable PROXY protocol so Stalwart sees the real client IP
+      - "traefik.tcp.services.mail-smtp-svc.loadbalancer.proxyProtocol.version=2"
+
+      # TCP - IMAPS (993)
+      - "traefik.tcp.routers.mail-imaps.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mail-imaps.entrypoints=imaps"
+      - "traefik.tcp.routers.mail-imaps.service=mail-imaps-svc"
+      - "traefik.tcp.services.mail-imaps-svc.loadbalancer.server.port=993"
+      - "traefik.tcp.services.mail-imaps-svc.loadbalancer.proxyProtocol.version=2"
+
+  # 2. Certificate Dumper (Converts Traefik's JSON to .pem files)
+  cert-dumper:
+    image: ldez/traefik-certs-dumper:v2.8.1
+    container_name: mail-cert-dumper
+    volumes:
+      # Depends on location of acme.json file in traefik docker config.
+      - /home/jr/olomana-repo/software-development/traefik/acme.json:/app/acme.json:ro
+      - /pwspool/software/mailserver/stalwart/certs:/app/certs:rw
+    command: >
+      file --watch 
+      --domain "mail.whitney.rip" 
+      --dest /app/certs
+

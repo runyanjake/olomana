@@ -14,6 +14,8 @@ services:
       - linkwarden
     volumes:
       - /pwspool/software/linkwarden/db:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
   linkwarden:
     container_name: linkwarden
     env_file: properties.env
@@ -42,4 +44,6 @@ services:
       - linkwarden 
     volumes:
       - /pwspool/software/linkwarden/meili_data:/meili_data
+    labels:
+      - traefik.enable=false
 

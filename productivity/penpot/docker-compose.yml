@@ -16,7 +16,7 @@ services:
       - "traefik.http.routers.penpot.rule=Host(`blueprint.whitney.rip`)"
       - "traefik.http.routers.penpot.entrypoints=websecure"
       - "traefik.http.routers.penpot.tls=true"
-      - "traefik.http.routers.penpot.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.penpot.tls.certresolver=lets-encrypt"
       - "traefik.http.services.penpot.loadbalancer.server.port=8080"
     depends_on:
       - penpot-backend
