@@ -25,3 +25,8 @@ Requires that the `/transcode` and `/downloads` directories are created and link
 ## Setup
 When navigating to plex, assuming no nginx routing is happening, you must go to `https://[url]/web/index.html#!/` for first time setup.
 
+## Running
+```bash
+docker compose down && docker system prune -af && docker compose up -d && docker logs -f plex
+```
+

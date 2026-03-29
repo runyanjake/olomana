@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   minecraft:
     driver: bridge
@@ -10,6 +8,37 @@ networks:
     external: true
 
 services:
+  minecraft_solo:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft_solo
+    restart: unless-stopped
+    networks:
+      - grafana
+      - minecraft
+    ports:
+      - "25567:25565"
+    volumes:
+      - /pwspool/games/minecraft/minecraft_solo:/data
+    environment:
+      - TYPE=PURPUR
+      - MEMORY=2G
+      - VERSION=LATEST
+      - EULA=TRUE
+      - SERVER_NAME=minecraft_solo
+      - MODE=survival
+      - DIFFICULTY=hard
+      - OPS=RicecakeSMS,pZ_aeriaL
+      - ENABLE_WHITELIST=true
+      - WHITELIST=RicecakeSMS,pZ_aeriaL
+      - ICON=https://i.imgur.com/sqjZGql.png
+      - ENABLE_COMMAND_BLOCK=false
+      - GENERATE_STRUCTURES=true
+      - MOTD="\u00A77Pinnerland Creative Server, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
+      - PVP=false
+      - ALLOW_FLIGHT=true
+    labels:
+      - "traefik.enable=false"
+
   minecraft_creative:
     image: itzg/minecraft-server:latest
     container_name: minecraft_creative
@@ -23,9 +52,9 @@ services:
     volumes:
       - /pwspool/games/minecraft/minecraft_creative:/data
     environment:
-      - TYPE=PAPER
+      - TYPE=PURPUR
       - MEMORY=2G
-      - VERSION=1.21.4
+      - VERSION=LATEST
       - EULA=TRUE
       - SERVER_NAME=minecraft_creative
       - MODE=creative
@@ -56,9 +85,9 @@ services:
     volumes:
       - /pwspool/games/minecraft/minecraft_2023:/data
     environment:
-      - TYPE=PAPER
+      - TYPE=PURPUR
       - MEMORY=4G
-      - VERSION=1.21.4
+      - VERSION=LATEST
       - EULA=TRUE
       - SERVER_NAME=minecraft_2023
       - MODE=survival
@@ -88,9 +117,9 @@ services:
     volumes:
       - /pwspool/games/minecraft/minecraft_skyblock:/data
     environment:
-      - TYPE=PAPER
+      - TYPE=PURPUR
       - MEMORY=4G
-      - VERSION=1.21.4
+      - VERSION=LATEST
       - EULA=TRUE
       - SERVER_NAME=minecraft_skyblock
       - MODE=survival
