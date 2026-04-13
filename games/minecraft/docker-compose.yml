@@ -13,10 +13,11 @@ services:
     container_name: minecraft_solo
     restart: unless-stopped
     networks:
-      - grafana
+      - traefik
       - minecraft
     ports:
       - "25567:25565"
+    #  - "8127:8123"
     volumes:
       - /pwspool/games/minecraft/minecraft_solo:/data
     environment:
@@ -35,9 +36,12 @@ services:
       - GENERATE_STRUCTURES=true
       - MOTD="\u00A77Pinnerland Creative Server, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
       - PVP=false
-      - ALLOW_FLIGHT=true
+      - ALLOW_FLIGHT=true 
     labels:
-      - "traefik.enable=false"
+      - traefik.http.routers.minemap-solo.rule=Host(`minemap-solo.whitney.rip`)
+      - traefik.http.routers.minemap-solo.tls=true
+      - traefik.http.routers.minemap-solo.tls.certresolver=lets-encrypt
+      - traefik.http.services.minemap-solo.loadbalancer.server.port=8123
 
   minecraft_creative:
     image: itzg/minecraft-server:latest

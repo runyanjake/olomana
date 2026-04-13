@@ -1,7 +1,7 @@
 # Minecraft
 Self-host one or multiple servers.
 
-## Setup 
+## Setup
 
 ### Whitelist
 
@@ -11,7 +11,7 @@ Add the following env vars in docker-compose.yml:
 ENABLE_WHITELIST: "TRUE"
 WHITELIST: "player1,player2,player3"
 ```
-The whitelist will be created in `whitelist.json` in the server directory. Adding something there will update the whitelist on the next run.
+The whitelist will be created in `whitelist.json` in the server directory. Adding something there will update the whitelist on the next run
 
 #### Option 2: Manually
 1. After first time startup set `enforce-whitelist=true` in `server.properties`.
@@ -34,6 +34,7 @@ Add users via server commands (`whitelist add NAME`).
 ##### Plugins (Updated 3/29/2026)
 [OnePlayerSleep+](https://modrinth.com/plugin/oneplayersleepgg?version=1.21.11&loader=paper)
 [NoEndermanGrief](https://modrinth.com/plugin/no-enderman-griefing/version/1.0)
+[Dynmap](https://www.curseforge.com/minecraft/bukkit-plugins/dynmap/files/7460127)
 
 #### Plugins (Old)
 SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`  
@@ -44,6 +45,15 @@ ajLeaderboards: `https://www.spigotmc.org/threads/ajleaderboards.471179/`
 #### Updating Plugins
 Obtain the new jar file for the updated plugin, stop server and swap old jar in `plugins/`.
 Most plugins should not need to regenerate their data, so you can leave it as is. 
+
+#### Plugin Configuration
+
+##### Dynmap 
+After starting the server, go to the Dynmap plugin folder (`plugins/dynmap/configuration.txt`) and set the following:
+```bash
+webserver-bindaddress: 0.0.0.0
+webserver-port: 8123
+```
 
 ## Maintenance
 
