@@ -1,0 +1,299 @@
+networks:
+  traefik:
+    external: true
+  plane:
+    driver: bridge
+
+# Shared environment for all plane-backend services
+x-backend-env:
+  &backend-env
+  SECRET_KEY: ${SECRET_KEY}
+  DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@plane-db/${POSTGRES_DB}
+  REDIS_URL: redis://plane-redis:6379/
+  AMQP_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@plane-mq:5672/
+  WEB_URL: https://${DOMAIN}
+  CORS_ALLOWED_ORIGINS: https://${DOMAIN}
+  DOCKERIZED: 1
+  GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
+  USE_MINIO: 1
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+  AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+  AWS_S3_ENDPOINT_URL: http://plane-minio:9000
+  AWS_S3_BUCKET_NAME: ${MINIO_BUCKET_NAME:-uploads}
+  FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}
+
+services:
+
+  # ── Database ─────────────────────────────────────────────────────────────────
+
+  plane-db:
+    image: postgres:15.7-alpine
+    container_name: plane-db
+    restart: always
+    networks:
+      - plane
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - /pwspool/software/plane/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Cache ─────────────────────────────────────────────────────────────────────
+
+  plane-redis:
+    image: valkey/valkey:7.2.11-alpine
+    container_name: plane-redis
+    restart: always
+    networks:
+      - plane
+    volumes:
+      - /pwspool/software/plane/redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Message Queue ─────────────────────────────────────────────────────────────
+
+  plane-mq:
+    image: rabbitmq:3.13.6-management-alpine
+    container_name: plane-mq
+    restart: always
+    networks:
+      - plane
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - /pwspool/software/plane/rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running", "-q"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ── Object Storage (MinIO) ────────────────────────────────────────────────────
+
+  plane-minio:
+    image: minio/minio:latest
+    container_name: plane-minio
+    restart: always
+    networks:
+      - plane
+    command: server /export --console-address ":9090"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - /pwspool/software/plane/minio:/export
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  plane-createbuckets:
+    image: minio/mc:latest
+    container_name: plane-createbuckets
+    restart: "no"
+    networks:
+      - plane
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET_NAME: ${MINIO_BUCKET_NAME:-uploads}
+    depends_on:
+      plane-minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set myminio http://plane-minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD &&
+      mc mb myminio/$$MINIO_BUCKET_NAME --ignore-existing"
+
+  # ── Migrations (one-shot) ─────────────────────────────────────────────────────
+
+  migrator:
+    image: makeplane/plane-backend:${APP_RELEASE:-stable}
+    container_name: plane-migrator
+    restart: "no"
+    networks:
+      - plane
+    command: ./bin/docker-entrypoint-migrator.sh
+    environment:
+      <<: *backend-env
+    depends_on:
+      plane-db:
+        condition: service_healthy
+      plane-redis:
+        condition: service_healthy
+
+  # ── API ───────────────────────────────────────────────────────────────────────
+
+  api:
+    image: makeplane/plane-backend:${APP_RELEASE:-stable}
+    container_name: plane-api
+    restart: always
+    networks:
+      - plane
+    command: ./bin/docker-entrypoint-api.sh
+    environment:
+      <<: *backend-env
+    volumes:
+      - /pwspool/software/plane/logs/api:/logs
+    depends_on:
+      plane-db:
+        condition: service_healthy
+      plane-redis:
+        condition: service_healthy
+      plane-mq:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+
+  # ── Celery Worker ─────────────────────────────────────────────────────────────
+
+  worker:
+    image: makeplane/plane-backend:${APP_RELEASE:-stable}
+    container_name: plane-worker
+    restart: always
+    networks:
+      - plane
+    command: ./bin/docker-entrypoint-worker.sh
+    environment:
+      <<: *backend-env
+    volumes:
+      - /pwspool/software/plane/logs/worker:/logs
+    depends_on:
+      plane-db:
+        condition: service_healthy
+      plane-redis:
+        condition: service_healthy
+      plane-mq:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+
+  # ── Celery Beat ───────────────────────────────────────────────────────────────
+
+  beat-worker:
+    image: makeplane/plane-backend:${APP_RELEASE:-stable}
+    container_name: plane-beat-worker
+    restart: always
+    networks:
+      - plane
+    command: ./bin/docker-entrypoint-beat.sh
+    environment:
+      <<: *backend-env
+    volumes:
+      - /pwspool/software/plane/logs/beat:/logs
+    depends_on:
+      plane-db:
+        condition: service_healthy
+      plane-redis:
+        condition: service_healthy
+      plane-mq:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+
+  # ── Frontend ──────────────────────────────────────────────────────────────────
+
+  web:
+    image: makeplane/plane-frontend:${APP_RELEASE:-stable}
+    container_name: plane-web
+    restart: always
+    networks:
+      - plane
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: https://${DOMAIN}
+      NEXT_PUBLIC_SPACE_BASE_URL: https://${DOMAIN}/spaces
+      NEXT_PUBLIC_ADMIN_BASE_URL: https://${DOMAIN}/god-mode
+      NEXT_PUBLIC_LIVE_BASE_URL: https://${DOMAIN}/live
+    depends_on:
+      - api
+
+  # ── Admin Dashboard ───────────────────────────────────────────────────────────
+
+  admin:
+    image: makeplane/plane-admin:${APP_RELEASE:-stable}
+    container_name: plane-admin
+    restart: always
+    networks:
+      - plane
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: https://${DOMAIN}
+      NEXT_PUBLIC_ADMIN_BASE_URL: https://${DOMAIN}/god-mode
+    depends_on:
+      - api
+
+  # ── Public Space ──────────────────────────────────────────────────────────────
+
+  space:
+    image: makeplane/plane-space:${APP_RELEASE:-stable}
+    container_name: plane-space
+    restart: always
+    networks:
+      - plane
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: https://${DOMAIN}
+      NEXT_PUBLIC_SPACE_BASE_URL: https://${DOMAIN}/spaces
+    depends_on:
+      - api
+
+  # ── Live (real-time collaboration) ────────────────────────────────────────────
+
+  live:
+    image: makeplane/plane-live:${APP_RELEASE:-stable}
+    container_name: plane-live
+    restart: always
+    networks:
+      - plane
+    environment:
+      LIVE_BASE_PATH: /live
+      SECRET_KEY: ${SECRET_KEY}
+      API_BASE_URL: http://api:8000
+    depends_on:
+      - api
+
+  # ── Proxy (gateway – only service on the Traefik network) ─────────────────────
+
+  proxy:
+    image: makeplane/plane-proxy:${APP_RELEASE:-stable}
+    container_name: plane-proxy
+    restart: always
+    networks:
+      - plane
+      - traefik
+    environment:
+      # plane-proxy is Caddy — it needs SITE_ADDRESS (listen spec),
+      # BUCKET_NAME, and FILE_SIZE_LIMIT. Traefik terminates TLS in front
+      # of it, so Caddy listens plain-HTTP on :80 and issues no certs.
+      SITE_ADDRESS: ":80"
+      BUCKET_NAME: ${MINIO_BUCKET_NAME:-uploads}
+      FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}
+      CERT_EMAIL: ""
+      CERT_ACME_DNS: ""
+      TRUSTED_PROXIES: "0.0.0.0/0"
+    depends_on:
+      - web
+      - api
+      - admin
+      - space
+      - live
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.plane.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.plane.tls=true
+      - traefik.http.routers.plane.tls.certresolver=lets-encrypt
+      - traefik.http.services.plane.loadbalancer.server.port=80
+      - traefik.docker.network=traefik
