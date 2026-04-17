@@ -2,17 +2,17 @@
 
 # List of container paths to start
 declare -a CONTAINERS=(
-  "home/homeassistant"
   "media/immich"
   "media/plex"
   "media/transmission"
   "misc/homepage"
-  "productivity/code-server"
-	"productivity/excalidraw"
-  "productivity/planka"
-  "software-development/gitea"
-  "software-development/grafana"
-  "software-development/traefik"
+  "smarthome/homeassistant"
+	"software-development/design/excalidraw"
+  "software-development/project-management/planka"
+  "software-development/documentation/code-server"
+  "software-development/infrastructure/gitea"
+  "software-development/infrastructure/grafana"
+  "software-development/infrastructure/traefik"
 )
 
 # Start all containers in one call to start-containers.sh
