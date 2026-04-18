@@ -10,6 +10,7 @@ declare -a CONTAINERS=(
 	"software-development/design/excalidraw"
   "software-development/project-management/planka"
   "software-development/documentation/code-server"
+  "software-development/documentation/docmost"
   "software-development/infrastructure/gitea"
   "software-development/infrastructure/grafana"
   "software-development/infrastructure/traefik"
