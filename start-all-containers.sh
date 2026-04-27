@@ -8,7 +8,6 @@ declare -a CONTAINERS=(
   "misc/homepage"
   "smarthome/homeassistant"
 	"software-development/design/excalidraw"
-  "software-development/project-management/planka"
   "software-development/documentation/code-server"
   "software-development/infrastructure/gitea"
   "software-development/infrastructure/grafana"

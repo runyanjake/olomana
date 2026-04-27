@@ -17,7 +17,6 @@ services:
       - minecraft
     ports:
       - "25567:25565"
-    #  - "8127:8123"
     volumes:
       - /pwspool/games/minecraft/minecraft_solo:/data
     environment:
