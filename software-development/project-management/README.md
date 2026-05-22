@@ -30,19 +30,19 @@ Cons
 - Mobile usage gated behind $6/seat paywall.
 
 ## Planka
-Blah blah 
+A solid self hosted Kanban board.
 
 Pros
-- 
+- Visually nice, works good on mobile/desktop/tablet.
 
 Cons
-- 
+- No sprint planning.
 
-## Example
-Blah blah 
+## Taiga
+A decent looking PMS software.
 
 Pros
-- 
+- Allows for sprint planning, though it's not intuitive (to me).
 
 Cons
-- 
+- You cannot get rid of some of the "completion status" visuals. 
