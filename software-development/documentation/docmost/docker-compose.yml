@@ -25,7 +25,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.docmost.rule=Host(`docs.whitney.rip`)"
       - "traefik.http.routers.docmost.entrypoints=websecure"
-      - "traefik.http.routers.docmost.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.docmost.tls.certresolver=lets-encrypt"
       - "traefik.http.services.docmost.loadbalancer.server.port=3000"
 
   db:
