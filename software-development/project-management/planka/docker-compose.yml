@@ -8,7 +8,7 @@ services:
   planka:
     image: ghcr.io/plankanban/planka:2.0.0-rc.2
     container_name: planka
-    restart: on-failure
+    restart: unless-stopped
     networks:
       - planka
       - traefik
@@ -31,7 +31,7 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: planka-db
-    restart: on-failure
+    restart: unless-stopped
     networks:
       - planka
     volumes:

@@ -1,5 +1,3 @@
-volumesersion: '3.7'
-
 networks:
   traefik:
     external: true
@@ -16,7 +14,8 @@ services:
     volumes:
       - /pwspool/software/jenkins:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/local/bin/docker:/usr/local/bin/docker
+      - /usr/bin/docker:/usr/local/bin/docker:ro
+      - /usr/libexec/docker/cli-plugins/docker-compose:/usr/local/lib/docker/cli-plugins/docker-compose:ro
     labels:
       - traefik.http.routers.jenkins.rule=Host(`jenkins.whitney.rip`)
       - traefik.http.routers.jenkins.tls=true
