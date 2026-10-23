@@ -77,7 +77,7 @@ services:
       # websockets, so /ws on the main host must go straight to the backend.
       - "traefik.http.routers.multica-ws.rule=Host(`${FRONTEND_HOST}`) && (Path(`/ws`) || PathPrefix(`/ws/`))"
       - "traefik.http.routers.multica-ws.entrypoints=websecure"
-      - "traefik.http.routers.multica-ws.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.multica-ws.tls.certresolver=let-sencrypt"
       - "traefik.http.routers.multica-ws.service=multica-backend"
 
   # Official image. Proxies API calls to REMOTE_API_URL at runtime.
@@ -97,5 +97,5 @@ services:
       - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik}"
       - "traefik.http.routers.multica-web.rule=Host(`${FRONTEND_HOST}`)"
       - "traefik.http.routers.multica-web.entrypoints=websecure"
-      - "traefik.http.routers.multica-web.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.multica-web.tls.certresolver=lets-encrypt"
       - "traefik.http.services.multica-web.loadbalancer.server.port=3000"
