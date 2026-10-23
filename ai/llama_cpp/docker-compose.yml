@@ -1,5 +1,6 @@
 networks:
   ai:
+    name: ai
     driver: bridge
 
 services:
@@ -10,14 +11,14 @@ services:
     networks:
       - ai
     volumes:
-      - /pwspool/software/ai/llama_cpp:/models
-    command: >
-      -m /models/Llama-3.1-8B-Instruct-Q4_K_M.gguf
-      --host 0.0.0.0
-      --port 8080
-      -ngl 999
-      -c 4096
-      --threads 6
+      - ${MODELS_PATH:-/pwspool/software/ai/llama_cpp}:/models
+    environment:
+      - LLAMA_ARG_MODEL=/models/${MODEL_FILE:-Llama-3.1-8B-Instruct-Q4_K_M.gguf}
+      - LLAMA_ARG_HOST=0.0.0.0
+      - LLAMA_ARG_PORT=8080
+      - LLAMA_ARG_N_GPU_LAYERS=${GPU_LAYERS:-999}
+      - LLAMA_ARG_CTX_SIZE=${CTX_SIZE:-4096}
+      - LLAMA_ARG_THREADS=${THREADS:-6}
     deploy:
       resources:
         reservations:
