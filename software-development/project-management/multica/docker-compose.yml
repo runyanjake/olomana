@@ -71,13 +71,9 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik}"
       - "traefik.http.services.multica-backend.loadbalancer.server.port=8080"
-      # On the traefik network only so traefik can reach /ws; everything else
-      # goes through the frontend.
-      # Next.js rewrites proxy /api, /auth, /uploads to the backend, but not
-      # websockets, so /ws on the main host must go straight to the backend.
       - "traefik.http.routers.multica-ws.rule=Host(`${FRONTEND_HOST}`) && (Path(`/ws`) || PathPrefix(`/ws/`))"
       - "traefik.http.routers.multica-ws.entrypoints=websecure"
-      - "traefik.http.routers.multica-ws.tls.certresolver=let-sencrypt"
+      - "traefik.http.routers.multica-ws.tls.certresolver=lets-encrypt"
       - "traefik.http.routers.multica-ws.service=multica-backend"
 
   # Official image. Proxies API calls to REMOTE_API_URL at runtime.
