@@ -1,7 +1,4 @@
 networks:
-  minecraft:
-    driver: bridge
-    name: minecraft
   metrics:
     external: true
   traefik:
@@ -14,7 +11,7 @@ services:
     restart: unless-stopped
     networks:
       - traefik
-      - minecraft
+      - metrics
     ports:
       - "25567:25565"
     volumes:
@@ -48,7 +45,6 @@ services:
     restart: unless-stopped
     networks:
       - metrics
-      - minecraft
     ports:
       - "25566:25565"
       - "9226:9225"
@@ -81,7 +77,6 @@ services:
     networks:
       - traefik
       - metrics
-      - minecraft
     ports:
       - "25565:25565"
       - "9225:9225"
@@ -114,7 +109,7 @@ services:
     image: itzg/minecraft-server:latest
     container_name: minecraft_skyblock
     networks:
-      - minecraft
+      - metrics
     ports:
       - "25564:25565"
     volumes:
@@ -139,7 +134,7 @@ services:
     image: joshi425/minecraft_exporter:latest
     container_name: minecraft_2023_metrics
     networks:
-      - minecraft
+      - metrics
     ports:
       - 2565:2565
     volumes:
