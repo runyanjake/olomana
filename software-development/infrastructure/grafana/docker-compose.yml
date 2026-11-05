@@ -1,7 +1,7 @@
 networks:
-  grafana:
+  metrics:
     driver: bridge
-    name: grafana
+    name: metrics
   traefik:
     external: true
   minecraft:
@@ -17,7 +17,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     networks:
-      - grafana
+      - metrics
       - traefik
     volumes:
       - ./grafana.ini:/etc/grafana/grafana.ini
@@ -37,7 +37,7 @@ services:
     user: "1003:1005"
     restart: unless-stopped
     networks:
-      - grafana
+      - metrics
     pid: host
     command:
       - "--path.rootfs=/host"
@@ -53,8 +53,8 @@ services:
     container_name: prometheus
     restart: always
     networks:
-      - grafana
-      - minecraft
+      - metrics
+      - traefik
     volumes:
       - "./prometheus.yml:/etc/prometheus.yml"
       - prometheus_data:/prometheus
@@ -64,5 +64,12 @@ services:
       - "--web.console.libraries=/usr/share/prometheus/console_libraries"
       - "--web.console.templates=/usr/share/prometheus/consoles"
     labels:
-      - traefik.enable=false
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.prometheus.rule=Host(`${PROMETHEUS_HOST}`)
+      - traefik.http.routers.prometheus.tls=true
+      - traefik.http.routers.prometheus.tls.certresolver=lets-encrypt
+      - traefik.http.routers.prometheus.middlewares=prometheus-auth
+      - traefik.http.middlewares.prometheus-auth.basicauth.users=${PROMETHEUS_BASIC_AUTH}
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
 

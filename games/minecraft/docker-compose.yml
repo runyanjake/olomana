@@ -2,7 +2,7 @@ networks:
   minecraft:
     driver: bridge
     name: minecraft
-  grafana:
+  metrics:
     external: true
   traefik:
     external: true
@@ -47,7 +47,7 @@ services:
     container_name: minecraft_creative
     restart: unless-stopped
     networks:
-      - grafana
+      - metrics
       - minecraft
     ports:
       - "25566:25565"
@@ -80,7 +80,7 @@ services:
     container_name: minecraft_2023
     networks:
       - traefik
-      - grafana
+      - metrics
       - minecraft
     ports:
       - "25565:25565"

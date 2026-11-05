@@ -6,6 +6,9 @@
 Create/Fill in the following files in a `grafana` directory under this one using the templates.
 - `grafana.ini`
 - `prometheus.yml`
+- `.env` (copy from `.env.example`; holds the Prometheus hostname and basic auth hash for Traefik)
+
+Generate the basic auth value with `htpasswd -nbB admin 'your-password'` and paste it into `.env`, keeping the single quotes.
 
 ### Volumes
 Make sure that in additionto mounting the 2 files above to their respective containers, grafana container has the following mount:
