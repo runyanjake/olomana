@@ -47,11 +47,11 @@ Most plugins should not need to regenerate their data, so you can leave it as is
 
 #### Plugin Configuration
 
-##### BlueMap 
-After starting the server, go to the BlueMap plugin folder (`plugins/BlueMap/webserver.conf`) and set the following:
-```bash
-ip: 0.0.0.0
-port: 8100
+##### BlueMap
+After starting the server, go to the BlueMap containers' mounted directories and edit `/pwspool/games/minecraft/bluemap_container_name/config/core.conf` (if multiple instances, you have to do multiple times):
+```text
+accept-download: true
+render-thread-count: 2  # or some reasonable number
 ```
 
 ##### Dynmap 
