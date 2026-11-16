@@ -32,21 +32,27 @@ Add users via server commands (`whitelist add NAME`).
 ### Plugins/Mods
 
 ##### Plugins (Updated 3/29/2026)
-[OnePlayerSleep+](https://modrinth.com/plugin/oneplayersleepgg?version=1.21.11&loader=paper)
-[NoEndermanGrief](https://modrinth.com/plugin/no-enderman-griefing/version/1.0)
-[Dynmap](https://www.curseforge.com/minecraft/bukkit-plugins/dynmap/files/7460127)
+- Single Player Sleep effect by using Spigot gamerules: `/gamerule playersSleepingPercentage 1`.
+- [Bluemap](https://www.spigotmc.org/resources/bluemap.83557/) - Dynmap alternative providing web-accessible live-updating player map. 
 
-#### Plugins (Old)
-SinglePlayerSleep: `https://www.spigotmc.org/resources/singleplayersleep.68139/`  
-Dynmap: `https://www.spigotmc.org/resources/dynmap%C2%AE.274/`  
-NoEndermanGrief: `https://www.spigotmc.org/resources/no-enderman-grief2.71236/`  
-ajLeaderboards: `https://www.spigotmc.org/threads/ajleaderboards.471179/`
+#### Plugins (Old Reference Links)
+- [SinglePlayerSleep](https://www.spigotmc.org/resources/singleplayersleep.68139/)/[OnePlayerSleep+](https://modrinth.com/plugin/oneplayersleepgg?version=1.21.11&loader=paper)/[SinglePlayerSleep](https://www.spigotmc.org/resources/singleplayersleep.68139/)/[OnePlayerSleep+](https://modrinth.com/plugin/oneplayersleepgg?version=1.21.11&loader=paper) - Note this is no longer needed, instead use the Spigot game rule `/gamerule playersSleepingPercentage 1` to get the desired effect.
+- [Dynmap 1](https://www.spigotmc.org/resources/dynmap%C2%AE.274/)/[Dynmap 2](https://www.curseforge.com/minecraft/bukkit-plugins/dynmap/files/7460127)
+- [NoEndermanGrief 1](https://www.spigotmc.org/resources/no-enderman-grief2.71236/)/[NoEndermanGrief 2](https://modrinth.com/plugin/no-enderman-griefing/version/1.0)
+- [ajLeaderboards](https://www.spigotmc.org/threads/ajleaderboards.471179/)
 
 #### Updating Plugins
 Obtain the new jar file for the updated plugin, stop server and swap old jar in `plugins/`.
 Most plugins should not need to regenerate their data, so you can leave it as is. 
 
 #### Plugin Configuration
+
+##### BlueMap 
+After starting the server, go to the BlueMap plugin folder (`plugins/BlueMap/webserver.conf`) and set the following:
+```bash
+ip: 0.0.0.0
+port: 8100
+```
 
 ##### Dynmap 
 After starting the server, go to the Dynmap plugin folder (`plugins/dynmap/configuration.txt`) and set the following:
