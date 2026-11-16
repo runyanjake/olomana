@@ -53,6 +53,16 @@ After starting the server, go to the BlueMap containers' mounted directories and
 accept-download: true
 render-thread-count: 2  # or some reasonable number
 ```
+Additionally, you will need to edit `nvim /pwspool/games/minecraft/bluemap_2023/config/maps/overworld.conf`:
+```text
+world: "/app/world/world"
+name: "YOUR_WORLD_NAME"
+```
+
+**Starting a Render**:
+```text
+docker exec -it bluemap_2023 java -jar cli.jar -r
+```
 
 ##### Dynmap 
 After starting the server, go to the Dynmap plugin folder (`plugins/dynmap/configuration.txt`) and set the following:
