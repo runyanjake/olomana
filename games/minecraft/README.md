@@ -33,7 +33,8 @@ Add users via server commands (`whitelist add NAME`).
 
 ##### Plugins (Updated 3/29/2026)
 - Single Player Sleep effect by using Spigot gamerules: `/gamerule playersSleepingPercentage 1`.
-- [Bluemap](https://www.spigotmc.org/resources/bluemap.83557/) - Dynmap alternative providing web-accessible live-updating player map. 
+- [Bluemap](https://www.spigotmc.org/resources/bluemap.83557/) - Dynmap alternative providing web-accessible live-updating player map. We are using the Docker container, not the plugin.
+- [sladkoff/Minecraft-Prometheus-Exporter](https://github.com/sladkoff/minecraft-prometheus-exporter/releases) - Prometheus node exporter for Minecraft servers.
 
 #### Plugins (Old Reference Links)
 - [SinglePlayerSleep](https://www.spigotmc.org/resources/singleplayersleep.68139/)/[OnePlayerSleep+](https://modrinth.com/plugin/oneplayersleepgg?version=1.21.11&loader=paper)/[SinglePlayerSleep](https://www.spigotmc.org/resources/singleplayersleep.68139/)/[OnePlayerSleep+](https://modrinth.com/plugin/oneplayersleepgg?version=1.21.11&loader=paper) - Note this is no longer needed, instead use the Spigot game rule `/gamerule playersSleepingPercentage 1` to get the desired effect.
@@ -47,7 +48,15 @@ Most plugins should not need to regenerate their data, so you can leave it as is
 
 #### Plugin Configuration
 
+##### PrometheusExporter
+After starting the server, edit `/path/to/minecraft/directory/plugins/PrometheusExporter/config.yml`:
+```text
+host: 0.0.0.0
+port: 9940
+```
+
 ##### BlueMap
+*Note that we are using the BlueMap docker container, not a plugin.*
 After starting the server, go to the BlueMap containers' mounted directories and edit `/pwspool/games/minecraft/bluemap_container_name/config/core.conf` (if multiple instances, you have to do multiple times):
 ```text
 accept-download: true
@@ -63,6 +72,8 @@ name: "YOUR_WORLD_NAME"
 ```text
 docker exec -it bluemap_2023 java -jar cli.jar -r
 ```
+
+#### Plugin Configuration (Old References)
 
 ##### Dynmap 
 After starting the server, go to the Dynmap plugin folder (`plugins/dynmap/configuration.txt`) and set the following:
