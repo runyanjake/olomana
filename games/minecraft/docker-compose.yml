@@ -34,7 +34,7 @@ services:
       - PVP=false
       - ALLOW_FLIGHT=true
       - PROMETHEUS_ENABLED=true
-      - MINECRAFT_PROMETHEUS_EXPORTER_HOST=0.0.0.0
+      - PROMETHEUS_EXPORTER_HOST=0.0.0.0
     labels:
       - "traefik.enable=false"
 
@@ -87,7 +87,7 @@ services:
       - LEVEL_TYPE=FLAT
       - ALLOW_FLIGHT=true
       - PROMETHEUS_ENABLED=true
-      - MINECRAFT_PROMETHEUS_EXPORTER_HOST=0.0.0.0
+      - PROMETHEUS_EXPORTER_HOST=0.0.0.0
     labels:
       - "traefik.enable=false"
 
@@ -119,7 +119,7 @@ services:
       - MOTD="\u00A77Pinnerland, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
       - ALLOW_FLIGHT=false
       - PROMETHEUS_ENABLED=true
-      - MINECRAFT_PROMETHEUS_EXPORTER_HOST=0.0.0.0
+      - PROMETHEUS_EXPORTER_HOST=0.0.0.0
     labels:
       - "traefik.enable=false"
 
@@ -167,6 +167,6 @@ services:
       - ICON=https://i.imgur.com/sqjZGql.png
       - MOTD="\u00A77Skyblock, powered by \u00A75P\u00A79W\u00A75S\u00A77\!"
       - PROMETHEUS_ENABLED=true
-      - MINECRAFT_PROMETHEUS_EXPORTER_HOST=0.0.0.0
+      - PROMETHEUS_EXPORTER_HOST=0.0.0.0
     labels:
       - "traefik.enable=false"
