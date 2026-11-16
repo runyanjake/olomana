@@ -13,6 +13,7 @@ services:
       - metrics
     ports:
       - "25567:25565"
+      - "9941:9940"
     volumes:
       - /pwspool/games/minecraft/minecraft_solo:/data
     environment:
@@ -64,6 +65,7 @@ services:
       - metrics
     ports:
       - "25566:25565"
+      - "9942:9940"
     volumes:
       - /pwspool/games/minecraft/minecraft_creative:/data
     environment:
@@ -97,6 +99,7 @@ services:
       - metrics
     ports:
       - "25565:25565"
+      - "9940:9940"
     volumes:
       - /pwspool/games/minecraft/minecraft_2023:/data
     environment:
@@ -147,6 +150,7 @@ services:
       - metrics
     ports:
       - "25564:25565"
+      - "9943:9940"
     volumes:
       - /pwspool/games/minecraft/minecraft_skyblock:/data
     environment:
