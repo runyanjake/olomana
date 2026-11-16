@@ -10,7 +10,6 @@ services:
     container_name: minecraft_solo
     restart: unless-stopped
     networks:
-      - traefik
       - metrics
     ports:
       - "25567:25565"
@@ -35,6 +34,21 @@ services:
       - ALLOW_FLIGHT=true
       - PROMETHEUS_ENABLED=true
       - MINECRAFT_PROMETHEUS_EXPORTER_HOST=0.0.0.0
+    labels:
+      - "traefik.enable=false"
+
+  bluemap_solo:
+    image: ghcr.io/bluemap-minecraft/bluemap:latest
+    container_name: bluemap_solo
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - /pwspool/games/minecraft/minecraft_solo:/app/world:ro
+      - /pwspool/games/minecraft/bluemap_solo/config:/app/config
+      - /pwspool/games/minecraft/bluemap_solo/data:/app/data
+      - /pwspool/games/minecraft/bluemap_solo/web:/app/web
+    command: ["-r", "-u", "-w"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.minemap-solo.rule=Host(`minemap-solo.whitney.rip`)"
@@ -80,7 +94,6 @@ services:
     container_name: minecraft_2023
     restart: unless-stopped
     networks:
-      - traefik
       - metrics
     ports:
       - "25565:25565"
@@ -104,6 +117,21 @@ services:
       - ALLOW_FLIGHT=false
       - PROMETHEUS_ENABLED=true
       - MINECRAFT_PROMETHEUS_EXPORTER_HOST=0.0.0.0
+    labels:
+      - "traefik.enable=false"
+
+  bluemap_2023:
+    image: ghcr.io/bluemap-minecraft/bluemap:latest
+    container_name: bluemap_2023
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - /pwspool/games/minecraft/minecraft_2023:/app/world:ro
+      - /pwspool/games/minecraft/bluemap_2023/config:/app/config
+      - /pwspool/games/minecraft/bluemap_2023/data:/app/data
+      - /pwspool/games/minecraft/bluemap_2023/web:/app/web
+    command: ["-r", "-u", "-w"]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.minemap.rule=Host(`minemap.whitney.rip`)"
